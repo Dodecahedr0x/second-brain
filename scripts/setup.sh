@@ -3,26 +3,26 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env.local"
+RUN_SCRIPT="$REPO_ROOT/scripts/run.sh"
+LOG_FILE="$REPO_ROOT/logs/run.log"
 
 echo "Second-Brain Setup"
 echo "=================="
 
-# Vault path
-if [[ -f "$ENV_FILE" ]]; then
-    existing=$(grep -E '^VAULT_PATH=' "$ENV_FILE" | cut -d= -f2-)
-    echo "Existing VAULT_PATH: $existing"
-    read -rp "New vault path (leave blank to keep): " input
-    VAULT_PATH="${input:-$existing}"
-else
-    read -rp "Vault path (absolute path to your Obsidian vault): " VAULT_PATH
-fi
+# --- Vault path ---
+current_vault=$(grep -E '^VAULT_PATH=' "$ENV_FILE" 2>/dev/null | cut -d= -f2- || true)
+prompt="Vault path (absolute path to your Obsidian vault)"
+[[ -n "$current_vault" ]] && prompt="Vault path (leave blank to keep: $current_vault)"
+
+read -rp "$prompt: " input
+VAULT_PATH="${input:-$current_vault}"
 
 if [[ -z "$VAULT_PATH" ]]; then
     echo "Error: vault path cannot be empty." >&2
     exit 1
 fi
 
-VAULT_PATH="${VAULT_PATH%/}"  # strip trailing slash
+VAULT_PATH="${VAULT_PATH%/}"
 
 if [[ ! -d "$VAULT_PATH" ]]; then
     echo "Warning: '$VAULT_PATH' does not exist or is not a directory."
@@ -30,30 +30,24 @@ if [[ ! -d "$VAULT_PATH" ]]; then
     [[ "${confirm,,}" == "y" ]] || exit 1
 fi
 
-# Write .env.local
 printf 'VAULT_PATH=%s\n' "$VAULT_PATH" > "$ENV_FILE"
 echo "Written: $ENV_FILE"
 
-# Cron job
+# --- Cron job ---
 echo ""
-RUN_SCRIPT="$REPO_ROOT/scripts/run.sh"
-LOG_FILE="$REPO_ROOT/logs/run.log"
+current_hour=$(crontab -l 2>/dev/null | grep -F "$RUN_SCRIPT" | awk '{print $2}' || true)
+default_hour="${current_hour:-8}"
+prompt="Hour to run daily loop (0-23, leave blank to keep: $default_hour)"
 
-existing_hour=$(crontab -l 2>/dev/null | grep -oP "^\d+ \K\d+" | head -1 || true)
-if [[ -n "$existing_hour" ]]; then
-    echo "Existing cron job runs at ${existing_hour}:00."
-fi
-
-read -rp "Hour to run daily loop (0-23, default 8): " input_hour
-HOUR="${input_hour:-8}"
+read -rp "$prompt: " input_hour
+HOUR="${input_hour:-$default_hour}"
 
 if ! [[ "$HOUR" =~ ^[0-9]+$ ]] || (( HOUR < 0 || HOUR > 23 )); then
-    echo "Invalid hour. Using 8." >&2
-    HOUR=8
+    echo "Invalid hour '$HOUR'. Using $default_hour." >&2
+    HOUR="$default_hour"
 fi
 
 CRON_JOB="0 $HOUR * * * $RUN_SCRIPT >> $LOG_FILE 2>&1"
-
-( crontab -l 2>/dev/null | grep -v "$RUN_SCRIPT" ; echo "$CRON_JOB" ) | crontab -
+( crontab -l 2>/dev/null | grep -vF "$RUN_SCRIPT" ; echo "$CRON_JOB" ) | crontab -
 echo "Cron job set: daily at ${HOUR}:00"
 echo "  Log: $LOG_FILE"
