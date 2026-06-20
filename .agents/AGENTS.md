@@ -10,12 +10,13 @@ Before executing any loop iteration, an agent MUST:
 
 0. Read `.env.local` in the repo root — load `VAULT_PATH`. Abort if missing (tell user to run `scripts/setup.sh`).
 1. Read `context/vault-structure.md` — understand current folder layout and conventions
-2. Read `context/agent-notes.md` — understand the agent-managed note convention
-3. Read `Agent Vault Index` in the vault — load last known vault state
-4. Read `Agent Operation Log` in the vault — know what was done last time
-5. Read `context/boundaries.md` — internalize what is off-limits
-6. Read `loop.md` — load the six-phase execution model
-7. Load relevant skills from `skills/` for the current task type
+2. Read `context/agent-notes.md` and `skills/agent-notes.md` — load the agent-managed note convention and templates
+3. Verify all four agent-managed notes exist in the vault; create any missing ones using `skills/agent-notes.md` templates
+4. Read `Agent Vault Index` — load last known vault state
+5. Read `Agent Operation Log` — know what was done last time
+6. Read `context/boundaries.md` — internalize what is off-limits
+7. Read `loop.md` — load the six-phase execution model
+8. Load relevant skills from `skills/` for the current task type
 
 ## Core Principles (Harness Engineering)
 
