@@ -1,6 +1,6 @@
 # Spec: Daily Notes Processing Pipeline
 
-**Trigger**: Scheduled (daily, default 08:00) or manual run. Processes daily notes written since the last run.
+**Trigger**: Scheduled (daily, default 08:00) or manual run. Always targets yesterday's daily note; extends it even if already processed.
 
 ## Overview
 

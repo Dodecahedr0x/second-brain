@@ -17,13 +17,15 @@ Identify all vault content that needs processing: new files, modified files, and
 3. Find inbox-tagged files:
    grep -rl "#inbox\|#raw" $VAULT_PATH --include="*.md"
 
-4. Find unprocessed daily notes:
-   - List files matching YYYY-MM-DD.md pattern
-   - Exclude those containing "Processed by agent" in their content
+4. Find yesterday's daily note:
+   YESTERDAY=$(date -d yesterday +%Y-%m-%d)
+   - Target: $VAULT_PATH/$YESTERDAY.md
+   - Include regardless of whether it has already been processed — always extend it
+   - If the file does not exist, skip (user did not write a note yesterday)
 
 5. Merge and deduplicate all three lists → change set
 
-6. Sort by: inbox-tagged first, then oldest-unprocessed / oldest-modified first
+6. Sort by: inbox-tagged first, then yesterday's daily note, then oldest-modified first
 ```
 
 ## Output Format
@@ -32,7 +34,7 @@ Identify all vault content that needs processing: new files, modified files, and
 CHANGE_SET:
 - [inbox] $VAULT_PATH/Inbox/raw-note.md
 - [modified] $VAULT_PATH/2026-06-20.md
-- [unprocessed-daily] $VAULT_PATH/2026-06-19.md
+- [daily] $VAULT_PATH/2026-06-19.md
 ```
 
 ## Edge Cases
@@ -43,4 +45,4 @@ CHANGE_SET:
 
 ## Time Complexity Note
 
-For vaults with >500 notes, limit the change set to the 20 oldest unprocessed items and log a warning.
+For vaults with >500 notes, limit the modified-files slice to the 20 oldest items and log a warning. Yesterday's daily note is always included regardless of this limit.

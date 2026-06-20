@@ -1,6 +1,6 @@
 # Spec: Daily Note Handling
 
-**Trigger**: A daily note (`YYYY-MM-DD.md`) exists with unprocessed bullet points.
+**Trigger**: Yesterday's daily note (`YYYY-MM-DD.md`) is in the change set. Runs whether or not the note has already been processed — each run may extend it with new links, digest, or suggestions.
 
 ## Daily Note Philosophy
 
@@ -14,16 +14,16 @@ Daily notes are the primary inbox. The user pours raw thoughts here. The agent's
 
 1. Read the daily note top to bottom
 2. For each bullet point:
-   - If it names a known concept → inline-link it: `[[Syncthing]]`
+   - If it names a known concept → inline-link it: `[[Syncthing]]` (skip if already linked)
    - If it names an unknown concept → log in `Agent Concept Gaps`; link it only if the same plan creates a stub this session
    - If it is a task (contains "TODO", action verb, or "- [ ]") → leave it unchanged
    - If it is a personal reflection → leave it unchanged
-3. Add the canonical processed footer at the bottom of the note with the processing date:
+3. Update the processed footer (add if absent, update date if present):
    ```
    ---
    *Processed by agent on YYYY-MM-DD*
    ```
-4. Do NOT delete any content from daily notes — only add links and the processed marker
+4. Do NOT delete any content from daily notes — only add links and update the footer
 
 ## What NOT to Do
 
@@ -34,7 +34,7 @@ Daily notes are the primary inbox. The user pours raw thoughts here. The agent's
 
 ## Scope
 
-Process at most the last 7 unprocessed daily notes per session. Older ones are lower priority.
+Always process yesterday's note. If catch-up is needed (bootstrap or missed days), process at most the last 7 daily notes per session, oldest first.
 
 ## Relationship to Daily Pipeline
 
