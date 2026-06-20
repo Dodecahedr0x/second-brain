@@ -4,13 +4,14 @@
 
 ## Overview
 
-This pipeline extends the base loop with three capabilities that `specs/daily-note.md` does not cover:
+This pipeline extends the base loop with four capabilities that `specs/daily-note.md` does not cover:
 
 1. **External content extraction** — pull URLs and citations from daily notes and fetch their content
 2. **Note enrichment** — update existing atomic notes (or create new ones) with facts from fetched content
 3. **Knowledge surfacing** — append a digest to the daily note summarising what was learned
+4. **Daily suggestions** — compile recent knowledge, find extending resources, detect routines, write suggestions to today's daily note
 
-All three run inside the existing six-phase loop. This spec defines *when* and *how* each additional step fires within those phases.
+All four run inside the existing six-phase loop. This spec defines *when* and *how* each additional step fires within those phases.
 
 ---
 
@@ -21,8 +22,8 @@ All three run inside the existing six-phase loop. This spec defines *when* and *
 | Phase 1 OBSERVE | Mark daily notes as `daily-pipeline` type in the change set |
 | Phase 2 ORIENT | Run URL extraction and content fetching (see §URL Extraction) |
 | Phase 3 DECIDE | Add FETCH and ENRICH actions to the plan |
-| Phase 4 ACT | Execute fetches, enrich notes, build digest buffer |
-| Phase 5 VERIFY | Check fetched sources are referenced; digest is written |
+| Phase 4 ACT | Execute fetches, enrich notes, build digest buffer, run suggestions workflow |
+| Phase 5 VERIFY | Check fetched sources are referenced; digest and suggestions are written |
 | Phase 6 CLEANUP | Log fetch results; persist digest; update vault index |
 
 ---
@@ -138,6 +139,25 @@ Append a fenced section to the bottom of the current daily note (above the exist
 
 ---
 
+## §Suggestions
+
+Runs during Phase 4 (ACT), after §Knowledge Digest is written. Delegates entirely to `specs/daily-suggestions.md`.
+
+Summary of what it does:
+1. Compiles notes created/updated in the last 7 days from `Agent Vault Index`
+2. Calls `skills/find-resources.md` for the dominant concept cluster
+3. Calls `skills/identify-routines.md` on the last 14 daily notes
+4. Writes a `## Suggestions — YYYY-MM-DD` section to **today's** daily note (creating the file if absent)
+
+If today's daily note already has a `## Suggestions` section, replace it rather than appending a second one.
+
+Log:
+```
+[TIMESTAMP] SUGGESTIONS: written to YYYY-MM-DD.md — N explore items, N routines
+```
+
+---
+
 ## Scheduling
 
 The pipeline is designed to run via a scheduled cloud agent (see `specs/schedule.md` once created).
@@ -168,3 +188,6 @@ If any limit is hit mid-session, defer the remainder with `#queued` and log clea
 - `specs/generation.md` — used when this pipeline schedules CREATE actions
 - `specs/connection.md` — runs after generation to wire new notes into the graph
 - `skills/fetch-url.md` — the fetching primitive used by §Content Fetching
+- `specs/daily-suggestions.md` — full spec for the §Suggestions workflow
+- `skills/identify-routines.md` — routine detection used by §Suggestions
+- `skills/find-resources.md` — resource search used by §Suggestions

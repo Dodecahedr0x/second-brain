@@ -53,3 +53,4 @@ Full detail in `context/boundaries.md`. Quick reference:
 | Handle daily notes (full pipeline: fetch + enrich + digest) | `specs/daily-pipeline.md` |
 | Create a note from external content | `specs/source-note.md` |
 | Surface new knowledge as digest | `specs/knowledge-digest.md` |
+| Write daily suggestions (explore + routines) | `specs/daily-suggestions.md` |
