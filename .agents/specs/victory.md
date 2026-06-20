@@ -4,8 +4,8 @@ A session is complete ONLY when ALL applicable checks below pass. This prevents 
 
 ## Universal Checks (every session)
 
-- [ ] `memory/operation-log.md` has been updated with this session's entry
-- [ ] `memory/vault-index.md` reflects the current state of the vault
+- [ ] `Agent Operation Log` has been updated with this session's entry
+- [ ] `Agent Vault Index` reflects the current state of the vault
 - [ ] No vault file is in a partial or broken state (no half-written notes, no truncated content)
 - [ ] All wikilinks inserted this session point to files that exist (or are new stubs)
 - [ ] No files listed in `context/boundaries.md` as forbidden were modified
@@ -13,14 +13,14 @@ A session is complete ONLY when ALL applicable checks below pass. This prevents 
 ## Ingestion Session Checks
 
 - [ ] All raw/inbox items in the change set are either processed or explicitly tagged `#queued`
-- [ ] Every named concept extracted has either an existing note or an entry in `memory/concept-gaps.md`
+- [ ] Every named concept extracted has either an existing note or an entry in `Agent Concept Gaps`
 - [ ] The original source note is not degraded — only enriched
 
 ## Generation Session Checks
 
 - [ ] Every new note follows the atomic note template from `specs/generation.md`
 - [ ] Every new note has at least one wikilink to an existing note
-- [ ] New notes removed from `memory/concept-gaps.md`
+- [ ] New notes removed from `Agent Concept Gaps`
 
 ## Connection Session Checks
 
@@ -30,7 +30,7 @@ A session is complete ONLY when ALL applicable checks below pass. This prevents 
 ## Failure Protocol
 
 If a check fails:
-1. Log the failure in `memory/operation-log.md` under `VICTORY_CHECK_FAILED`
+1. Log the failure in `Agent Operation Log` under `VICTORY_CHECK_FAILED`
 2. Attempt to fix if the fix is unambiguous and safe
 3. If fix is unclear → mark as DEFERRED, log reason, proceed to Phase 6 cleanup
 4. NEVER mark a session complete with an outstanding unresolved failure

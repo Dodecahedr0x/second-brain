@@ -8,7 +8,7 @@ Create a well-formed atomic note for a concept, following the standard template 
 
 ## Pre-Creation Checks
 
-1. Confirm the concept is in `memory/concept-gaps.md` or was extracted this session
+1. Confirm the concept is in `Agent Concept Gaps` or was extracted this session
 2. Confirm no file named `<Concept>.md` already exists in the vault
 3. Confirm the concept has enough information to write at minimum a stub (title + 1 sentence)
 
@@ -49,9 +49,9 @@ Tags: #{topic} #atomic
    - If a matching topic folder exists → place there
    - Otherwise → vault root
 3. Write file using template
-4. Append to memory/vault-index.md:
+4. Append to Agent Vault Index:
    | <filename> | <title> | #atomic #<topic> | <key concepts> | <today's date> |
-5. Remove concept from memory/concept-gaps.md (or mark status: Created)
+5. Remove concept from Agent Concept Gaps (or mark status: Created)
 6. Log: [TIMESTAMP] ATOMIC_CREATED: <filename> — <one-line rationale>
 ```
 

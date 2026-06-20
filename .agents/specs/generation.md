@@ -1,6 +1,6 @@
 # Spec: Atomic Note Generation
 
-**Trigger**: A concept is in `memory/concept-gaps.md` with no existing note, OR ingestion produced a concept that warrants its own note.
+**Trigger**: A concept is in `Agent Concept Gaps` with no existing note, OR ingestion produced a concept that warrants its own note.
 
 ## Atomic Note Standard
 
@@ -35,12 +35,12 @@ Tags: #[topic] #atomic
 
 ## Generation Process
 
-1. Check `memory/vault-index.md` — confirm the note does NOT already exist under a different name
+1. Check `Agent Vault Index` — confirm the note does NOT already exist under a different name
 2. Name the file exactly as the concept appears in wikilinks: `[[Syncthing]]` → `Syncthing.md`
 3. Fill the template above. Do not hallucinate facts — if information is unknown, use "Information pending" and tag `#stub`
 4. Save to the vault root (or appropriate topic folder if one exists)
-5. Update `memory/vault-index.md` with the new note
-6. Update `memory/concept-gaps.md` — move concept from Pending to Created
+5. Update `Agent Vault Index` with the new note
+6. Update `Agent Concept Gaps` — move concept from Pending to Created
 7. Return to `specs/connection.md` — link the new note to/from related notes
 
 ## Stub Policy
@@ -48,7 +48,7 @@ Tags: #[topic] #atomic
 If the agent cannot confidently write more than the title and one sentence:
 - Create the note as a `#stub` with just the title and a one-line placeholder
 - Do NOT fill in speculative content
-- Log it in `memory/operation-log.md` as `STUB_CREATED`
+- Log it in `Agent Operation Log` as `STUB_CREATED`
 - The user will fill it in; the stub ensures wikilinks don't dangle
 
 ## Naming Rules

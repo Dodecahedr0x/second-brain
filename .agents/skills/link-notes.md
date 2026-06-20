@@ -10,7 +10,7 @@ Insert wikilinks into a note where concepts are mentioned but not yet linked.
 
 ```
 1. Load parse result for the target note (from skills/parse-content.md)
-2. Load memory/vault-index.md — get list of all note titles
+2. Load Agent Vault Index — get list of all note titles
 
 3. For each concept in parse result:
    a. Check if an exact match exists in vault-index (case-insensitive)

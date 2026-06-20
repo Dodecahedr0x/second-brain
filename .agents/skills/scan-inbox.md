@@ -9,7 +9,7 @@ Identify all vault content that needs processing: new files, modified files, and
 ## Procedure
 
 ```
-1. Read memory/vault-index.md → get last_run_timestamp (T)
+1. Read Agent Operation Log → get last_run_timestamp (T)
 
 2. Find modified files:
    find $VAULT_PATH -name "*.md" -newer <T> -not -path "*/.obsidian/*"

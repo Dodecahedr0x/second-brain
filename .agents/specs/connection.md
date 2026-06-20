@@ -13,7 +13,7 @@
 
 ## Connection Process
 
-1. Load `memory/vault-index.md` — get list of all existing notes and their key concepts
+1. Load `Agent Vault Index` — get list of all existing notes and their key concepts
 2. For the target note, extract its concepts (from headings, bold terms, named entities)
 3. For each concept: check if a note exists with that name → if yes, insert `[[Note Name]]` at first mention
 4. Search other notes for references to THIS note's title → add `[[This Note]]` to them

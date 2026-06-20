@@ -56,12 +56,12 @@ Omit any section that has no entries. Do not emit empty `###` headings.
 
 ## Surfacing Beyond the Daily Note
 
-In addition to the in-note digest, update two index files in `memory/`:
+In addition to the in-note digest, update these agent-managed vault notes:
 
-### `memory/vault-index.md`
+### `Agent Vault Index`
 Add all newly created notes. Mark enriched notes with `[UPDATED YYYY-MM-DD]` suffix.
 
-### `memory/concept-gaps.md`
+### `Agent Concept Gaps`
 For items in "Needs Review" that are concepts (not fetch failures), add them to the Pending list so the next session can attempt creation.
 
 ## Example Output

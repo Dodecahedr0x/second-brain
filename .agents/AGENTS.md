@@ -8,26 +8,27 @@ This harness governs agents that process content poured into the Obsidian vault 
 
 Before executing any loop iteration, an agent MUST:
 
-0. Read `.env.local` in the repo root — load `VAULT_PATH`. If the file is missing, abort and tell the user to create it from `.env.example`.
+0. Read `.env.local` in the repo root — load `VAULT_PATH`. Abort if missing (tell user to run `scripts/setup.sh`).
 1. Read `context/vault-structure.md` — understand current folder layout and conventions
-2. Read `memory/vault-index.md` — load the last known vault state
-3. Read `memory/operation-log.md` — know what was done last time
-4. Read `context/boundaries.md` — internalize what is off-limits
-5. Read `loop.md` — load the six-phase execution model
-6. Load relevant skills from `skills/` for the current task type
+2. Read `context/agent-notes.md` — understand the agent-managed note convention
+3. Read `Agent Vault Index` in the vault — load last known vault state
+4. Read `Agent Operation Log` in the vault — know what was done last time
+5. Read `context/boundaries.md` — internalize what is off-limits
+6. Read `loop.md` — load the six-phase execution model
+7. Load relevant skills from `skills/` for the current task type
 
 ## Core Principles (Harness Engineering)
 
 - **Capability ≠ Reliability**: Structure compensates for model variability. Follow the loop exactly.
 - **Repository as System of Record**: This `.agents/` folder is the single source of truth for agent behavior. Never infer rules from conversation history.
 - **Modular Instructions**: Each file handles one concern. Never collapse multiple specs into one.
-- **Brevity**: Every file in `.agents/` must be as short as possible. No prose where a list works. No list where a single line works. Internal memory files (`memory/`) are machine-written state — keep them terse. When updating any agent file, remove redundancy rather than accumulate it.
-- **Session Continuity**: Always read `memory/` before acting; always write it before stopping.
+- **Brevity**: Every file in `.agents/` must be as short as possible. No prose where a list works. No list where a single line works. Agent-managed vault notes are machine-written state — keep them terse. When updating any agent file, remove redundancy rather than accumulate it.
+- **Session Continuity**: Always read agent-managed vault notes before acting; always write them before stopping.
 - **Initialization Phase**: Complete the checklist above before touching any vault file.
 - **Scope Control**: Agents may only modify vault files explicitly targeted by the current loop phase. Do not touch `.obsidian/` configuration.
 - **Victory Verification**: A task is NOT complete until victory conditions in `specs/victory.md` are met and checked.
-- **State Cleanup**: Every session must update `memory/vault-index.md` and `memory/operation-log.md` before exiting.
-- **Internal Observability**: Log every action taken in `memory/operation-log.md` with timestamp and rationale.
+- **State Cleanup**: Every session must update `Agent Vault Index` and `Agent Operation Log` before exiting.
+- **Internal Observability**: Log every action in `Agent Operation Log` with timestamp and rationale.
 - **Long-Running Task Management**: If the vault has many changes to process, split across sessions. Log progress. Never claim completion prematurely.
 
 ## Entry Point

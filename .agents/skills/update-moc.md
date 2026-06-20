@@ -37,7 +37,7 @@ Tags: #moc #{topic}
 3. Create file: "{Topic} MOC.md" in vault root (or topic folder)
 4. Fill template with all relevant notes + one-line description each
 5. In each listed note, add at bottom: "See also: [[{Topic} MOC]]"
-6. Update memory/vault-index.md: add MOC to MOC Registry
+6. Update Agent Vault Index: add MOC to MOC Registry
 ```
 
 ### Updating an Existing MOC
@@ -61,5 +61,5 @@ Tags: #moc #{topic}
 - [ ] MOC contains only links to notes that exist
 - [ ] No duplicate entries in the Notes list
 - [ ] Each entry has a brief description
-- [ ] The MOC itself is listed in `memory/vault-index.md` under MOC Registry
+- [ ] The MOC itself is listed in `Agent Vault Index` under MOC Registry
 - [ ] Notes added to MOC have a reciprocal "See also" link back to the MOC

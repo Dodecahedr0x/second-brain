@@ -66,7 +66,7 @@ Runs during Phase 4 (ACT), immediately before standard enrichment actions.
    - **Summary** — 2–4 sentence digest of the main argument or content
    - **Key concepts** — named entities, technical terms, proper nouns
    - **Key facts** — specific claims, data points, quotes worth preserving
-3. For each key concept, look it up in `memory/vault-index.md`:
+3. For each key concept, look it up in `Agent Vault Index`:
    - **Match found** → schedule ENRICH action for that note
    - **No match** → schedule CREATE action (new atomic note); add to concept-gaps if agent cannot write it confidently
 4. Log the fetch result:
@@ -102,7 +102,7 @@ When fetched content maps to an existing atomic note:
 ### Limits
 
 - Add at most 5 new bullet facts per note per session (avoid flooding)
-- If more than 5 new facts exist, add the top 5 by relevance and log the rest in `memory/concept-gaps.md` under the note's name
+- If more than 5 new facts exist, add the top 5 by relevance and log the rest in `Agent Concept Gaps` under the note's name
 
 ---
 
@@ -147,7 +147,7 @@ The pipeline is designed to run via a scheduled cloud agent (see `specs/schedule
 
 Recommended cadence: **daily at 08:00 local time**, processing all daily notes modified since the last successful run.
 
-Session state (`memory/operation-log.md`) provides the `last_run_timestamp` that bounds what gets picked up.
+Session state (`Agent Operation Log`) provides the `last_run_timestamp` that bounds what gets picked up.
 
 ---
 

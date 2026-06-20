@@ -23,7 +23,7 @@
 ## Quality Gate
 
 Before marking a raw item as ingested, verify:
-- [ ] Every named entity either has an existing note or is logged in `memory/concept-gaps.md`
+- [ ] Every named entity either has an existing note or is logged in `Agent Concept Gaps`
 - [ ] No information was silently dropped
 - [ ] The original note is not degraded (only enriched or tagged)
 
