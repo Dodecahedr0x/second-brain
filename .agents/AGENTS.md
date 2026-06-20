@@ -51,4 +51,5 @@ Full detail in `context/boundaries.md`. Quick reference:
 | Generate atomic notes | `specs/generation.md` |
 | Handle daily notes (link annotation only) | `specs/daily-note.md` |
 | Handle daily notes (full pipeline: fetch + enrich + digest) | `specs/daily-pipeline.md` |
+| Create a note from external content | `specs/source-note.md` |
 | Surface new knowledge as digest | `specs/knowledge-digest.md` |

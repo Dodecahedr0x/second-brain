@@ -1,53 +1,65 @@
 # Skill: Parse Content
 
-**Used in**: Loop Phase 2 (ORIENT)
+**Used in**: Loop Phase 2 (ORIENT) for vault notes; Phase 4 (ACT) as router for external content
 
-## Purpose
+## Part A — Vault Note Parsing
 
-Extract structured information from a raw vault note for downstream processing.
+For a given `.md` file already in the vault:
 
-## Parse Steps
-
-For a given note file:
-
-1. **Extract metadata**:
-   - Title: first `# Heading` or filename (strip `.md`)
-   - Tags: all `#tag` tokens
-   - Frontmatter: YAML block if present
-   - Existing wikilinks: all `[[Target]]` patterns
-
-2. **Extract concepts**:
-   - All `**bold**` terms (often key concepts)
-   - All proper nouns (capitalized mid-sentence)
-   - All `[[wikilinks]]` even if already existing
-   - Headings `##` and `###` (each is a sub-concept)
-
-3. **Extract facts**:
-   - Each bullet point or numbered list item
-   - Each sentence under a heading
-
-4. **Classify content type**:
-   - Task: contains checkbox `- [ ]`, "TODO", "- [ ]", imperative verb phrase
-   - Question: ends with `?` or starts with "Why", "How", "What"
+1. **Metadata**: title (first `# Heading` or filename), tags (`#tag`), frontmatter YAML, existing wikilinks
+2. **Concepts**: `**bold**` terms, capitalised mid-sentence proper nouns, `[[wikilinks]]`, `##`/`###` headings
+3. **Facts**: each bullet or numbered list item, each sentence under a heading
+4. **Classify each item**:
+   - Task: checkbox `- [ ]`, "TODO", imperative verb phrase
+   - Question: ends with `?` or starts with Why/How/What
    - Fact/Claim: declarative statement
-   - Reference: URL, book title, author name
+   - Reference: URL, book title, author name — **route to Part B**
 
-## Output Format
+### Output
 
 ```
 PARSE_RESULT for <filename>:
   title: <string>
-  tags: [#tag1, #tag2]
-  existing_links: [[Note1]], [[Note2]]
-  concepts: [Concept A, Concept B]
-  facts: [Fact 1, Fact 2]
+  tags: [#tag1]
+  existing_links: [[Note1]]
+  concepts: [A, B]
+  facts: [Fact 1]
   tasks: [Task 1]
   questions: [Question 1]
-  references: [URL or citation]
+  references: [url or citation]  ← hand these to Part B
 ```
 
-## Guardrails
+### Guardrails
 
-- Do not interpret or expand beyond what is written — only extract
-- If a bullet is ambiguous between task and fact → classify as fact
-- Proper nouns under 4 characters are likely acronyms → include but flag with `[ACRONYM]`
+- Extract only — do not interpret or expand beyond what is written
+- Ambiguous bullet (task vs fact) → classify as fact
+- Proper nouns under 4 characters → include, flag `[ACRONYM]`
+
+---
+
+## Part B — External Content Routing
+
+Triggered when a reference (URL or citation) is found in Part A, or when a daily note bullet is itself a URL.
+
+### Step 1: Classify the URL
+
+| Pattern | Type | Extractor |
+|---------|------|-----------|
+| `youtube.com/watch`, `youtu.be/` | YouTube | `skills/extract-youtube.md` |
+| `twitter.com/`, `x.com/` (post URL) | Twitter/X | `skills/extract-twitter.md` |
+| Any other URL | Web article | `skills/fetch-url.md` |
+| No URL — book/paper citation | Citation | log in `Agent Concept Gaps`, tag `#needs-review` |
+
+### Step 2: Call Extractor
+
+Each extractor returns an `EXTRACT_RESULT` with `status`, `note` (filename created), and `concepts`.
+
+### Step 3: Update Source
+
+After the extractor creates the source note:
+1. Replace the raw URL bullet in the originating vault note with `[[<source note title>]]`
+2. If additional concepts were returned, add them to `Agent Concept Gaps` for atomic note generation
+
+### Failure
+
+If the extractor returns `BLOCKED` or `FAILED`, leave the original bullet untouched and append `#needs-review` to that line.

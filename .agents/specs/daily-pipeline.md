@@ -54,35 +54,32 @@ EXTERNAL_REFS for <daily-note>:
 
 ---
 
-## §Content Fetching
+## §Content Extraction
 
 Runs during Phase 4 (ACT), immediately before standard enrichment actions.
 
 ### Per-URL Steps
 
-1. Use `skills/fetch-url.md` to retrieve and parse the page
-2. Extract from the fetched content:
-   - **Title** — canonical page/article title
-   - **Summary** — 2–4 sentence digest of the main argument or content
-   - **Key concepts** — named entities, technical terms, proper nouns
-   - **Key facts** — specific claims, data points, quotes worth preserving
-3. For each key concept, look it up in `Agent Vault Index`:
-   - **Match found** → schedule ENRICH action for that note
-   - **No match** → schedule CREATE action (new atomic note); add to concept-gaps if agent cannot write it confidently
-4. Log the fetch result:
+1. Pass the URL to `skills/parse-content.md` Part B — it classifies the content type and calls the appropriate extractor (`extract-youtube.md`, `extract-twitter.md`, or `fetch-url.md`)
+2. Each extractor creates a source note (see `specs/source-note.md`) and returns `EXTRACT_RESULT` with `status`, `note`, and `concepts`
+3. Replace the raw URL bullet in the daily note with `[[<source note title>]]`
+4. For each concept returned:
+   - **Matches existing note** → schedule ENRICH action
+   - **No match** → add to `Agent Concept Gaps`; schedule CREATE if enough info exists
+5. Log:
    ```
-   [TIMESTAMP] FETCH: <url> → title="<title>", concepts=[A, B], facts=N
+   [TIMESTAMP] EXTRACT: <url> → note="<filename>", concepts=[A, B]
    ```
 
 ### Failure Handling
 
-| Error | Action |
-|-------|--------|
-| Network unreachable | Log as `FETCH_FAILED`, skip; leave URL in daily note as bare link |
-| Page returns no parseable content | Log as `FETCH_EMPTY`, tag URL bullet with `#needs-review` |
-| Robots/paywall blocks | Log as `FETCH_BLOCKED`, skip; note is left untouched |
+| Status | Action |
+|--------|--------|
+| `FAILED` / `EMPTY` | Log, leave URL bullet unchanged |
+| `BLOCKED` | Log, tag bullet `#needs-review` |
+| `NO_TRANSCRIPT` (YouTube) | Source note created as stub, tag `#needs-review` |
 
-Do NOT retry failed fetches in the same session. They will be retried next session if the URL is still present in an unprocessed note.
+Do not retry failed extractions in the same session.
 
 ---
 
