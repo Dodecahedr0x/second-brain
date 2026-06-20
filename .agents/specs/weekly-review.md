@@ -1,0 +1,109 @@
+# Spec: Weekly Review
+
+**Trigger**: Scheduled (weekly, Monday 08:00 local time) or manual run. Looks back at the 7 days ending yesterday.
+
+**Goal**: Surface what mattered most across the past week so the user opens the week with a clear sense of momentum and open threads.
+
+---
+
+## Output Location
+
+Write a new note: `$VAULT_PATH/Weekly Review — YYYY-W##.md`
+(ISO week number, e.g. `Weekly Review — 2026-W25.md`)
+
+Create the file fresh each run. If it already exists, replace it in full.
+
+---
+
+## Output Template
+
+```markdown
+# Weekly Review — YYYY-W##
+*YYYY-MM-DD → YYYY-MM-DD*
+
+## What Mattered Most
+<!-- Top 3–5 concept clusters by note activity -->
+- [[Theme]] — N notes created/enriched; one sentence on why it dominated
+
+## Highlight of the Week
+<!-- Single note most enriched or most referenced -->
+- [[Note Title]] — one sentence on what made it stand out
+
+## Routines in Good Shape
+<!-- Active routines only; omit fading/dormant -->
+- **Activity** · N-day streak · Next: specific action
+
+## Open Threads
+<!-- Concept gaps or #stub notes created this week that remain unfilled -->
+- [[Concept]] — gap opened YYYY-MM-DD
+
+---
+Tags: #weekly-review
+```
+
+Omit any section with no entries.
+
+---
+
+## Phase Integration Map
+
+| Loop Phase | Work Added by This Spec |
+|------------|------------------------|
+| Phase 1 OBSERVE | Collect notes created/updated in the past 7 days from `Agent Vault Index`; collect the 7 daily notes |
+| Phase 2 ORIENT | Group notes by topic tag; compute activity counts; call `skills/identify-routines.md`; read `Agent Concept Gaps` for gaps opened this week |
+| Phase 3 DECIDE | Plan review note content — assign one entry per section; no FETCH or ENRICH actions |
+| Phase 4 ACT | Write `Weekly Review — YYYY-W##.md` |
+| Phase 5 VERIFY | Confirm file exists, all wikilinks valid, no empty sections emitted |
+| Phase 6 CLEANUP | Log session in `Agent Operation Log`; add review note to `Agent Vault Index` |
+
+---
+
+## Steps
+
+### 1. Collect the Week's Activity
+
+From `Agent Vault Index`:
+- Collect all notes with `[UPDATED YYYY-MM-DD]` or created within the 7-day window
+- Count per-note how many times it was updated (proxy for importance)
+
+From the 7 daily notes (YYYY-MM-DD.md files for Mon–Sun):
+- Extract concept mentions (wikilinks) across all bullets
+- Count frequency per concept → rank by total mentions
+
+### 2. Identify Top Themes
+
+Group concepts by topic tag or shared keyword. Keep the top 3–5 clusters.
+- A cluster needs ≥ 2 notes or ≥ 3 total mentions to qualify
+- Name each cluster after its most-mentioned concept (e.g., `[[Distributed Systems]]`)
+
+### 3. Identify the Highlight
+
+Pick the single note that was enriched the most times this week (most `[UPDATED …]` entries) or — if tied — the one with the most inbound wikilinks added this week.
+
+### 4. Identify Routines
+
+Call `skills/identify-routines.md` on the 7 daily notes.
+Include only **active** routines (last seen ≤ 3 days ago). Omit fading and dormant.
+
+### 5. Collect Open Threads
+
+From `Agent Concept Gaps`: extract gaps whose opened-date falls within the 7-day window.
+Limit to 5 — prefer gaps with `High` priority.
+
+### 6. Write the Review Note
+
+Assemble the template. Write the file. If a section has no entries, omit the entire `##` heading.
+
+Log:
+```
+[TIMESTAMP] WEEKLY_REVIEW: wrote Weekly Review — YYYY-W##.md — N themes, N open threads
+```
+
+---
+
+## Constraints
+
+- Do not fetch external URLs — this is a retrospective, not an enrichment run
+- Do not modify any vault note other than the weekly review file itself
+- Keep the total note under 30 lines — if more items exist, pick highest-value ones
+- Never invent data — all entries must come from `Agent Vault Index`, daily notes, or `Agent Concept Gaps`
