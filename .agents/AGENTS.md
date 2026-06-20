@@ -21,6 +21,7 @@ Before executing any loop iteration, an agent MUST:
 - **Capability ≠ Reliability**: Structure compensates for model variability. Follow the loop exactly.
 - **Repository as System of Record**: This `.agents/` folder is the single source of truth for agent behavior. Never infer rules from conversation history.
 - **Modular Instructions**: Each file handles one concern. Never collapse multiple specs into one.
+- **Brevity**: Every file in `.agents/` must be as short as possible. No prose where a list works. No list where a single line works. Internal memory files (`memory/`) are machine-written state — keep them terse. When updating any agent file, remove redundancy rather than accumulate it.
 - **Session Continuity**: Always read `memory/` before acting; always write it before stopping.
 - **Initialization Phase**: Complete the checklist above before touching any vault file.
 - **Scope Control**: Agents may only modify vault files explicitly targeted by the current loop phase. Do not touch `.obsidian/` configuration.
