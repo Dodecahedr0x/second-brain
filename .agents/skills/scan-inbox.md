@@ -12,10 +12,10 @@ Identify all vault content that needs processing: new files, modified files, and
 1. Read memory/vault-index.md → get last_run_timestamp (T)
 
 2. Find modified files:
-   find ../Vault -name "*.md" -newer <T> -not -path "*/.obsidian/*"
+   find $VAULT_PATH -name "*.md" -newer <T> -not -path "*/.obsidian/*"
 
 3. Find inbox-tagged files:
-   grep -rl "#inbox\|#raw" ../Vault --include="*.md"
+   grep -rl "#inbox\|#raw" $VAULT_PATH --include="*.md"
 
 4. Find unprocessed daily notes:
    - List files matching YYYY-MM-DD.md pattern
@@ -30,9 +30,9 @@ Identify all vault content that needs processing: new files, modified files, and
 
 ```
 CHANGE_SET:
-- [inbox] ../Vault/Inbox/raw-note.md
-- [modified] ../Vault/2026-06-20.md
-- [unprocessed-daily] ../Vault/2026-06-19.md
+- [inbox] $VAULT_PATH/Inbox/raw-note.md
+- [modified] $VAULT_PATH/2026-06-20.md
+- [unprocessed-daily] $VAULT_PATH/2026-06-19.md
 ```
 
 ## Edge Cases

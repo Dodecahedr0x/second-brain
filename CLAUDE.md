@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repo contains code, scripts, and tools that digest content from the Obsidian vault at `../Vault` into structured knowledge: atomic notes, wikilink connections, and Maps of Content.
+This repo contains code, scripts, and tools that digest content from the Obsidian vault into structured knowledge: atomic notes, wikilink connections, and Maps of Content.
 
 ## Agent Entry Point
 
@@ -10,7 +10,7 @@ All agent work starts at `.agents/AGENTS.md`. Read it before touching the vault.
 
 ## Vault Location
 
-`/home/openclaw/Vault` (relative: `../Vault`)
+Set in `.env.local` (untracked). Copy `.env.example` and fill in `VAULT_PATH`. Agents abort if this file is missing.
 
 ## Quick Start for Agents
 

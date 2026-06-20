@@ -1,12 +1,12 @@
 # Vault Structure & Conventions
 
-**Vault path**: `/home/openclaw/Vault`  
+**Vault path**: `$VAULT_PATH` (see `.env.local`)  
 **Last observed**: 2026-06-19
 
 ## Current Structure
 
 ```
-Vault/
+$VAULT_PATH/
 ├── .obsidian/          ← FORBIDDEN: Obsidian config, never touch
 ├── .stfolder/          ← FORBIDDEN: Syncthing metadata, never touch
 └── 2026-06-19.md       ← Daily note (inbox)
@@ -56,7 +56,7 @@ Atomic notes use the template from `specs/generation.md`.
 
 As the vault grows, use this folder structure:
 ```
-Vault/
+$VAULT_PATH/
 ├── Daily/              ← Daily notes (YYYY-MM-DD.md)
 ├── Atomic/             ← Atomic concept notes
 ├── MOCs/               ← Maps of Content

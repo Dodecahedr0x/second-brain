@@ -6,8 +6,8 @@ This file defines hard constraints. Violating any of these is an automatic abort
 
 | Path | Reason |
 |------|--------|
-| `../Vault/.obsidian/` | Obsidian configuration — changes here break the app |
-| `../Vault/.stfolder/` | Syncthing metadata — changes here break sync |
+| `$VAULT_PATH/.obsidian/` | Obsidian configuration — changes here break the app |
+| `$VAULT_PATH/.stfolder/` | Syncthing metadata — changes here break sync |
 | `.agents/` itself | Agents do not rewrite their own harness during a run |
 | `/home/openclaw/second-brain/` (except `memory/` files) | Repo code is not a vault artifact |
 

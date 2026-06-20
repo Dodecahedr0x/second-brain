@@ -2,12 +2,13 @@
 
 ## Purpose
 
-This harness governs agents that process content poured into the Obsidian vault at `../Vault` and digest it into structured, connected knowledge: new atomic notes, updated Maps of Content, and wikilink relationships.
+This harness governs agents that process content poured into the Obsidian vault (path set in `.env.local`) and digest it into structured, connected knowledge: new atomic notes, updated Maps of Content, and wikilink relationships.
 
 ## Initialization Checklist
 
 Before executing any loop iteration, an agent MUST:
 
+0. Read `.env.local` in the repo root — load `VAULT_PATH`. If the file is missing, abort and tell the user to create it from `.env.example`.
 1. Read `context/vault-structure.md` — understand current folder layout and conventions
 2. Read `memory/vault-index.md` — load the last known vault state
 3. Read `memory/operation-log.md` — know what was done last time

@@ -2,7 +2,7 @@
 
 **Last updated**: 2026-06-19  
 **last_run_timestamp**: 2026-06-19T00:00:00Z  
-**Vault path**: `/home/openclaw/Vault`
+**Vault path**: `$VAULT_PATH` (see `.env.local`)
 
 ## Note Registry
 
