@@ -2,7 +2,7 @@
 
 **Trigger**: End of each daily pipeline run, after §Knowledge Digest is written.
 
-**Goal**: Write a curated, actionable section to today's daily note so the user opens Obsidian and immediately knows what to explore and do — without needing to read anything else.
+**Goal**: Write a curated, actionable section to today's daily note so the user opens Obsidian and immediately knows what to explore and do — with hooks that pull them back (open threads, memory, questions, stakes).
 
 ---
 
@@ -22,21 +22,34 @@ The section is written after any digest and before the processed footer, if pres
 
 ## Suggestions — YYYY-MM-DD
 
-### Explore
-<!-- 2–4 items: resources or concepts worth visiting today -->
-- [Resource Title](url) — one line on why it connects to your recent notes
-- [[Concept]] — in your notes but not yet explored; worth creating a note
+### Loose Ends
+<!-- Open questions or follow-ups from the past 7 days not yet resolved -->
+- *YYYY-MM-DD* — bullet text with [[wikilinks]]
 
 ### Routines
-<!-- Detected recurring activities with streak and a concrete next step -->
+<!-- Fading routines first (pick back up — fading), then active -->
 - **Activity name** · N-day streak · Next: specific action
+- **Fading activity** · last seen YYYY-MM-DD · Pick back up — fading
+
+### On This Day
+<!-- 1–2 items from same date in prior weeks/months/years -->
+- *N days ago* — bullet text with [[wikilinks]]
+
+### Question for Today
+<!-- One specific open question derived from this week's theme or a stub note -->
+> Question text here?
+
+### Explore
+<!-- 2–4 resources or concepts worth visiting today -->
+- [Resource Title](url) — one line on why it connects to your recent notes
+- [[Concept]] — in your notes but not yet explored; worth creating a note
 
 ### This Week's Theme
 <!-- One sentence naming the dominant concept cluster this week, with a suggestion -->
 One sentence + optional [[MOC suggestion]]
 ```
 
-Omit any section with no entries. Keep the total under 15 lines — if more items exist, pick the highest-value ones.
+Omit any section with no entries. Keep the total under 20 lines — if more items exist, pick the highest-value ones.
 
 ---
 
@@ -58,10 +71,20 @@ For each cluster of ≥ 2 recently-touched concepts, call `skills/find-resources
 ### 3. Identify Routines
 
 Call `skills/identify-routines.md` on the last 14 daily notes:
-- Get a list of activities with streak counts and last-seen date
-- Flag: **active** (seen in last 3 days), **fading** (4–7 days ago), **dormant** (>7 days)
-- For each active routine, generate one concrete next-step sentence
-- For each fading routine, flag it as "pick back up?"
+- Get routines sorted: **fading first** (urgent: true), then active, then dormant
+- For fading routines, render as: `**Name** · last seen YYYY-MM-DD · Pick back up — fading`
+- For active routines, render as: `**Name** · N-day streak · Next: [next_step]`
+- Omit dormant routines
+
+### 3b. On This Day
+
+Call `skills/on-this-day.md` with today's date.
+Use the returned items verbatim — do not paraphrase. If the result is empty, omit the section.
+
+### 3c. Loose Ends
+
+Call `skills/unresolved-threads.md` on the last 7 daily notes.
+Use the returned items verbatim. If the result is empty, omit the section.
 
 ### 4. Identify This Week's Theme
 
@@ -69,19 +92,34 @@ From the concept clusters found in Step 1:
 - Name the dominant theme (the cluster with the most recently-touched notes)
 - If 3+ notes share a topic and no MOC exists for it, suggest creating one
 
+### 3d. Question for Today
+
+Using the dominant theme from Step 4 and any `#stub` notes from Step 1, generate one specific, answerable question:
+- Tool/technique theme → ask about a concrete use case or trade-off
+- Theory/concept theme → ask for an empirical example or counter-argument
+- Stub note → ask the most obvious unanswered question implied by the stub's title
+
+The question must go one level deeper than what's already in the notes — do not ask something the vault already answers. Format as a `>` blockquote so it reads as a writing prompt, not agent commentary.
+
+Omit this section if no good question can be formed.
+
 ### 5. Write to Today's Daily Note
 
-Assemble the template. Rank items:
-1. Routines (user-defined patterns take priority)
-2. Explore items from the dominant cluster
-3. Loose ends (#stub notes, concept gaps with High priority)
+Assemble the template in this section order (highest return-pull first):
+1. **Loose Ends** — accountability hook
+2. **Routines** — stakes hook (fading before active)
+3. **On This Day** — memory hook
+4. **Question for Today** — curiosity hook
+5. **Explore** — discovery (from dominant cluster, then loose ends)
+6. **This Week's Theme** — orientation
 
-Write the section. If today's note already has a `## Suggestions` section, replace only that section — do not append a second one.
+Write the section. If today's note already has a `## Suggestions` section, replace only that section — do not append a second one. If individual sub-sections already exist within it, replace each sub-section in place.
 
 ---
 
 ## Constraints
 
-- Never write speculative content — only suggest resources that were actually found via search, and only name routines actually observed in the notes
-- Do not suggest the user do things they already did today (check today's note content first)
-- Keep suggestions concrete and skimmable — the user should be able to action each item in under a minute of reading
+- Never write speculative content — only suggest resources actually found via search, name only routines observed in the notes, surface only threads that genuinely appear in past notes
+- Do not suggest things already done today (check today's note content first)
+- The Question for Today must not be answerable by reading the existing vault — if the answer is already there, generate a different question
+- Keep suggestions concrete and skimmable — each item should be actionable in under a minute of reading

@@ -51,13 +51,16 @@ For fading routines, the next step is: "Pick back up: <activity label> (last: <d
 ROUTINES:
 - label: <name>
   status: active | fading | dormant
+  urgent: true | false
   streak: N days
   last_seen: YYYY-MM-DD
   frequency: N/14
   next_step: <one sentence>
 ```
 
-Return at most 6 routines, sorted: active first, then fading, then dormant.
+Set `urgent: true` when `status: fading` — these routines are at risk of breaking.
+
+Return at most 6 routines, sorted: **fading first** (urgent), then active, then dormant.
 
 ## Guardrails
 
