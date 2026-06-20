@@ -4,14 +4,14 @@
 
 This harness governs agents that process content poured into the Obsidian vault (path set in `.env.local`) and digest it into structured, connected knowledge: new atomic notes, updated Maps of Content, and wikilink relationships.
 
-## Initialization Checklist
+## Phase 0: Initialization Checklist
 
 Before executing any loop iteration, an agent MUST:
 
 0. Read `.env.local` in the repo root — load `VAULT_PATH`. Abort if missing (tell user to run `scripts/setup.sh`).
 1. Read `context/vault-structure.md` — understand current folder layout and conventions
 2. Read `context/agent-notes.md` and `skills/agent-notes.md` — load the agent-managed note convention and templates
-3. Verify all four agent-managed notes exist in the vault; create any missing ones using `skills/agent-notes.md` templates
+3. Verify all four agent-managed notes exist in the vault; create any missing ones using `skills/agent-notes.md` templates (Phase 0 exception)
 4. Read `Agent Vault Index` — load last known vault state
 5. Read `Agent Operation Log` — know what was done last time
 6. Read `context/boundaries.md` — internalize what is off-limits
@@ -34,13 +34,13 @@ Before executing any loop iteration, an agent MUST:
 
 ## Entry Point
 
-All agents start by executing `loop.md`. No direct vault editing occurs without passing through the loop phases.
+All agents start with Phase 0 initialization, then execute `loop.md`. No direct vault editing occurs outside Phase 0 or the loop phases.
 
 ## Scope Boundaries (Summary)
 
 Full detail in `context/boundaries.md`. Quick reference:
-- **Allowed**: Creating `.md` files in the vault, editing existing vault notes, adding wikilinks, creating/updating MOC files
-- **Forbidden**: Deleting vault files, modifying `.obsidian/` config, modifying files in `second-brain/` itself, touching `.stfolder/`
+- **Allowed**: Creating `.md` files in the vault, editing current change-set notes, updating agent-managed notes, adding wikilinks, creating/updating MOC files named in the Phase 3 contract
+- **Forbidden during vault-processing runs**: Deleting vault files, modifying `.obsidian/` config, modifying repo files, touching `.stfolder/`
 
 ## Agent Types
 

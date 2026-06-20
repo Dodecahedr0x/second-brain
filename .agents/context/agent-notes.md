@@ -23,7 +23,7 @@ Every agent-managed note must have this frontmatter property. Tag `#agent-system
 
 ## Rules
 
-- Agents may freely read and write these notes
+- Agents may freely read and write these notes, including section-level rewrites when needed
 - Users should not edit them manually (agents may overwrite)
 - Never delete them — reset their content instead
-- If a note is missing, create it from scratch before proceeding
+- If a note is missing, create it from scratch during Phase 0 before proceeding

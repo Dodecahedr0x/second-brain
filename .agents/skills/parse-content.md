@@ -57,9 +57,10 @@ Each extractor returns an `EXTRACT_RESULT` with `status`, `note` (filename creat
 ### Step 3: Update Source
 
 After the extractor creates the source note:
-1. Replace the raw URL bullet in the originating vault note with `[[<source note title>]]`
+1. Annotate the raw URL bullet in the originating vault note with `[[<source note title>]]`; keep the original URL in the source note frontmatter
 2. If additional concepts were returned, add them to `Agent Concept Gaps` for atomic note generation
+3. If additional URLs/references were returned, schedule or defer FETCH; do not treat URLs as concepts
 
 ### Failure
 
-If the extractor returns `BLOCKED` or `FAILED`, leave the original bullet untouched and append `#needs-review` to that line.
+If the extractor returns `BLOCKED`, `FAILED`, or `EMPTY`, leave the original bullet untouched and append `#needs-review` only if safe.

@@ -11,7 +11,7 @@
 Append to `$VAULT_PATH/YYYY-MM-DD.md` (today's date, not the note being processed).
 Create the file if it does not exist yet.
 
-The section is always the **last thing** in the note, after any digest already written.
+The section is written after any digest and before the processed footer, if present.
 
 ---
 
@@ -76,7 +76,7 @@ Assemble the template. Rank items:
 2. Explore items from the dominant cluster
 3. Loose ends (#stub notes, concept gaps with High priority)
 
-Write the section. If today's note already has a `## Suggestions` section, replace it — do not append a second one.
+Write the section. If today's note already has a `## Suggestions` section, replace only that section — do not append a second one.
 
 ---
 

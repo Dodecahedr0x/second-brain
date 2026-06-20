@@ -20,8 +20,8 @@ All four run inside the existing six-phase loop. This spec defines *when* and *h
 | Loop Phase | New Work Added by This Pipeline |
 |------------|--------------------------------|
 | Phase 1 OBSERVE | Mark daily notes as `daily-pipeline` type in the change set |
-| Phase 2 ORIENT | Run URL extraction and content fetching (see §URL Extraction) |
-| Phase 3 DECIDE | Add FETCH and ENRICH actions to the plan |
+| Phase 2 ORIENT | Detect URLs/citations only (see §URL Extraction) |
+| Phase 3 DECIDE | Add FETCH, SOURCE_CREATE, ENRICH, and ATOMIZE actions to the plan |
 | Phase 4 ACT | Execute fetches, enrich notes, build digest buffer, run suggestions workflow |
 | Phase 5 VERIFY | Check fetched sources are referenced; digest and suggestions are written |
 | Phase 6 CLEANUP | Log fetch results; persist digest; update vault index |
@@ -62,12 +62,13 @@ Runs during Phase 4 (ACT), immediately before standard enrichment actions.
 ### Per-URL Steps
 
 1. Pass the URL to `skills/parse-content.md` Part B — it classifies the content type and calls the appropriate extractor (`extract-youtube.md`, `extract-twitter.md`, or `fetch-url.md`)
-2. Each extractor creates a source note (see `specs/source-note.md`) and returns `EXTRACT_RESULT` with `status`, `note`, and `concepts`
-3. Replace the raw URL bullet in the daily note with `[[<source note title>]]`
-4. For each concept returned:
+2. Each extractor creates a source note (see `specs/source-note.md`) and returns `EXTRACT_RESULT` with `status`, `note`, `concepts`, and optional `references`
+3. Annotate the raw URL bullet in the daily note with `[[<source note title>]]`; keep the original URL in the source note frontmatter
+4. For each returned concept:
    - **Matches existing note** → schedule ENRICH action
    - **No match** → add to `Agent Concept Gaps`; schedule CREATE if enough info exists
-5. Log:
+5. For returned `references`, schedule a later FETCH or log as deferred; do not put URLs in `Agent Concept Gaps`.
+6. Log:
    ```
    [TIMESTAMP] EXTRACT: <url> → note="<filename>", concepts=[A, B]
    ```
@@ -76,9 +77,8 @@ Runs during Phase 4 (ACT), immediately before standard enrichment actions.
 
 | Status | Action |
 |--------|--------|
-| `FAILED` / `EMPTY` | Log, leave URL bullet unchanged |
-| `BLOCKED` | Log, tag bullet `#needs-review` |
-| `NO_TRANSCRIPT` (YouTube) | Source note created as stub, tag `#needs-review` |
+| `FAILED` / `EMPTY` / `BLOCKED` | Log, leave URL bullet unchanged, append `#needs-review` only if safe |
+| `NO_TRANSCRIPT` (YouTube) | Source note created as stub; annotate source bullet and add `#needs-review` if safe |
 
 Do not retry failed extractions in the same session.
 
@@ -110,26 +110,7 @@ Runs at the end of Phase 4, before Phase 5 VERIFY.
 
 ### Format
 
-Append a fenced section to the bottom of the current daily note (above the existing `*Processed by agent*` footer if present):
-
-```markdown
----
-
-## Knowledge Digest — YYYY-MM-DD
-
-### New Notes Created
-- [[Note A]] — one-sentence summary
-- [[Note B]] — one-sentence summary
-
-### Notes Enriched
-- [[Existing Note]] — added N facts from [Source Title](url)
-
-### Sources Processed
-- [Title](url) → [[Atomic Note]] (created / enriched)
-
-### Deferred / Needs Review
-- [url] — reason (FETCH_FAILED / too ambiguous / paywall)
-```
+Use `specs/knowledge-digest.md` as the canonical template. Write the digest after user content and before suggestions / the processed footer.
 
 ### Constraints
 
@@ -149,7 +130,7 @@ Summary of what it does:
 3. Calls `skills/identify-routines.md` on the last 14 daily notes
 4. Writes a `## Suggestions — YYYY-MM-DD` section to **today's** daily note (creating the file if absent)
 
-If today's daily note already has a `## Suggestions` section, replace it rather than appending a second one.
+Final daily-note order: user content → knowledge digest(s) → suggestions → processed footer. If today's daily note already has a `## Suggestions` section, replace that section in place rather than appending a second one.
 
 Log:
 ```
@@ -160,7 +141,7 @@ Log:
 
 ## Scheduling
 
-The pipeline is designed to run via a scheduled cloud agent (see `specs/schedule.md` once created).
+The pipeline is designed to run via the local scheduled agent/cron path installed by `scripts/setup.sh` and invoked by `scripts/run.sh`.
 
 Recommended cadence: **daily at 08:00 local time**, processing all daily notes modified since the last successful run.
 
@@ -187,7 +168,7 @@ If any limit is hit mid-session, defer the remainder with `#queued` and log clea
 - `specs/ingestion.md` — governs non-URL raw content (runs in parallel with this pipeline)
 - `specs/generation.md` — used when this pipeline schedules CREATE actions
 - `specs/connection.md` — runs after generation to wire new notes into the graph
-- `skills/fetch-url.md` — the fetching primitive used by §Content Fetching
+- `skills/fetch-url.md` — the fetching primitive used by §Content Extraction
 - `specs/daily-suggestions.md` — full spec for the §Suggestions workflow
 - `skills/identify-routines.md` — routine detection used by §Suggestions
 - `skills/find-resources.md` — resource search used by §Suggestions

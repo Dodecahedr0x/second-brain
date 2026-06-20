@@ -15,10 +15,10 @@ Daily notes are the primary inbox. The user pours raw thoughts here. The agent's
 1. Read the daily note top to bottom
 2. For each bullet point:
    - If it names a known concept → inline-link it: `[[Syncthing]]`
-   - If it names an unknown concept → log in `Agent Concept Gaps`, then link it (stub will be created)
+   - If it names an unknown concept → log in `Agent Concept Gaps`; link it only if the same plan creates a stub this session
    - If it is a task (contains "TODO", action verb, or "- [ ]") → leave it unchanged
    - If it is a personal reflection → leave it unchanged
-3. Add a `## Processed` marker at the bottom of the note with the processing date:
+3. Add the canonical processed footer at the bottom of the note with the processing date:
    ```
    ---
    *Processed by agent on YYYY-MM-DD*

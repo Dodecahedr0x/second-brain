@@ -15,10 +15,10 @@
 2. **Classify** each extracted item as one of:
    - **Concept**: A standalone idea worth its own atomic note (e.g., "Syncthing")
    - **Fact**: A specific claim that belongs inside an existing or new concept note
-   - **Task/Action**: Something to do — leave in the daily note, tag `#action`
-   - **Reference**: A link to an external resource — preserve in a References section
-3. **Route**: Concepts and facts go to `specs/generation.md`. Tasks stay. References get a `[[Sources]]` wikilink.
-4. **Mark processed**: Add `#processed` tag to the raw note, or move its content under a `## Processed` heading
+   - **Task/Action**: Something to do — leave unchanged and log only if relevant
+   - **Reference**: A link to an external resource — route to `specs/source-note.md`
+3. **Route**: Concepts and facts go to `specs/generation.md`. Tasks stay unchanged. References create/link individual source notes.
+4. **Mark processed**: Add the canonical processed footer: `*Processed by agent on YYYY-MM-DD*`
 
 ## Quality Gate
 

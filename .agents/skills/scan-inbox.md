@@ -23,7 +23,7 @@ Identify all vault content that needs processing: new files, modified files, and
 
 5. Merge and deduplicate all three lists → change set
 
-6. Sort by: inbox-tagged first, then newest-modified first
+6. Sort by: inbox-tagged first, then oldest-unprocessed / oldest-modified first
 ```
 
 ## Output Format

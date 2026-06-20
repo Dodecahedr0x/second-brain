@@ -38,6 +38,8 @@ Exit: Connection map built. Every change set item has an entry.
    - **ENRICH**: Add wikilinks/tags → `skills/link-notes.md`
    - **ATOMIZE**: Extract concepts into new notes → `skills/create-atomic.md`
    - **CONNECT**: Update a MOC → `skills/update-moc.md`
+   - **FETCH**: Extract external content into a source note → `skills/parse-content.md` Part B / `specs/source-note.md`
+   - **SOURCE_CREATE**: Create a source note from fetched content → `specs/source-note.md`
    - **DEFER**: Tag `#needs-review`, skip this session
 2. Validate against `context/boundaries.md`
 3. If > 20 actions planned: process oldest first, defer the rest
@@ -85,7 +87,7 @@ Exit: All checks pass, or failures explicitly logged as DEFERRED.
 **Goal**: Restore clean state for the next session.
 
 1. Update `Agent Vault Index` — add new notes, mark changed notes with `[UPDATED date]`
-2. Append session summary to `Agent Operation Log`:
+2. Prepend session summary near the top of `Agent Operation Log` (newest first):
    ```
    ## Session YYYY-MM-DD
    Type / Items processed / Actions / Deferred
