@@ -16,7 +16,7 @@ Set in `.env.local` (untracked). Run `scripts/setup.sh` to create it. Agents abo
 
 1. Read `.agents/AGENTS.md` (harness config + initialization checklist)
 2. Execute `.agents/loop.md` (six-phase processing loop)
-3. Update `.agents/memory/` before stopping
+3. Update the agent-managed vault notes before stopping
 
 ## What This Repo Does NOT Do
 
@@ -32,7 +32,7 @@ Set in `.env.local` (untracked). Run `scripts/setup.sh` to create it. Agents abo
 ## Conventions
 
 - All agent config lives in `.agents/`
-- Memory files (state between sessions) live in `.agents/memory/`
+- Agent memory/state lives in agent-managed notes inside the user vault
 - Specs (what to do) live in `.agents/specs/`
 - Skills (how to do it) live in `.agents/skills/`
 - Context (environment facts) live in `.agents/context/`

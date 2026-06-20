@@ -17,7 +17,7 @@ Agents follow a six-phase loop (`loop.md`): observe changes → orient in the kn
 | `.agents/specs/` | What to do (ingestion, generation, daily pipeline, …) |
 | `.agents/skills/` | How to do it (fetch URLs, create atomic notes, …) |
 | `.agents/context/` | Environment facts (vault structure, boundaries) |
-| `.agents/memory/` | State between sessions (vault index, operation log) |
+| Agent-managed vault notes | State between sessions (vault index, concept gaps, operation log, user profile) |
 | `scripts/` | Setup and maintenance scripts |
 
 ## Running an Agent

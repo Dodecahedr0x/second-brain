@@ -9,7 +9,7 @@ This file defines hard constraints. Violating any of these is an automatic abort
 | `$VAULT_PATH/.obsidian/` | Obsidian configuration — changes here break the app |
 | `$VAULT_PATH/.stfolder/` | Syncthing metadata — changes here break sync |
 | `.agents/` itself | Agents do not rewrite their own harness during a run |
-| `/home/openclaw/second-brain/` (except `memory/` files) | Repo code is not a vault artifact |
+| `/home/openclaw/second-brain/` | Repo code is not a vault artifact |
 
 ## Forbidden Actions
 
@@ -46,4 +46,4 @@ The agent may only touch files that are:
 1. Listed in the current session's change set (from Phase 1), OR
 2. Directly created by the agent this session (new atomic notes, new MOCs)
 
-Any other file is out of scope. If a file outside scope needs updating, log it in `memory/operation-log.md` under `DEFERRED_SCOPE` and address it next session.
+Any other file is out of scope. If a file outside scope needs updating, log it in `Agent Operation Log` under `DEFERRED_SCOPE` and address it next session.
