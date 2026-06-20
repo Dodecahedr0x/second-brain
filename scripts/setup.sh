@@ -33,3 +33,27 @@ fi
 # Write .env.local
 printf 'VAULT_PATH=%s\n' "$VAULT_PATH" > "$ENV_FILE"
 echo "Written: $ENV_FILE"
+
+# Cron job
+echo ""
+RUN_SCRIPT="$REPO_ROOT/scripts/run.sh"
+LOG_FILE="$REPO_ROOT/logs/run.log"
+
+existing_hour=$(crontab -l 2>/dev/null | grep -oP "^\d+ \K\d+" | head -1 || true)
+if [[ -n "$existing_hour" ]]; then
+    echo "Existing cron job runs at ${existing_hour}:00."
+fi
+
+read -rp "Hour to run daily loop (0-23, default 8): " input_hour
+HOUR="${input_hour:-8}"
+
+if ! [[ "$HOUR" =~ ^[0-9]+$ ]] || (( HOUR < 0 || HOUR > 23 )); then
+    echo "Invalid hour. Using 8." >&2
+    HOUR=8
+fi
+
+CRON_JOB="0 $HOUR * * * $RUN_SCRIPT >> $LOG_FILE 2>&1"
+
+( crontab -l 2>/dev/null | grep -v "$RUN_SCRIPT" ; echo "$CRON_JOB" ) | crontab -
+echo "Cron job set: daily at ${HOUR}:00"
+echo "  Log: $LOG_FILE"

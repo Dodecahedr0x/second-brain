@@ -27,7 +27,10 @@ Set in `.env.local` (untracked). Run `scripts/setup.sh` to create it. Agents abo
 
 ## Scripts
 
-*(None yet — add as the repo grows)*
+| Script | Purpose |
+|--------|---------|
+| `scripts/setup.sh` | First-time setup: vault path → `.env.local`, cron job |
+| `scripts/run.sh` | Run the agent loop once (also called by cron) |
 
 ## Conventions
 
