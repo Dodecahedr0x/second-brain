@@ -4,7 +4,9 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env.local"
 RUN_SCRIPT="$REPO_ROOT/scripts/run.sh"
-LOG_FILE="$REPO_ROOT/logs/run.log"
+DAILY_LOG_FILE="$REPO_ROOT/logs/run.log"
+WEEKLY_LOG_FILE="$REPO_ROOT/logs/weekly-review.log"
+MONTHLY_LOG_FILE="$REPO_ROOT/logs/monthly-review.log"
 LOG_DIR="$REPO_ROOT/logs"
 
 echo "Second-Brain Setup"
@@ -50,8 +52,20 @@ if ! [[ "$HOUR" =~ ^[0-9]+$ ]] || (( HOUR < 0 || HOUR > 23 )); then
     HOUR="$default_hour"
 fi
 
-CRON_JOB="0 $HOUR * * * $RUN_SCRIPT >> $LOG_FILE 2>&1"
+DAILY_CRON_JOB="0 $HOUR * * * $RUN_SCRIPT >> $DAILY_LOG_FILE 2>&1"
+WEEKLY_CRON_JOB="0 $HOUR * * 1 $RUN_SCRIPT specs/weekly-review.md >> $WEEKLY_LOG_FILE 2>&1"
+MONTHLY_CRON_JOB="0 $HOUR 1 * * $RUN_SCRIPT specs/monthly-review.md >> $MONTHLY_LOG_FILE 2>&1"
 existing_crontab=$(crontab -l 2>/dev/null | grep -vF "$RUN_SCRIPT" || true)
-{ [[ -n "$existing_crontab" ]] && printf '%s\n' "$existing_crontab"; echo "$CRON_JOB"; } | crontab -
-echo "Cron job set: daily at ${HOUR}:00"
-echo "  Log: $LOG_FILE"
+{
+    [[ -n "$existing_crontab" ]] && printf '%s\n' "$existing_crontab"
+    printf '%s\n' "$DAILY_CRON_JOB"
+    printf '%s\n' "$WEEKLY_CRON_JOB"
+    printf '%s\n' "$MONTHLY_CRON_JOB"
+} | crontab -
+echo "Cron jobs set:"
+echo "  Daily loop: daily at ${HOUR}:00"
+echo "    Log: $DAILY_LOG_FILE"
+echo "  Weekly review: Mondays at ${HOUR}:00"
+echo "    Log: $WEEKLY_LOG_FILE"
+echo "  Monthly review: 1st of month at ${HOUR}:00"
+echo "    Log: $MONTHLY_LOG_FILE"

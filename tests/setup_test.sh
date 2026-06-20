@@ -42,3 +42,5 @@ if git -C "$PROJECT" check-ignore -q logs/.gitkeep; then
 fi
 
 grep -F "0 8 * * * $PROJECT/scripts/run.sh >> $PROJECT/logs/run.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null
+grep -F "0 8 * * 1 $PROJECT/scripts/run.sh specs/weekly-review.md >> $PROJECT/logs/weekly-review.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null
+grep -F "0 8 1 * * $PROJECT/scripts/run.sh specs/monthly-review.md >> $PROJECT/logs/monthly-review.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null
