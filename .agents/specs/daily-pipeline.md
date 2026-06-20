@@ -66,7 +66,7 @@ Runs during Phase 4 (ACT), immediately before standard enrichment actions.
 3. Annotate the raw URL bullet in the daily note with `[[<source note title>]]`; keep the original URL in the source note frontmatter
 4. For each returned concept:
    - **Matches existing note** → schedule ENRICH action
-   - **No match** → add to `Agent Concept Gaps`; schedule CREATE if enough info exists
+   - **No match** → add to `Agent Concept Gaps`; schedule ATOMIZE if enough info exists
 5. For returned `references`, schedule a later FETCH or log as deferred; do not put URLs in `Agent Concept Gaps`.
 6. Log:
    ```
@@ -166,7 +166,7 @@ If any limit is hit mid-session, defer the remainder with `#queued` and log clea
 
 - `specs/daily-note.md` — governs basic link annotation (still runs first; this pipeline adds steps after)
 - `specs/ingestion.md` — governs non-URL raw content (runs in parallel with this pipeline)
-- `specs/generation.md` — used when this pipeline schedules CREATE actions
+- `specs/generation.md` — used when this pipeline schedules ATOMIZE actions
 - `specs/connection.md` — runs after generation to wire new notes into the graph
 - `skills/fetch-url.md` — the fetching primitive used by §Content Extraction
 - `specs/daily-suggestions.md` — full spec for the §Suggestions workflow

@@ -58,7 +58,7 @@ After creating the source note, update the originating daily note bullet:
 - Watched [[Some Video Title]] — <one-line personal note if any>
 ```
 
-Replace or annotate the raw URL with the wikilink. Do not delete the original URL — keep it in the source note's frontmatter.
+Annotate the raw URL with the wikilink. Do not delete the original URL from the source note's frontmatter.
 
 ## Relationship to Atomic Notes
 

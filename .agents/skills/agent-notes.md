@@ -26,7 +26,7 @@ agent_managed: true
 # Agent Vault Index
 
 **Last updated**: YYYY-MM-DD
-**last_run_timestamp**: YYYY-MM-DDThh:mm:ssZ
+**last_indexed_at**: YYYY-MM-DDThh:mm:ssZ
 
 ## Note Registry
 
@@ -49,7 +49,7 @@ agent_managed: true
 - Add new notes as rows in Note Registry
 - Append `[UPDATED YYYY-MM-DD]` to the row of any enriched note
 - Move notes from Orphan Watch once they gain a wikilink
-- Update `last_run_timestamp` to current ISO 8601 time
+- Update `last_indexed_at` to current ISO 8601 time (informational only; `Agent Operation Log` is authoritative for `last_run_timestamp`)
 
 ---
 
