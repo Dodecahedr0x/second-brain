@@ -21,41 +21,62 @@
 
 ## Phase 1: Find Items
 
-Search `$VAULT_PATH` for `#needs-review` in `.md` files. Exclude agent-managed notes (`agent_managed: true` frontmatter) and the agent notes themselves.
+Search `$VAULT_PATH` for incomplete items across four patterns. Exclude notes with `agent_managed: true` frontmatter.
 
-Collect two item types:
+### Type A — Tagged URL bullet in a daily note
 
-### Type A — URL bullet in a daily note
-
-Pattern: a bullet in a `YYYY-MM-DD.md` file that contains a bare URL or markdown link **and** either `#needs-review` on the same line or no wikilink annotation yet (unannotated after a previous failed session).
+A bullet in a `YYYY-MM-DD.md` file containing a URL **and** `#needs-review` on the same line.
 
 ```
 - https://youtu.be/abc123 #needs-review
 - [Some Article](https://example.com) #needs-review
 ```
 
-Extract: `url`, `source_daily_note` (filename), `bullet_text`.
+Extract: `url`, `source_daily_note`, `bullet_text`.
 
-### Type B — Stub source note
+### Type B — Tagged stub source note
 
-Pattern: a non-daily `.md` file with `source_url:` in frontmatter and `#needs-review` in its Tags line.
+A non-daily `.md` file with `source_url:` frontmatter and `#needs-review` in its Tags line.
 
 ```yaml
 ---
 source_url: https://youtu.be/abc123
 source_type: youtube
 ---
-...
 Tags: #source #youtube #needs-review
 ```
 
 Extract: `source_url`, `source_type`, `note_filename`.
 
+### Type C — Untagged stub source note
+
+A non-daily `.md` file with `source_type: youtube` or `source_type: twitter` in frontmatter where the content is clearly incomplete — any of:
+- `## Summary` section is empty (heading immediately followed by blank line or next `##`)
+- `## Raw Notes` section is empty (for YouTube)
+- Note has no `## Concepts` section
+
+These notes were created but never filled in, and the `#needs-review` tag was not added (e.g. because the pipeline was interrupted or skipped it).
+
+Extract: `source_url` from frontmatter, `source_type`, `note_filename`.
+
+### Type D — Bare URL bullet in a daily note (never attempted)
+
+A bullet in a `YYYY-MM-DD.md` file that contains a URL but has **no** `[[wikilink]]` on the same line and no `#needs-review` tag — meaning it was never picked up by the pipeline.
+
+```
+- https://twitter.com/user/status/123456789
+- Read this later: https://example.com/article
+```
+
+Exclude bullets that are plain tasks (`- [ ]`) or contain only a wikilink with no URL. Exclude bullets where the URL is already embedded inside a `[[...]]` display alias.
+
+Extract: `url`, `source_daily_note`, `bullet_text`.
+
 ---
 
 ## Phase 2: Classify
 
-For each item determine the retry skill:
+For each item determine the retry skill from its URL (or `source_url` frontmatter for Type B/C):
 
 | URL pattern | Skill |
 |-------------|-------|
@@ -63,7 +84,10 @@ For each item determine the retry skill:
 | `twitter.com` or `x.com` | `skills/extract-twitter.md` |
 | anything else | `skills/fetch-url.md` |
 
-If the URL cannot be determined from a Type B note's frontmatter → classify as SKIP (log: "no source_url in frontmatter").
+Special cases:
+- Type C with `source_type: youtube` and no URL in frontmatter → SKIP (log: "no source_url")
+- Type D with a URL that is not http/https → SKIP (log: "non-http URL, skipping")
+- Any item whose URL is `localhost`, `127.*`, or `192.168.*` → SKIP (log: "local URL")
 
 ---
 
@@ -100,11 +124,16 @@ Call the appropriate extraction skill with the item's URL.
    - No match → add to `Agent Concept Gaps`
 4. Log: `[TIMESTAMP] RETRY_OK: <url> → [[Source Note Title]]`
 
-**Type B (stub source note)**:
+**Type B/C (stub source note)**:
 1. Fill in the stub: overwrite `## Summary`, `## Key Points`, `## Raw Notes`, `## Concepts` with extracted content.
-2. Remove `#needs-review` from the Tags line.
-3. If the originating daily note can be found (via `source_url` cross-reference in the vault), annotate its bullet.
+2. Remove `#needs-review` from the Tags line if present.
+3. If the originating daily note can be found (search for the URL in all daily notes), annotate its bullet with `[[Note Title]]`.
 4. Log: `[TIMESTAMP] RETRY_OK: <note_filename> filled from <url>`
+
+**Type D (bare URL bullet, never attempted)**:
+1. Same as Type A success — the URL was never tried before, so this is a first extraction.
+2. Create the source note, annotate the daily note bullet.
+3. Log: `[TIMESTAMP] RETRY_OK (first attempt): <url> → [[Source Note Title]]`
 
 **After success**: tag the item `#queued` only if enrichment of atomic notes was deferred. Otherwise it is fully processed.
 

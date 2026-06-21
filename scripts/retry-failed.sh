@@ -14,23 +14,40 @@ fi
 source "$ENV_FILE"
 mkdir -p "$LOG_DIR"
 
-# Quick pre-flight: count #needs-review items so the user knows what's queued
-NEEDS_REVIEW_COUNT=$(grep -rl '#needs-review' "$VAULT_PATH" --include="*.md" 2>/dev/null \
-    | xargs grep -lv 'agent_managed: true' 2>/dev/null \
-    | wc -l | tr -d ' ') || NEEDS_REVIEW_COUNT=0
+# Pre-flight: cast a wide net for items that may need retry.
+# Three sources:
+#   1. Any note tagged #needs-review
+#   2. Source notes with source_type: youtube or twitter (may be stubs without the tag)
+#   3. Daily notes (YYYY-MM-DD.md) containing a bare URL line with no [[wikilink]] on it
+_find_candidates() {
+    local vault="$1"
+    # 1. #needs-review
+    grep -rl '#needs-review' "$vault" --include="*.md" 2>/dev/null || true
+    # 2. YouTube / Twitter source notes
+    grep -rl 'source_type: youtube\|source_type: twitter' "$vault" --include="*.md" 2>/dev/null || true
+    # 3. Daily notes with bare URL bullets (http but no [[ on same line)
+    grep -rl 'https\?://' "$vault" --include="[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md" 2>/dev/null \
+        | while IFS= read -r f; do
+            grep -qP '^- .*https?://(?!.*\[\[)' "$f" 2>/dev/null && echo "$f" || true
+        done || true
+}
 
-if [[ "$NEEDS_REVIEW_COUNT" -eq 0 ]]; then
-    echo "No #needs-review items found in vault. Nothing to do."
+CANDIDATE_COUNT=$(_find_candidates "$VAULT_PATH" \
+    | grep -v 'agent_managed: true' \
+    | sort -u | grep -c . 2>/dev/null) || CANDIDATE_COUNT=0
+
+if [[ "$CANDIDATE_COUNT" -eq 0 ]]; then
+    echo "No items to retry found in vault (no #needs-review, stub sources, or bare URLs). Nothing to do."
     exit 0
 fi
 
-echo "Found $NEEDS_REVIEW_COUNT file(s) with #needs-review items. Starting retry agent..."
+echo "Found $CANDIDATE_COUNT candidate file(s). Starting retry agent..."
 
 {
     echo ""
     echo "=== $(date -Iseconds) ==="
     echo "Vault: $VAULT_PATH"
-    echo "Items: $NEEDS_REVIEW_COUNT file(s) with #needs-review"
+    echo "Candidates: $CANDIDATE_COUNT file(s)"
     echo ""
 } >> "$LOG_FILE"
 

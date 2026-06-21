@@ -32,13 +32,16 @@ fi
 # node + npm (required for defuddle)
 if command -v npm &>/dev/null; then
     check_ok "npm ($(npm --version))"
-    # defuddle — auto-install
+    # defuddle — auto-install; do not abort if install fails
     if command -v defuddle &>/dev/null; then
         check_ok "defuddle"
     else
         check_install "defuddle"
-        npm install -g defuddle --silent
-        check_ok "defuddle (installed)"
+        if npm install -g defuddle 2>/dev/null; then
+            check_ok "defuddle (installed)"
+        else
+            check_missing "defuddle" "npm install failed — try: sudo npm install -g defuddle"
+        fi
     fi
 else
     check_missing "node/npm" "install from https://nodejs.org — needed for defuddle"
@@ -50,12 +53,18 @@ if command -v yt-dlp &>/dev/null; then
     check_ok "yt-dlp"
 elif command -v pip3 &>/dev/null; then
     check_install "yt-dlp"
-    pip3 install -q --user yt-dlp
-    check_ok "yt-dlp (installed via pip3)"
+    if pip3 install -q --user yt-dlp 2>/dev/null; then
+        check_ok "yt-dlp (installed via pip3)"
+    else
+        check_missing "yt-dlp" "pip3 install failed — try: pip3 install yt-dlp"
+    fi
 elif command -v brew &>/dev/null; then
     check_install "yt-dlp"
-    brew install yt-dlp
-    check_ok "yt-dlp (installed via brew)"
+    if brew install yt-dlp 2>/dev/null; then
+        check_ok "yt-dlp (installed via brew)"
+    else
+        check_missing "yt-dlp" "brew install failed — try: brew install yt-dlp"
+    fi
 else
     check_missing "yt-dlp" "pip3 install yt-dlp  OR  brew install yt-dlp"
 fi
