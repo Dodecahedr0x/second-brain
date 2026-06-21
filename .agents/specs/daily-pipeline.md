@@ -4,14 +4,15 @@
 
 ## Overview
 
-This pipeline extends the base loop with four capabilities that `specs/daily-note.md` does not cover:
+This pipeline extends the base loop with five capabilities that `specs/daily-note.md` does not cover:
 
 1. **External content extraction** — pull URLs and citations from daily notes and fetch their content
 2. **Note enrichment** — update existing atomic notes (or create new ones) with facts from fetched content
-3. **Knowledge surfacing** — append a digest to the daily note summarising what was learned
-4. **Daily suggestions** — compile recent knowledge, find extending resources, detect routines, write suggestions to today's daily note
+3. **Knowledge surfacing** — append a digest to yesterday's note summarising what was learned
+4. **Carry-forward** — write a compact bridge section into today's note with the session's key outputs
+5. **Daily suggestions** — compile recent knowledge, find extending resources, detect routines, write suggestions to today's daily note
 
-All four run inside the existing six-phase loop. This spec defines *when* and *how* each additional step fires within those phases.
+All five run inside the existing six-phase loop. This spec defines *when* and *how* each additional step fires within those phases.
 
 ---
 
@@ -22,8 +23,8 @@ All four run inside the existing six-phase loop. This spec defines *when* and *h
 | Phase 1 OBSERVE | Mark daily notes as `daily-pipeline` type in the change set |
 | Phase 2 ORIENT | Detect URLs/citations only (see §URL Extraction) |
 | Phase 3 DECIDE | Add FETCH, SOURCE_CREATE, ENRICH, and ATOMIZE actions to the plan |
-| Phase 4 ACT | Execute fetches, enrich notes, build digest buffer, run suggestions workflow |
-| Phase 5 VERIFY | Check fetched sources are referenced; digest and suggestions are written |
+| Phase 4 ACT | Execute fetches, enrich notes, build digest buffer, run carry-forward, run suggestions workflow |
+| Phase 5 VERIFY | Check fetched sources are referenced; digest, carry-forward, and suggestions are written |
 | Phase 6 CLEANUP | Log fetch results; persist digest; update vault index |
 
 ---
@@ -116,13 +117,48 @@ Use `specs/knowledge-digest.md` as the canonical template. Write the digest afte
 
 - The digest is **append-only** — never modify earlier digest sections
 - If nothing was fetched or enriched (no URLs in the daily note), omit the digest entirely
-- The digest is written to the *same* daily note the content came from, not a separate file
+- The digest is written to the *same* daily note the content came from (yesterday's note), not to today's note
+
+---
+
+## §Carry-Forward
+
+Runs during Phase 4 (ACT), immediately after §Knowledge Digest is written, before §Suggestions.
+
+Writes a compact summary of the current session's outputs to **today's** daily note (creating the file if absent). Its purpose is to make yesterday's work visible the moment the user opens a new day — without requiring them to navigate back.
+
+### Template
+
+```markdown
+## From Yesterday — YYYY-MM-DD
+
+- **Created**: [[Note A]], [[Note B]]
+- **Enriched**: [[Existing Note]] · N facts · [Source Title](url)
+- **Theme**: [[Dominant Concept]] — one sentence on why it dominated
+- **Deferred**: N items — see [Knowledge Digest](YYYY-MM-DD.md)
+```
+
+Omit any line with no entries. Keep the section to ≤ 5 lines total.
+
+### Rules
+
+- **Created**: list every atomic note created this session as a wikilink; omit if none
+- **Enriched**: list the note enriched with the most new facts; if multiple, pick the one most relevant to the dominant theme; omit if none
+- **Theme**: the dominant concept cluster from the session (same source as §Suggestions Step 4); always include if anything was processed
+- **Deferred**: count of items tagged `#queued` or `#needs-review` in this session; link to the source daily note for details; omit if zero
+
+If today's note already has a `## From Yesterday` section, replace it in place — do not append a second one.
+
+Log:
+```
+[TIMESTAMP] CARRY_FORWARD: written to YYYY-MM-DD.md — N created, N enriched, theme=<concept>
+```
 
 ---
 
 ## §Suggestions
 
-Runs during Phase 4 (ACT), after §Knowledge Digest is written. Delegates entirely to `specs/daily-suggestions.md`.
+Runs during Phase 4 (ACT), after §Carry-Forward is written. Delegates entirely to `specs/daily-suggestions.md`.
 
 Summary of what it does:
 1. Compiles notes created/updated in the last 7 days from `Agent Vault Index`
@@ -130,7 +166,9 @@ Summary of what it does:
 3. Calls `skills/identify-routines.md` on the last 14 daily notes
 4. Writes a `## Suggestions — YYYY-MM-DD` section to **today's** daily note (creating the file if absent)
 
-Final daily-note order: user content → knowledge digest(s) → suggestions → processed footer. If today's daily note already has a `## Suggestions` section, replace that section in place rather than appending a second one.
+**Yesterday's note** order: user content → knowledge digest(s) → processed footer.
+
+**Today's note** order: carry-forward → suggestions. If either section already exists, replace it in place rather than appending a second one.
 
 Log:
 ```
