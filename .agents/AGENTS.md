@@ -56,3 +56,4 @@ Full detail in `context/boundaries.md`. Quick reference:
 | Write daily suggestions (explore + routines) | `specs/daily-suggestions.md` |
 | Summarise the past week's most important themes | `specs/weekly-review.md` |
 | Surface niche topics from the past month, find resources, update MOCs | `specs/monthly-review.md` |
+| Retry all #needs-review items; log persistent failures | `specs/retry-failed.md` |
