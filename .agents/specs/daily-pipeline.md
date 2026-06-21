@@ -44,13 +44,39 @@ For each daily note in the change set, scan for:
 | YouTube link | `https://youtu.be/...` or `https://youtube.com/watch?v=...` | URL, treat as video |
 | Book/article mention | `"Reading X by Y"` | Author + title (no URL) |
 
+### Grouping by Site
+
+After collecting all URLs, group them by site so that multiple pages from the same source end up in one note.
+
+**Grouping key** — the registered domain after stripping common subdomains (`www`, `docs`, `blog`, `help`, `support`, `developer`, `developers`, `api`):
+
+| Raw hostname | Grouping key |
+|---|---|
+| `docs.python.org` | `python.org` |
+| `developer.mozilla.org` | `mozilla.org` |
+| `react.dev` | `react.dev` |
+
+**Exceptions** — treat each URL as its own group regardless of domain:
+- `youtube.com`, `youtu.be` — each video is one artifact
+- `twitter.com`, `x.com` — each tweet is one artifact
+- `github.com` — group by `github.com/<owner>/<repo>` (first three path segments)
+
+For each group, pick a human-readable title: use the site's well-known name if recognizable (e.g., `MDN Web Docs`, `Python Documentation`), otherwise Title-Case the domain.
+
 ### Output
 
 Append to the session's connection map:
 
 ```
-EXTERNAL_REFS for <daily-note>:
-  urls: [url1, url2]
+SITE_GROUPS for <daily-note>:
+  - key: python.org
+    title: Python Documentation
+    type: article
+    urls: [url1, url2]
+  - key: youtu.be/abc123
+    title: <video title>
+    type: youtube
+    urls: [url3]
   citations: [{author, title}]
 ```
 
@@ -60,26 +86,38 @@ EXTERNAL_REFS for <daily-note>:
 
 Runs during Phase 4 (ACT), immediately before standard enrichment actions.
 
-### Per-URL Steps
+### Per-Group Steps
 
-1. Pass the URL to `skills/parse-content.md` Part B — it classifies the content type and calls the appropriate extractor (`extract-youtube.md`, `extract-twitter.md`, or `fetch-url.md`)
-2. Each extractor creates a source note (see `specs/source-note.md`) and returns `EXTRACT_RESULT` with `status`, `note`, `concepts`, and optional `references`
-3. Annotate the raw URL bullet in the daily note with `[[<source note title>]]`; keep the original URL in the source note frontmatter
-4. For each returned concept:
+For each group in `SITE_GROUPS`:
+
+1. For each URL in the group, call the appropriate extractor via `skills/parse-content.md` Part B (`extract-youtube.md`, `extract-twitter.md`, or `fetch-url.md`). Fetch all URLs before creating the note.
+2. Merge results across all URLs in the group:
+   - `summary`: synthesize across all pages into a single paragraph
+   - `key_points`: union and deduplicate; keep at most 10
+   - `concepts`: union of all returned concept lists
+3. Create **one** source note for the group using `specs/source-note.md`:
+   - Note title = the group's `title`
+   - `source_url` = the first (or root) URL in the group
+   - `source_urls` = all URLs in the group (only written when group has > 1 URL)
+4. Annotate **every** raw URL bullet in the daily note that belongs to this group with `[[<group note title>]]` — all bullets in the group point to the same note.
+5. For each returned concept:
    - **Matches existing note** → schedule ENRICH action
    - **No match** → add to `Agent Concept Gaps`; schedule ATOMIZE if enough info exists
-5. For returned `references`, schedule a later FETCH or log as deferred; do not put URLs in `Agent Concept Gaps`.
-6. Log:
+6. For returned `references`, schedule a later FETCH or log as deferred.
+7. Log:
    ```
-   [TIMESTAMP] EXTRACT: <url> → note="<filename>", concepts=[A, B]
+   [TIMESTAMP] EXTRACT: <key> (N URLs) → note="<filename>", concepts=[A, B]
    ```
 
 ### Failure Handling
 
+If **any** URL in a group fails, continue fetching the remaining URLs in the group. Create the source note from whatever succeeded. Only mark the whole group as failed if **all** URLs fail.
+
 | Status | Action |
 |--------|--------|
-| `FAILED` / `EMPTY` / `BLOCKED` | Log, leave URL bullet unchanged, append `#needs-review` only if safe |
-| `NO_TRANSCRIPT` (YouTube) | Source note created as stub; annotate source bullet and add `#needs-review` if safe |
+| All URLs `FAILED` / `EMPTY` / `BLOCKED` | Log, leave all URL bullets unchanged, tag `#needs-review` |
+| Partial failure (some URLs OK) | Create note from successful fetches; annotate succeeded bullets; mark failed bullets `#needs-review` |
+| `NO_TRANSCRIPT` (YouTube) | Source note created as stub; annotate source bullet; tag `#needs-review` |
 
 Do not retry failed extractions in the same session.
 

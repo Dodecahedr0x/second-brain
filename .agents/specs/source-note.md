@@ -6,7 +6,7 @@ A source note captures a specific piece of external content (article, video, twe
 
 Create a source note whenever a daily note references external content that warrants more than a single bullet — i.e., content rich enough to extract multiple concepts or facts from.
 
-## Template
+## Template — Single URL
 
 ```markdown
 ---
@@ -44,21 +44,76 @@ Links to atomic notes for concepts mentioned in this source:
 Tags: #source #<source_type>
 ```
 
+## Template — Multiple URLs (same site)
+
+Use when two or more URLs from the same site are processed together. All bullets in the originating note that pointed to any of these URLs get annotated with `[[<Title>]]`.
+
+```markdown
+---
+source_url: <root or first url>
+source_urls:
+  - <url1>
+  - <url2>
+source_type: article | docs | other
+captured: YYYY-MM-DD
+agent_processed: true
+---
+
+# <Site Name>
+
+> [!info] Source
+> [<site name>](<root url>) — <author / org if known>
+
+## Summary
+
+<Synthesized summary across all pages — 3–6 sentences.>
+
+## Key Points
+
+<Merged and deduplicated from all pages — max 10 bullets.>
+
+## Concepts
+
+- [[Concept A]]
+- [[Concept B]]
+
+## Pages
+
+| Page | Key Takeaway |
+|------|-------------|
+| [<page title>](<url1>) | One sentence |
+| [<page title>](<url2>) | One sentence |
+
+## Raw Notes
+
+### [<page title>](<url1>)
+
+> <key excerpt or first 200 words>
+
+### [<page title>](<url2>)
+
+> <key excerpt or first 200 words>
+
+---
+Tags: #source #<source_type>
+```
+
 ## Naming
 
-`<Title>.md` — use the content's own title, Title Case, stripped of special characters.
-
-If the title is unknown or too generic, use: `<Source Type> - <YYYY-MM-DD>.md`
+- **Single URL**: use the content's own title, Title Case, stripped of special characters.
+- **Multiple URLs**: use the site name + a topic qualifier if all pages share a clear sub-topic (e.g., `Python Documentation — asyncio.md`); otherwise just the site name (`MDN Web Docs.md`).
+- Fallback if title unknown: `<Source Type> - <YYYY-MM-DD>.md`
 
 ## Linking Back
 
-After creating the source note, update the originating daily note bullet:
+After creating the source note, annotate every originating URL bullet:
 
 ```
-- Watched [[Some Video Title]] — <one-line personal note if any>
+- [[Some Video Title]] — <one-line personal note if any>
+- [[Python Documentation — asyncio]] — used in project
 ```
 
-Annotate the raw URL with the wikilink. Do not delete the original URL from the source note's frontmatter.
+For multi-URL notes, **all** bullets from the group get replaced with the same `[[Note Title]]` wikilink. The original URLs are preserved in the `source_urls` frontmatter field — do not keep them in the daily note text.
 
 ## Relationship to Atomic Notes
 
