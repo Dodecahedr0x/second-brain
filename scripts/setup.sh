@@ -12,6 +12,62 @@ LOG_DIR="$REPO_ROOT/logs"
 echo "Second-Brain Setup"
 echo "=================="
 
+# --- Dependencies ---
+echo ""
+echo "Checking dependencies..."
+
+MISSING_TOOLS=()
+
+check_ok()      { printf '  [OK]      %s\n' "$1"; }
+check_install() { printf '  [INSTALL] %s\n' "$1"; }
+check_missing() { printf '  [MISSING] %s — %s\n' "$1" "$2"; MISSING_TOOLS+=("$1"); }
+
+# claude CLI (required to run the agent loop)
+if command -v claude &>/dev/null; then
+    check_ok "claude"
+else
+    check_missing "claude" "install from https://claude.ai/download"
+fi
+
+# node + npm (required for defuddle)
+if command -v npm &>/dev/null; then
+    check_ok "npm ($(npm --version))"
+    # defuddle — auto-install
+    if command -v defuddle &>/dev/null; then
+        check_ok "defuddle"
+    else
+        check_install "defuddle"
+        npm install -g defuddle --silent
+        check_ok "defuddle (installed)"
+    fi
+else
+    check_missing "node/npm" "install from https://nodejs.org — needed for defuddle"
+    check_missing "defuddle" "install after node: npm install -g defuddle"
+fi
+
+# yt-dlp — auto-install via pip3 or brew, fallback to warn
+if command -v yt-dlp &>/dev/null; then
+    check_ok "yt-dlp"
+elif command -v pip3 &>/dev/null; then
+    check_install "yt-dlp"
+    pip3 install -q --user yt-dlp
+    check_ok "yt-dlp (installed via pip3)"
+elif command -v brew &>/dev/null; then
+    check_install "yt-dlp"
+    brew install yt-dlp
+    check_ok "yt-dlp (installed via brew)"
+else
+    check_missing "yt-dlp" "pip3 install yt-dlp  OR  brew install yt-dlp"
+fi
+
+if [[ ${#MISSING_TOOLS[@]} -gt 0 ]]; then
+    echo ""
+    echo "Warning: ${#MISSING_TOOLS[@]} tool(s) missing — install them before running the agent."
+    echo "         Setup will continue; the agent will fail without them."
+fi
+
+echo ""
+
 # --- Vault path ---
 current_vault=$(grep -E '^VAULT_PATH=' "$ENV_FILE" 2>/dev/null | cut -d= -f2- || true)
 prompt="Vault path (absolute path to your Obsidian vault)"
