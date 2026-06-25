@@ -58,6 +58,8 @@ echo "Found $CANDIDATE_COUNT candidate file(s). Starting retry agent..."
 
 Complete the Phase 0 initialization checklist in \`.agents/AGENTS.md\`, then execute \`.agents/specs/retry-failed.md\` through all six loop phases.
 
+When retrying YouTube items, run yt-dlp with \`--cookies-from-browser chrome\` for both metadata and subtitle/transcript commands so browser cookies are available before declaring YouTube bot detection still blocked.
+
 Stop only after Phase 6 cleanup is complete, the Agent Operation Log is updated, and the RETRY SUMMARY block has been printed." \
     >> "$LOG_FILE" 2>&1
 
