@@ -103,7 +103,7 @@ echo "Written: $ENV_FILE"
 echo ""
 mkdir -p "$LOG_DIR"
 touch "$LOG_DIR/.gitkeep"
-current_hour=$(crontab -l 2>/dev/null | grep -F "$RUN_SCRIPT" | awk '{print $2}' || true)
+current_hour=$(crontab -l 2>/dev/null | grep -F "$RUN_SCRIPT" | head -1 | awk '{print $2}' || true)
 default_hour="${current_hour:-8}"
 prompt="Hour to run daily loop (0-23, leave blank to keep: $default_hour)"
 
@@ -111,8 +111,8 @@ read -rp "$prompt: " input_hour
 HOUR="${input_hour:-$default_hour}"
 
 if ! [[ "$HOUR" =~ ^[0-9]+$ ]] || (( HOUR < 0 || HOUR > 23 )); then
-    echo "Invalid hour '$HOUR'. Using $default_hour." >&2
-    HOUR="$default_hour"
+    echo "Invalid hour '$HOUR'. Using 8." >&2
+    HOUR="8"
 fi
 
 DAILY_CRON_JOB="0 $HOUR * * * $RUN_SCRIPT >> $CRON_ERR_LOG 2>&1"
