@@ -19,6 +19,7 @@ source "$ENV_FILE"
 mkdir -p "$ARCHIVE_DIR"
 
 SPEC_PATH="${1:-}"
+EXTRA_CONTEXT="${2:-}"
 TYPE="daily"
 SPEC_INSTRUCTION="Then execute the six-phase loop in \`.agents/loop.md\`."
 if [[ -n "$SPEC_PATH" ]]; then
@@ -35,10 +36,20 @@ LOG_FILE="$ARCHIVE_DIR/$(date +%Y-%m-%d_%H-%M-%S)_${TYPE}.log"
 
 echo "=== $(date -Iseconds) ===" >> "$LOG_FILE"
 
-claude --dangerously-skip-permissions -p \
-    "You are a second-brain processing agent. Your repo is at $REPO_ROOT and the vault is at $VAULT_PATH.
+PROMPT="You are a second-brain processing agent. Your repo is at $REPO_ROOT and the vault is at $VAULT_PATH.
 
-Read \`.agents/AGENTS.md\` and complete the initialization checklist in order. $SPEC_INSTRUCTION Stop only after Phase 6 cleanup is complete and all agent-managed vault notes are updated." \
+Read \`.agents/AGENTS.md\` and complete the initialization checklist in order. $SPEC_INSTRUCTION Stop only after Phase 6 cleanup is complete and all agent-managed vault notes are updated."
+
+if [[ -n "$EXTRA_CONTEXT" ]]; then
+    PROMPT="$PROMPT
+
+Additional context for this run: $EXTRA_CONTEXT"
+fi
+
+# CLAUDE_BIN lets callers (e.g. the Obsidian plugin) point at a claude binary
+# that isn't on the GUI PATH. CLAUDE_EXTRA_ARGS passes through extra flags.
+"${CLAUDE_BIN:-claude}" --dangerously-skip-permissions ${CLAUDE_EXTRA_ARGS:-} -p \
+    "$PROMPT" \
     >> "$LOG_FILE" 2>&1
 
 echo "Done: $(date -Iseconds)" >> "$LOG_FILE"

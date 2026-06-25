@@ -1,3 +1,7 @@
 .env.local
 logs/*
 !logs/.gitkeep
+
+# Plugin build tooling
+node_modules/
+*.tsbuildinfo

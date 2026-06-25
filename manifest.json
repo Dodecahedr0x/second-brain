@@ -1,0 +1,10 @@
+{
+  "id": "second-brain-workflows",
+  "name": "Second Brain Workflows",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Run the second-brain agent workflows (ingestion, daily pipeline, reviews, …) as Obsidian commands.",
+  "author": "Dodecahedr0x",
+  "authorUrl": "https://github.com/Dodecahedr0x/second-brain",
+  "isDesktopOnly": true
+}

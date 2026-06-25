@@ -1,0 +1,20 @@
+{
+  "name": "second-brain-workflows",
+  "version": "0.1.0",
+  "description": "Obsidian commands for the second-brain agent harness",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "typecheck": "tsc -noEmit -skipLibCheck"
+  },
+  "author": "Dodecahedr0x",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20",
+    "builtin-modules": "^3.3.0",
+    "esbuild": "^0.21.5",
+    "obsidian": "latest",
+    "typescript": "^5.4.0"
+  }
+}

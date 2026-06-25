@@ -28,7 +28,9 @@ _find_candidates() {
     # 3. Daily notes with bare URL bullets (http but no [[ on same line)
     grep -rl 'https\?://' "$vault" --include="[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md" 2>/dev/null \
         | while IFS= read -r f; do
-            grep -qP '^- .*https?://(?!.*\[\[)' "$f" 2>/dev/null && echo "$f" || true
+            # BSD-grep compatible (macOS): a bullet with a URL but no [[wikilink]].
+            # Take URL bullets, then keep the file if any such line lacks [[.
+            grep -E '^- .*https?://' "$f" 2>/dev/null | grep -vq '\[\[' && echo "$f" || true
         done || true
 }
 
@@ -51,7 +53,7 @@ echo "Found $CANDIDATE_COUNT candidate file(s). Starting retry agent..."
     echo ""
 } >> "$LOG_FILE"
 
-claude --dangerously-skip-permissions -p \
+"${CLAUDE_BIN:-claude}" --dangerously-skip-permissions ${CLAUDE_EXTRA_ARGS:-} -p \
     "You are a second-brain retry agent. Your repo is at $REPO_ROOT and the vault is at $VAULT_PATH.
 
 Complete the Phase 0 initialization checklist in \`.agents/AGENTS.md\`, then execute \`.agents/specs/retry-failed.md\` through all six loop phases.
