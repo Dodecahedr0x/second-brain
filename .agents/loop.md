@@ -54,12 +54,16 @@ Exit: Numbered plan exists. No action is ambiguous.
 **Goal**: Execute the plan exactly as written.
 
 1. Execute actions in order, one at a time
-2. After each action, log immediately in `Agent Operation Log`:
+2. Before each action apply idempotency guards:
+   - **ENRICH**: skip any wikilink or tag that already exists verbatim in the target note
+   - **ATOMIZE / SOURCE_CREATE**: if the target note already exists, switch to ENRICH instead of creating a duplicate
+   - **FETCH**: if a source note for this URL already exists and is not a `#stub`, skip the fetch
+3. After each action, log immediately in `Agent Operation Log`:
    ```
    [TIMESTAMP] ACTION_TYPE: <file> — <rationale>
    ```
-3. After each action, verify modified file is valid markdown and all wikilinks are valid
-4. If an action would violate `context/boundaries.md` → SKIP, log reason, continue
+4. After each action, verify modified file is valid markdown and all wikilinks are valid
+5. If an action would violate `context/boundaries.md` → SKIP, log reason, continue
 
 Exit: All planned actions executed or explicitly SKIPPED.
 

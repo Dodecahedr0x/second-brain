@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure user-local bin is on PATH (required when invoked from cron)
+export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
+
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env.local"
 LOG_DIR="$REPO_ROOT/logs"
