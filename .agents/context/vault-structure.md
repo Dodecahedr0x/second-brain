@@ -43,6 +43,9 @@ YYYY-MM-DD
 - [[Source Title]] — summary
 - [External Title](url) — why it connects
 
+### What's New
+- [[Source Title]] · arxiv · YYYY-MM-DD — abstract line → [[Concept]]
+
 ### Explore
 - [Resource](url) — reason
 - [[Concept Gap]] — worth creating
