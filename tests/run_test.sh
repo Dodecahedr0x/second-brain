@@ -8,7 +8,9 @@ trap 'rm -rf "$TMPDIR"' EXIT
 PROJECT="$TMPDIR/project"
 mkdir -p "$PROJECT/scripts" "$PROJECT/.agents" "$TMPDIR/bin" "$TMPDIR/home/.local/bin" "$TMPDIR/vault"
 cp "$ROOT/scripts/run.sh" "$PROJECT/scripts/run.sh"
+cp "$ROOT/.gitignore" "$PROJECT/.gitignore"
 chmod +x "$PROJECT/scripts/run.sh"
+git -C "$PROJECT" init -q
 printf 'VAULT_PATH=%s\n' "$TMPDIR/vault" > "$PROJECT/.env.local"
 cat > "$PROJECT/.agents/AGENTS.md" <<'EOF'
 # test harness
@@ -32,3 +34,8 @@ grep -F "Execute the entry spec \`.agents/specs/weekly-review.md\`" "$FAKE_CLAUD
 LOG_FILE=$(find "$PROJECT/logs/archive" -type f -name '*_weekly.log' -print -quit)
 [[ -n "$LOG_FILE" ]] || { echo "weekly archive log should be written" >&2; exit 1; }
 grep -F "Done:" "$LOG_FILE" >/dev/null
+
+git -C "$PROJECT" check-ignore -q .agent.lock || {
+    echo ".agent.lock should be ignored; run.sh creates it for flock coordination" >&2
+    exit 1
+}

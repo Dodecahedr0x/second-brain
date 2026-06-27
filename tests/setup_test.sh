@@ -41,6 +41,6 @@ if git -C "$PROJECT" check-ignore -q logs/.gitkeep; then
     exit 1
 fi
 
-grep -F "0 8 * * * $PROJECT/scripts/run.sh >> $PROJECT/logs/cron-errors.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null
+grep -F "0 * * * * $PROJECT/scripts/run.sh >> $PROJECT/logs/cron-errors.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null
 grep -F "0 8 * * 1 $PROJECT/scripts/run.sh specs/weekly-review.md >> $PROJECT/logs/cron-errors.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null
 grep -F "0 8 1 * * $PROJECT/scripts/run.sh specs/monthly-review.md >> $PROJECT/logs/cron-errors.log 2>&1" "$FAKE_CRONTAB_STORE" >/dev/null

@@ -1,4 +1,5 @@
 .env.local
+.agent.lock
 logs/*
 !logs/.gitkeep
 
