@@ -8,24 +8,34 @@ Returns recent YouTube videos for a topic via `yt-dlp` search. Conforms to the u
 
 `{topic, search_phrases, source_concepts, since_date}`.
 
+`$YT_COOKIES` below is the optional cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome`). Its presence decides the mode. (`ytsearchdate` is unsupported in current yt-dlp builds, so recency is enforced by date-filtering, not a date-sorted search.)
+
 ## Step 1: Search
 
-For the first search phrase:
+For the first search phrase, one search per topic (budget):
+
+**Cookies configured** (`YT_COOKIES` non-empty) — full extraction yields `upload_date`:
+```bash
+yt-dlp "ytsearch20:<phrase>" $YT_COOKIES --dump-json --dateafter <since_date as YYYYMMDD> --no-warnings
+```
+
+**No cookies** — fast flat search (no per-video metadata; YouTube bot-gates full extraction unauthenticated):
 ```bash
 yt-dlp "ytsearch20:<phrase>" --dump-json --flat-playlist --no-warnings
 ```
-`ytsearch` returns by relevance. (The `ytsearchdate` scheme is unsupported in current yt-dlp builds, and full per-video extraction — which would yield `upload_date` — is bot-gated by YouTube without browser cookies. So this skill uses the fast unauthenticated flat search.) One search per topic (budget).
 
 ## Step 2: Parse + Filter
 
-Each JSON line is a video. Extract `id`, `title`, `duration`, `channel`. `upload_date` is **not available** in flat-playlist output (it comes back null).
+Each JSON line is a video. Extract `id`, `title`, `duration`, `channel`, and `upload_date` (YYYYMMDD; **null in the no-cookies flat path**).
 - Drop `duration` < 60s (Shorts).
 - **Relevance gate**: keep only if `title` shares ≥1 term with `source_concepts`.
-- **Recency is best-effort**: because `upload_date` is unavailable unauthenticated, do not date-filter YouTube. The `Agent Discovery Log` dedup guard ensures each video is surfaced at most once, so a relevance-matched video is offered a single time rather than re-surfaced. (If `upload_date` is ever present — e.g. cookies configured — drop entries older than `since_date`.)
+- **Recency**:
+  - *Cookies path*: drop `upload_date` < `since_date` (compare as YYYYMMDD — strip dashes from `since_date`).
+  - *No-cookies path*: `upload_date` is unavailable, so do not date-filter; recency is best-effort and the `Agent Discovery Log` dedup guard ensures each relevance-matched video is surfaced at most once.
 
 ## Step 3: Select
 
-Keep up to 3 by relevance order. `why` = "video by <channel>".
+Keep up to 3 (newest first when dated, else relevance order). `why` = "video by <channel>".
 
 ## Output
 
@@ -41,5 +51,6 @@ Empty list if none pass. The video is later extracted by the existing `skills/ex
 
 ## Guardrails
 
-- ≤1 search per topic per pass.
-- If `yt-dlp` errors, return an empty list and log the failure — never abort the loop.
+- ≤1 search per topic per pass (a cookie-path retry after a fallback does not count against new topics).
+- If the cookies-path command errors (e.g. misconfigured cookies / no browser profile), retry once with the no-cookies flat command, then proceed.
+- If `yt-dlp` still errors, return an empty list and log the failure — never abort the loop.

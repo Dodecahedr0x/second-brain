@@ -8,6 +8,8 @@ Agent harness that processes an Obsidian vault into structured knowledge: atomic
 ./scripts/setup.sh   # prompts for vault path, writes .env.local
 ```
 
+Optional: set `YT_COOKIES` in `.env.local` (e.g. `YT_COOKIES="--cookies-from-browser chrome"`) to let YouTube discovery and transcript extraction use your browser's logged-in cookies — this bypasses YouTube bot-gating so the agent can read upload dates and auto-subtitles. Leave it empty to run unauthenticated (YouTube discovery is then relevance-only). See `.env.example`.
+
 ## How It Works
 
 Agents follow a six-phase loop (`loop.md`): observe changes → orient in the knowledge graph → plan actions → act → verify → clean up state. All behaviour is defined in `.agents/`.

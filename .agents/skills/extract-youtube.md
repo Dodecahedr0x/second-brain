@@ -4,10 +4,12 @@
 
 Produces a source note (see `specs/source-note.md`) from a YouTube video URL.
 
+In every `yt-dlp` command below, `$YT_COOKIES` is the cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome`). It is **optional** — if unset/empty, omit it and run unauthenticated (bot-gating may then yield `NO_TRANSCRIPT`).
+
 ## Step 1: Get Metadata
 
 ```bash
-yt-dlp --dump-json --no-download "<url>"
+yt-dlp $YT_COOKIES --dump-json --no-download "<url>"
 ```
 
 Extract: `title`, `channel`, `upload_date`, `description` (first 500 chars).
@@ -15,7 +17,7 @@ Extract: `title`, `channel`, `upload_date`, `description` (first 500 chars).
 ## Step 2: Get Transcript
 
 ```bash
-yt-dlp --write-auto-sub --sub-lang en --sub-format vtt \
+yt-dlp $YT_COOKIES --write-auto-sub --sub-lang en --sub-format vtt \
         --skip-download --output "/tmp/yt-%(id)s" "<url>"
 ```
 
