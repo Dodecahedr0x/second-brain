@@ -12,14 +12,14 @@ Returns recent YouTube videos for a topic via `yt-dlp` search. Conforms to the u
 
 For the first search phrase:
 ```bash
-yt-dlp "ytsearchdate20:<phrase>" --dump-json --flat-playlist --no-warnings
+yt-dlp "ytsearch20:<phrase>" --dump-json --flat-playlist --no-warnings
 ```
-`ytsearchdate` returns newest first. One search per topic (budget).
+`ytsearch` returns by relevance (the `ytsearchdate` scheme is unsupported in current yt-dlp builds); recency is enforced by the `upload_date` filter in Step 2. One search per topic (budget).
 
 ## Step 2: Parse + Filter
 
 Each JSON line is a video. Extract `id`, `title`, `upload_date` (YYYYMMDD), `duration`, `channel`.
-- Drop `upload_date` < `since_date`.
+- Drop `upload_date` < `since_date` (compare as YYYYMMDD — strip the dashes from `since_date` first).
 - Drop `duration` < 60s (Shorts).
 - **Relevance gate**: keep only if `title` shares ≥1 term with `source_concepts`.
 
