@@ -51,8 +51,8 @@ Omit any section with no entries.
 |------------|------------------------|
 | Phase 1 OBSERVE | Collect all notes created/updated in the past 30 days from `Agent Vault Index` |
 | Phase 2 ORIENT | Identify low-frequency concepts (≤ 2 notes); rank by intellectual interest heuristic; read existing MOCs for the niche topics |
-| Phase 3 DECIDE | Plan: up to 5 niche concepts to research; FETCH for each; MOC updates; exploration angle per concept |
-| Phase 4 ACT | Call `skills/find-resources.md` per niche concept; add resources to atomic notes; update/create MOCs; write review note |
+| Phase 3 DECIDE | Plan: up to 5 niche concepts; dormant discovery pass (≤10 source notes); MOC updates; exploration angle per concept |
+| Phase 4 ACT | Run `pass=dormant` discovery (≤10 source notes); add resources to atomic notes; update/create MOCs; write review note |
 | Phase 5 VERIFY | Review note exists; all wikilinks valid; all added resources verified (not fabricated); MOCs internally consistent |
 | Phase 6 CLEANUP | Log session in `Agent Operation Log`; update `Agent Vault Index` for any enriched notes and MOC changes |
 
@@ -80,12 +80,11 @@ Rank niche candidates:
 
 Pick up to 5 niche concepts. If fewer than 2 qualify, widen the frequency threshold to ≤ 4 notes.
 
-### 3. Find Fresh Resources
+### 3. Find Fresh Content (Dormant Topics)
 
-For each selected niche concept, call `skills/find-resources.md`:
-- Bias queries toward recent content (add "2025 OR 2026" to search queries)
-- Collect up to 2 resources per concept
-- Pass the concept's existing `## References` URLs as `existing_refs` to avoid duplicates
+Run `specs/discovery.md` with `pass=dormant` (cap 10 new source notes). It derives dormant topics, searches all four sources (arxiv/YouTube/web/HN), dedups against `Agent Discovery Log`, and emits URLs that this session fetches into source notes. Use the resulting `[[source notes]]` to populate `## Fresh Resources Added`, one line per note. For niche concepts that already have an atomic note, also append the new source under that note's `## References` (Step 4 below).
+
+If `pass=dormant` discovery returns fewer than 2 items total, fall back to `skills/find-resources.md` on the top niche concepts from Step 2 to populate Fresh Resources.
 
 ### 4. Enrich Atomic Notes
 
@@ -129,7 +128,7 @@ Log:
 
 ## Constraints
 
-- Limit to 5 niche concepts and 10 total external fetches per session — stay within budget
+- Limit to 10 new discovery source notes per session (the `pass=dormant` cap); plus ≤2 `find-resources` fallback fetches per niche concept — stay within budget
 - Never fabricate resources — all URLs must pass the lightweight verify step in `skills/find-resources.md`
 - Do not delete or overwrite existing `## References` entries — append only
 - Exploration angles may include forward wikilinks to notes that don't exist yet (intentional; seeds future work)

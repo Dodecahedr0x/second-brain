@@ -37,6 +37,11 @@ Create the file fresh each run. If it already exists, replace it in full.
 <!-- Concept gaps or #stub notes created this week that remain unfilled -->
 - [[Concept]] — gap opened YYYY-MM-DD
 
+## Rediscovered — Fresh Content on Topics You've Drifted From
+<!-- Faded topics (active recently-past, quiet now) with newly discovered source notes -->
+- **[[Faded Topic]]**
+  - [[Source Title]] · <source> · YYYY-MM-DD — one-line why
+
 ---
 Tags: #weekly-review
 ```
@@ -51,8 +56,8 @@ Omit any section with no entries.
 |------------|------------------------|
 | Phase 1 OBSERVE | Collect notes created/updated in the past 7 days from `Agent Vault Index`; collect the 7 daily notes |
 | Phase 2 ORIENT | Group notes by topic tag; compute activity counts; call `skills/identify-routines.md`; read `Agent Concept Gaps` for gaps opened this week |
-| Phase 3 DECIDE | Plan review note content — assign one entry per section; no FETCH or ENRICH actions |
-| Phase 4 ACT | Write `Weekly Review — YYYY-W##.md` |
+| Phase 3 DECIDE | Plan review note content — assign one entry per section; no FETCH or ENRICH actions except the Phase 4 faded-topic discovery pass |
+| Phase 4 ACT | Write `Weekly Review — YYYY-W##.md`; run `pass=faded` discovery (≤5 source notes) |
 | Phase 5 VERIFY | Confirm file exists, all wikilinks valid, no empty sections emitted |
 | Phase 6 CLEANUP | Log session in `Agent Operation Log`; add review note to `Agent Vault Index` |
 
@@ -90,6 +95,10 @@ Include only **active** routines (last seen ≤ 3 days ago). Omit fading and dor
 From `Agent Concept Gaps`: extract gaps whose opened-date falls within the 7-day window.
 Limit to 5 — prefer gaps with `High` priority.
 
+### 5b. Rediscover Faded Topics
+
+Run `specs/discovery.md` with `pass=faded` (cap 5 new source notes). The emitted URLs are fetched through the normal extract → source-note pipeline this session. Group the resulting `[[source notes]]` under their faded topic for the `## Rediscovered` section. If discovery returns nothing, omit the section.
+
 ### 6. Write the Review Note
 
 Assemble the template. Write the file. If a section has no entries, omit the entire `##` heading.
@@ -103,7 +112,7 @@ Log:
 
 ## Constraints
 
-- Do not fetch external URLs — this is a retrospective, not an enrichment run
-- Do not modify any vault note other than the weekly review file itself
+- Do not fetch external URLs **except** via the `### 5b` faded-topic discovery pass (cap 5 notes); the rest of the review is retrospective only
+- Do not modify any vault note other than the weekly review file, the ≤5 source notes created by the 5b faded-topic discovery pass, and `Agent Discovery Log`
 - Keep the total note under 30 lines — if more items exist, pick highest-value ones
 - Never invent data — all entries must come from `Agent Vault Index`, daily notes, or `Agent Concept Gaps`

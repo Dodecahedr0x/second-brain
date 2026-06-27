@@ -11,7 +11,7 @@ Create a source note whenever a daily note references external content that warr
 ```markdown
 ---
 source_url: <url>
-source_type: article | youtube | twitter | pdf | other
+source_type: article | youtube | twitter | paper | pdf | other
 captured: YYYY-MM-DD
 agent_processed: true
 ---

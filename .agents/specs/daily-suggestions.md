@@ -26,6 +26,10 @@ The section is written after any digest and before the processed footer, if pres
 <!-- Open questions or follow-ups from the past 7 days not yet resolved -->
 - *YYYY-MM-DD* — bullet text with [[wikilinks]]
 
+### What's New
+<!-- Items discovered today for your active topics (from Agent Discovery Log) -->
+- [[Source Title]] · <source> · YYYY-MM-DD — one-line abstract → [[Existing Concept]]
+
 ### Routines
 <!-- Fading routines first (pick back up — fading), then active -->
 - **Activity name** · N-day streak · Next: specific action
@@ -103,15 +107,23 @@ The question must go one level deeper than what's already in the notes — do no
 
 Omit this section if no good question can be formed.
 
+### 3e. What's New
+
+Read `Agent Discovery Log` → `## Surfaced`. Take rows dated today whose `Note` column is filled.
+For each (max 5, newest first): render `- [[Note Title]] · <source> · YYYY-MM-DD — <first line of the note's ## Summary> → <first [[concept]] from the note's ## Concepts>`.
+For HN items, append `([discussion](<permalink from the Surfaced row's Discussion column>))`.
+Omit the section if no discovery rows are dated today.
+
 ### 5. Write to Today's Daily Note
 
 Assemble the template in this section order (highest return-pull first):
 1. **Loose Ends** — accountability hook
-2. **Routines** — stakes hook (fading before active)
-3. **On This Day** — memory hook
-4. **Question for Today** — curiosity hook
-5. **Explore** — discovery (from dominant cluster, then loose ends)
-6. **This Week's Theme** — orientation
+2. **What's New** — proactive discovery feed
+3. **Routines** — stakes hook (fading before active)
+4. **On This Day** — memory hook
+5. **Question for Today** — curiosity hook
+6. **Explore** — discovery (from dominant cluster, then loose ends)
+7. **This Week's Theme** — orientation
 
 Write the section. If today's note already has a `## Suggestions` section, replace only that section — do not append a second one. If individual sub-sections already exist within it, replace each sub-section in place.
 

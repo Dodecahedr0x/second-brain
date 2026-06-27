@@ -47,6 +47,7 @@ Triggered when a reference (URL or citation) is found in Part A, or when a daily
 |---------|------|-----------|
 | `youtube.com/watch`, `youtu.be/` | YouTube | `skills/extract-youtube.md` |
 | `twitter.com/`, `x.com/` (post URL) | Twitter/X | `skills/extract-twitter.md` |
+| `arxiv.org/abs/`, `arxiv.org/pdf/` | arxiv paper | `skills/extract-arxiv.md` |
 | Any other URL | Web article | `skills/fetch-url.md` |
 | No URL — book/paper citation | Citation | log in `Agent Concept Gaps`, tag `#needs-review` |
 
