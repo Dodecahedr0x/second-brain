@@ -18,6 +18,14 @@ source "$ENV_FILE"
 
 mkdir -p "$ARCHIVE_DIR"
 
+# Prevent concurrent runs (e.g. hourly cron firing while a previous run is still live)
+LOCK_FILE="$REPO_ROOT/.agent.lock"
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+    echo "$(date -Iseconds) Agent already running — skipping." >> "$ARCHIVE_DIR/$(date +%Y-%m-%d)_skipped.log"
+    exit 0
+fi
+
 SPEC_PATH="${1:-}"
 EXTRA_CONTEXT="${2:-}"
 TYPE="daily"

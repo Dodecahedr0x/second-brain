@@ -9,11 +9,13 @@ Core closed-loop process. Execute all six phases in order — skipping or reorde
 **Goal**: Establish what has changed since the last run.
 
 1. Read `Agent Operation Log` → extract `last_run_timestamp`
-2. Find all vault `.md` files modified after that timestamp (skip `agent_managed: true` notes and `.obsidian/`, `.stfolder/`)
-3. Identify files tagged `#inbox` or `#raw`, or located in `Inbox/`
-4. Merge and deduplicate → **change set**
+2. Always add today's daily note (`YYYY-MM-DD.md`) to the change set, even if unmodified — it needs an agent zone refresh every run
+3. Find all vault `.md` files modified after `last_run_timestamp` (skip `agent_managed: true` notes and `.obsidian/`, `.stfolder/`)
+4. Identify files tagged `#inbox` or `#raw`, or located in `Inbox/`
+5. Merge and deduplicate → **change set**
+6. Classify today's daily note as **active** (user zone changed since `last_run_timestamp`) or **idle** (no user zone changes) — this mode drives Phase 3
 
-Exit: Change set built. If empty → skip to Phase 6.
+Exit: Change set built. Never empty (today's note is always present).
 
 ---
 

@@ -24,10 +24,37 @@ $VAULT_PATH/
 
 ### Note Structure
 
-Daily notes use bullet point format:
+Daily notes have two zones. The user writes freely in the user zone; the agent owns and replaces the agent zone each run.
+
 ```markdown
-- Item 1
-- Item 2 with a [[wikilink]]
+YYYY-MM-DD
+
+- User bullet 1
+- User bullet 2 with a [[wikilink]]
+- https://url-to-explore.com
+
+---
+## Agent — YYYY-MM-DD HH:MM
+
+### New Notes
+- [[Note A]] — one-liner
+
+### Resources
+- [[Source Title]] — summary
+- [External Title](url) — why it connects
+
+### Explore
+- [Resource](url) — reason
+- [[Concept Gap]] — worth creating
+
+### Routines
+- **Activity** · N-day streak · Next: action
+
+### Question
+> Open question for today?
+
+### Open
+- N items #needs-review · N items #queued
 ```
 
 Atomic notes use the template from `specs/generation.md`.

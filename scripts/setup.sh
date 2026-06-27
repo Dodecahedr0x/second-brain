@@ -103,9 +103,11 @@ echo "Written: $ENV_FILE"
 echo ""
 mkdir -p "$LOG_DIR"
 touch "$LOG_DIR/.gitkeep"
-current_hour=$(crontab -l 2>/dev/null | grep -F "$RUN_SCRIPT" | head -1 | awk '{print $2}' || true)
+
+# Weekly/monthly reviews run at a fixed hour; daily loop runs every hour
+current_hour=$(crontab -l 2>/dev/null | grep -F "weekly-review" | head -1 | awk '{print $2}' || true)
 default_hour="${current_hour:-8}"
-prompt="Hour to run daily loop (0-23, leave blank to keep: $default_hour)"
+prompt="Hour for weekly/monthly reviews (0-23, leave blank to keep: $default_hour)"
 
 read -rp "$prompt: " input_hour
 HOUR="${input_hour:-$default_hour}"
@@ -115,7 +117,7 @@ if ! [[ "$HOUR" =~ ^[0-9]+$ ]] || (( HOUR < 0 || HOUR > 23 )); then
     HOUR="8"
 fi
 
-DAILY_CRON_JOB="0 $HOUR * * * $RUN_SCRIPT >> $CRON_ERR_LOG 2>&1"
+DAILY_CRON_JOB="0 * * * * $RUN_SCRIPT >> $CRON_ERR_LOG 2>&1"
 WEEKLY_CRON_JOB="0 $HOUR * * 1 $RUN_SCRIPT specs/weekly-review.md >> $CRON_ERR_LOG 2>&1"
 MONTHLY_CRON_JOB="0 $HOUR 1 * * $RUN_SCRIPT specs/monthly-review.md >> $CRON_ERR_LOG 2>&1"
 existing_crontab=$(crontab -l 2>/dev/null | grep -vF "$RUN_SCRIPT" || true)
@@ -126,7 +128,7 @@ existing_crontab=$(crontab -l 2>/dev/null | grep -vF "$RUN_SCRIPT" || true)
     printf '%s\n' "$MONTHLY_CRON_JOB"
 } | crontab -
 echo "Cron jobs set:"
-echo "  Daily loop:     daily at ${HOUR}:00"
+echo "  Daily loop:     every hour"
 echo "  Weekly review:  Mondays at ${HOUR}:00"
 echo "  Monthly review: 1st of month at ${HOUR}:00"
 echo "  Run logs:       $LOG_DIR/archive/YYYY-MM-DD_HH-MM-SS_<type>.log"
