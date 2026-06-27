@@ -1,7 +1,7 @@
 # Design: Proactive Topic-Driven Content Discovery
 
 *Date: 2026-06-27*
-*Status: Approved — ready for implementation planning*
+*Status: ✅ Implemented — merged to `main` (2026-06-27, merge commit `80ca584`) via the plan at [`../plans/2026-06-27-proactive-topic-discovery.md`](../plans/2026-06-27-proactive-topic-discovery.md). This document is the original design record and is not maintained as living documentation.*
 
 ## Problem
 

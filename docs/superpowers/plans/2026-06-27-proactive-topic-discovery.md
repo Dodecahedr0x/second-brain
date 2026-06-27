@@ -1,5 +1,7 @@
 # Proactive Topic-Driven Content Discovery — Implementation Plan
 
+> **Status: ✅ Implemented** — all 9 tasks completed via subagent-driven development and merged to `main` (2026-06-27, merge commit `80ca584`). Per-task and final whole-branch reviews passed. The unchecked `- [ ]` boxes below reflect the plan as authored and are left as the original record; they are **not** a live to-do list.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a proactive discovery capability that infers the user's active topics from daily notes, fetches recent content on them from arxiv/YouTube/web/Hacker News, and weaves the results into the vault as source notes — including weekly/monthly passes that resurface forgotten topics.
