@@ -10,7 +10,7 @@ Infers the user's topics of interest from recent daily notes. No user-maintained
 
 ## Step 1: Collect Daily Notes
 
-Read the last ~14 daily notes (`YYYY-MM-DD.md`), newest first. **User zone only** — stop at the `---`/`## Agent` separator; never read agent-zone bullets. Skip `agent_managed: true` notes.
+Read recent daily notes covering the mode's window, newest first: `active` → last ~14 days, `faded` → last ~21 days, `dormant` → last ~90 days. **User zone only** — stop at the `---`/`## Agent` separator; never read agent-zone bullets. Skip `agent_managed: true` notes.
 
 ## Step 2: Extract Concepts
 

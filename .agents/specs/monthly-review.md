@@ -51,7 +51,7 @@ Omit any section with no entries.
 |------------|------------------------|
 | Phase 1 OBSERVE | Collect all notes created/updated in the past 30 days from `Agent Vault Index` |
 | Phase 2 ORIENT | Identify low-frequency concepts (≤ 2 notes); rank by intellectual interest heuristic; read existing MOCs for the niche topics |
-| Phase 3 DECIDE | Plan: up to 5 niche concepts to research; FETCH for each; MOC updates; exploration angle per concept |
+| Phase 3 DECIDE | Plan: up to 5 niche concepts; dormant discovery pass (≤10 source notes); MOC updates; exploration angle per concept |
 | Phase 4 ACT | Run `pass=dormant` discovery (≤10 source notes); add resources to atomic notes; update/create MOCs; write review note |
 | Phase 5 VERIFY | Review note exists; all wikilinks valid; all added resources verified (not fabricated); MOCs internally consistent |
 | Phase 6 CLEANUP | Log session in `Agent Operation Log`; update `Agent Vault Index` for any enriched notes and MOC changes |
@@ -84,7 +84,7 @@ Pick up to 5 niche concepts. If fewer than 2 qualify, widen the frequency thresh
 
 Run `specs/discovery.md` with `pass=dormant` (cap 10 new source notes). It derives dormant topics, searches all four sources (arxiv/YouTube/web/HN), dedups against `Agent Discovery Log`, and emits URLs that this session fetches into source notes. Use the resulting `[[source notes]]` to populate `## Fresh Resources Added`, one line per note. For niche concepts that already have an atomic note, also append the new source under that note's `## References` (Step 4 below).
 
-If discovery returns fewer than 2 items for a niche concept that has an atomic note, fall back to `skills/find-resources.md` for that concept (concept-driven web search) to fill the gap.
+If `pass=dormant` discovery returns fewer than 2 items total, fall back to `skills/find-resources.md` on the top niche concepts from Step 2 to populate Fresh Resources.
 
 ### 4. Enrich Atomic Notes
 

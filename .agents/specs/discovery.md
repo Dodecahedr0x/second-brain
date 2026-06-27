@@ -19,7 +19,7 @@ Call `skills/derive-topics.md` with `mode = pass`. If empty → return no candid
 
 ### 2. Pick Topic(s)
 Read `Agent Discovery Log` → `## Topic Coverage`.
-- **active**: pick the single highest-weight topic whose `last_covered` is older than the last 3 runs (or never covered). If all were covered recently, return no candidates.
+- **active**: pick the highest-`weight` topic whose `last_covered` is not today (i.e. not yet covered in the current day); if all active topics were covered today, return no candidates.
 - **faded**: pick the top 2–3 topics not covered in the last 7 days.
 - **dormant**: pick the top topics until the cap is reachable, not covered in the last 30 days.
 
@@ -37,7 +37,7 @@ Reject any candidate whose **normalized URL** (see `skills/agent-notes.md` Disco
 Score each survivor: `recency` (newer better) + `source_priority` (arxiv/hn > web/youtube for research topics; tune by topic nature) + `phrase_match` strength. Keep the top `cap` candidates across all topics/sources. Emit their URLs into the change set as FETCH candidates, tagged `discovered`.
 
 ### 6. Record
-For each emitted candidate, append a `## Surfaced` row (date, source, normalized URL, `[[Topic]]`, and — after Phase 4 creates the note — `note: [[Title]]`). Upsert each covered topic's `## Topic Coverage` row with today's date and `pass`.
+For each emitted candidate, append a `## Surfaced` row (date, source, normalized URL, `[[Topic]]`); set the `Note` column to `[[Title]]` after Phase 4 creates the note; for HN items, set the `Discussion` column to the `references` permalink — leave `Discussion` empty for non-HN. Upsert each covered topic's `## Topic Coverage` row with today's date and `pass`.
 
 ## Output
 
@@ -51,4 +51,4 @@ DISCOVERED (pass=<pass>): N urls
 - Hard cap per pass (table above). Never exceed, regardless of how many sources hit.
 - If a search skill errors, log and skip it — discovery never aborts the loop.
 - Creating > 5 notes in a session (dormant/faded passes) requires the `BULK_CREATION: N notes` log (`context/boundaries.md`).
-- HN candidates carry their discussion permalink in `references`; preserve it into the source note.
+- HN candidates carry their discussion permalink in `references`; record it in the Discovery Log `## Surfaced` Discussion column.

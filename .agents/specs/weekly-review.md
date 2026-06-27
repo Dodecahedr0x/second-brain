@@ -113,6 +113,6 @@ Log:
 ## Constraints
 
 - Do not fetch external URLs **except** via the `### 5b` faded-topic discovery pass (cap 5 notes); the rest of the review is retrospective only
-- Do not modify any vault note other than the weekly review file itself
+- Do not modify any vault note other than the weekly review file, the ≤5 source notes created by the 5b faded-topic discovery pass, and `Agent Discovery Log`
 - Keep the total note under 30 lines — if more items exist, pick highest-value ones
 - Never invent data — all entries must come from `Agent Vault Index`, daily notes, or `Agent Concept Gaps`

@@ -16,7 +16,7 @@ Run `WebSearch` on the first search phrase with a recency bias — append the cu
 
 From results, collect candidates:
 - Prefer a visible publication date ≥ `since_date`; if no date is visible, keep only if the result snippet implies recency.
-- Exclude paywalled sites, social media (except YouTube — but those are handled by search-youtube), arxiv (handled by search-arxiv), and Hacker News (handled by search-hackernews).
+- Exclude paywalled sites, social media, including YouTube (skip any youtube.com URL — it is handled by `skills/search-youtube.md`), arxiv (handled by search-arxiv), and Hacker News (handled by search-hackernews).
 - **Relevance gate**: keep only if title/snippet shares ≥1 term with `source_concepts`.
 
 ## Step 3: Select

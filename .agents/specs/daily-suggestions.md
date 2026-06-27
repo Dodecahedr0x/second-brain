@@ -109,9 +109,9 @@ Omit this section if no good question can be formed.
 
 ### 3e. What's New
 
-Read `Agent Discovery Log` → `## Surfaced`. Take rows dated today whose `note:` is filled.
+Read `Agent Discovery Log` → `## Surfaced`. Take rows dated today whose `Note` column is filled.
 For each (max 5, newest first): render `- [[Note Title]] · <source> · YYYY-MM-DD — <first line of the note's ## Summary> → <first [[concept]] from the note's ## Concepts>`.
-For HN items, append `([discussion](<permalink from the note frontmatter>))`.
+For HN items, append `([discussion](<permalink from the Surfaced row's Discussion column>))`.
 Omit the section if no discovery rows are dated today.
 
 ### 5. Write to Today's Daily Note

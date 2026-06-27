@@ -179,8 +179,8 @@ agent_managed: true
 
 ## Surfaced
 
-| Date | Source | Normalized URL | Topic | Note |
-|------|--------|----------------|-------|------|
+| Date | Source | Normalized URL | Topic | Note | Discussion |
+|------|--------|----------------|-------|------|------------|
 
 ## Topic Coverage
 
