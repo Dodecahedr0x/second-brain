@@ -20,6 +20,7 @@ Every agent-managed note must have this frontmatter property. Tag `#agent-system
 | `Agent Concept Gaps` | Concepts referenced but not yet having their own note |
 | `Agent Operation Log` | Session history and `last_run_timestamp` |
 | `Agent User Profile` | Observed user preferences and writing patterns |
+| `Agent Discovery Log` | Surfaced discovery URLs + per-topic coverage markers (dedup ledger) |
 
 ## Rules
 

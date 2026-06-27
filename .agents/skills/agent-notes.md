@@ -2,13 +2,13 @@
 
 **Used in**: Initialization (AGENTS.md step 3-4), Phase 6 CLEANUP, Abort Protocol
 
-How to create, read, and write the four agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
+How to create, read, and write the five agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
 
 ---
 
 ## Initialisation
 
-Before each session, check that all four notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
+Before each session, check that all five notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
 
 ---
 
@@ -161,3 +161,38 @@ Observed facts only — no speculation.
 ### Update
 
 Add bullet points under the relevant section when new patterns are observed. Never remove existing entries unless they are directly contradicted by newer evidence.
+
+---
+
+## Agent Discovery Log
+
+**Purpose**: Dedup ledger for proactive discovery. Records every URL surfaced and per-topic coverage markers so the hourly loop never re-surfaces the same item. Read in `specs/discovery.md` (dedup filter + rotation); written there after each emit.
+
+### Template
+
+```markdown
+---
+agent_managed: true
+---
+
+# Agent Discovery Log
+
+## Surfaced
+
+| Date | Source | Normalized URL | Topic | Note |
+|------|--------|----------------|-------|------|
+
+## Topic Coverage
+
+| Topic | last_covered | pass |
+|-------|--------------|------|
+
+---
+*Machine-maintained. Do not edit manually.* #agent-system
+```
+
+### Update (`specs/discovery.md`)
+
+- After emitting a candidate, add a row to `## Surfaced` with the normalized URL and the source note it became.
+- After covering a topic, upsert its `## Topic Coverage` row with today's date and the pass name.
+- **URL normalization** (apply before any compare or store): lowercase host, strip `www.`, strip `?query` and `#fragment`, strip trailing `/`.
