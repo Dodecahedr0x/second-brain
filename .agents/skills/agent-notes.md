@@ -131,6 +131,24 @@ Newest entries at top.
 
 Scan for the most recent `last_run_timestamp:` line in the file. If absent, treat all vault files as new (bootstrap mode).
 
+### Daily Summary (Phase 6, first run of a new day)
+
+When a run is the first on a new calendar day — the newest existing entry in the log is dated earlier than today — prepend a one-block rollup of that **earlier day's** runs (above that day's session blocks), then prepend this run's session as usual. Exactly one per day; idempotent — skip if `## Daily Summary — <that day>` already exists.
+
+Consolidate **only** from that day's existing `## Session` blocks (do not re-derive from the vault). Omit any field with nothing to report; one line per field; keep it terse; every `[[wikilink]]` must resolve.
+
+```markdown
+## Daily Summary — YYYY-MM-DD
+
+**Runs**: N — cadence/types; "all phases passed, 0 danglers" if true
+**New notes**: atomic / source / MOC / daily note (with [[wikilinks]])
+**Discovery**: active + faded/dormant activity; Topic Coverage stamped
+**Concept Gaps**: resolved / opened
+**Connections**: MOC additions; source-note enrich/retag
+**Carry-over blockers**: deferred items still unresolved
+**last_run_timestamp**: <that day's final session timestamp>
+```
+
 ---
 
 ## Agent User Profile

@@ -94,15 +94,16 @@ Exit: All checks pass, or failures explicitly logged as DEFERRED.
 **Goal**: Restore clean state for the next session.
 
 1. Update `Agent Vault Index` — add new notes, mark changed notes with `[UPDATED date]`
-2. Prepend session summary near the top of `Agent Operation Log` (newest first):
+2. **Daily rollup**: if the newest existing entry in `Agent Operation Log` is dated an earlier calendar day than today (i.e. this is the first run of a new day) and no `## Daily Summary — <that day>` block exists yet, prepend one consolidating that day's session blocks before doing step 3 — see `skills/agent-notes.md` (Agent Operation Log → Daily Summary) for the template and rules. Idempotent: skip if the block already exists.
+3. Prepend this run's session summary near the top of `Agent Operation Log` (newest first):
    ```
    ## Session YYYY-MM-DD
    Type / Items processed / Actions / Deferred
    next_run_hint: ...
    last_run_timestamp: ISO 8601
    ```
-3. Append new concept gaps to `Agent Concept Gaps`
-4. Verify `Agent Vault Index` is consistent with actual vault contents
+4. Append new concept gaps to `Agent Concept Gaps`
+5. Verify `Agent Vault Index` is consistent with actual vault contents
 
 Exit: All agent-managed notes updated. Session fully logged.
 
