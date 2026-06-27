@@ -166,7 +166,7 @@ Add bullet points under the relevant section when new patterns are observed. Nev
 
 ## Agent Discovery Log
 
-**Purpose**: Dedup ledger for proactive discovery. Records every URL surfaced and per-topic coverage markers so the hourly loop never re-surfaces the same item. Read in `specs/discovery.md` (dedup filter + rotation); written there after each emit.
+**Purpose**: Dedup ledger for proactive discovery. Records every URL surfaced and per-topic coverage markers so the hourly loop never re-surfaces the same item. Read in `specs/discovery.md` (dedup filter + rotation); written to this note after each emit (see `specs/discovery.md`).
 
 ### Template
 
@@ -192,6 +192,8 @@ agent_managed: true
 ```
 
 ### Update (`specs/discovery.md`)
+
+Rows are appended as **markdown table rows** matching the column headers above — never as bullet-list items.
 
 - After emitting a candidate, add a row to `## Surfaced` with the normalized URL and the source note it became.
 - After covering a topic, upsert its `## Topic Coverage` row with today's date and the pass name.
