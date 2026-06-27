@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repo contains code, scripts, and tools that digest content from the Obsidian vault into structured knowledge: atomic notes, wikilink connections, and Maps of Content.
+This repo contains code, scripts, and tools that digest content from the Obsidian vault into structured knowledge: atomic notes, wikilink connections, and Maps of Content. It also proactively discovers recent external content (arxiv, YouTube, web, Hacker News) for topics inferred from daily notes — see `.agents/specs/discovery.md`.
 
 ## Agent Entry Point
 

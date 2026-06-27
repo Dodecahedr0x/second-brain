@@ -12,12 +12,14 @@ Agent harness that processes an Obsidian vault into structured knowledge: atomic
 
 Agents follow a six-phase loop (`loop.md`): observe changes → orient in the knowledge graph → plan actions → act → verify → clean up state. All behaviour is defined in `.agents/`.
 
+Beyond digesting what you pour in, the agent also **proactively discovers** content for the topics you write about: it infers your active topics from recent daily notes and pulls fresh items from **arxiv, YouTube, the web, and Hacker News** into source notes, surfaced in your daily note's *What's New* section. Weekly and monthly passes resurface topics you've drifted from. See `.agents/specs/discovery.md`.
+
 | Directory | Purpose |
 |-----------|---------|
-| `.agents/specs/` | What to do (ingestion, generation, daily pipeline, …) |
-| `.agents/skills/` | How to do it (fetch URLs, create atomic notes, …) |
+| `.agents/specs/` | What to do (ingestion, generation, daily pipeline, discovery, …) |
+| `.agents/skills/` | How to do it (derive topics, search sources, fetch URLs, create atomic notes, …) |
 | `.agents/context/` | Environment facts (vault structure, boundaries) |
-| Agent-managed vault notes | State between sessions (vault index, concept gaps, operation log, user profile) |
+| Agent-managed vault notes | State between sessions (vault index, concept gaps, operation log, user profile, discovery log) |
 | `scripts/` | Setup and maintenance scripts |
 
 ## Running an Agent

@@ -3,6 +3,12 @@
 logs/*
 !logs/.gitkeep
 
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
+
+# Subagent-driven-development scratch (briefs, reports, review diffs, ledger)
+.superpowers/
+
 # Plugin build tooling
 node_modules/
 *.tsbuildinfo
