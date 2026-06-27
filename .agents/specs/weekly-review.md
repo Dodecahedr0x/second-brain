@@ -56,7 +56,7 @@ Omit any section with no entries.
 |------------|------------------------|
 | Phase 1 OBSERVE | Collect notes created/updated in the past 7 days from `Agent Vault Index`; collect the 7 daily notes |
 | Phase 2 ORIENT | Group notes by topic tag; compute activity counts; call `skills/identify-routines.md`; read `Agent Concept Gaps` for gaps opened this week |
-| Phase 3 DECIDE | Plan review note content — assign one entry per section; no FETCH or ENRICH actions |
+| Phase 3 DECIDE | Plan review note content — assign one entry per section; no FETCH or ENRICH actions except the Phase 4 faded-topic discovery pass |
 | Phase 4 ACT | Write `Weekly Review — YYYY-W##.md`; run `pass=faded` discovery (≤5 source notes) |
 | Phase 5 VERIFY | Confirm file exists, all wikilinks valid, no empty sections emitted |
 | Phase 6 CLEANUP | Log session in `Agent Operation Log`; add review note to `Agent Vault Index` |
