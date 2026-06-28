@@ -67,6 +67,21 @@ else
     check_missing "yt-dlp" "pip3 install yt-dlp  OR  brew install yt-dlp"
 fi
 
+# youtube-transcript-api — cookieless transcript fallback (used by skills/extract-youtube.md)
+if python3 -c 'import youtube_transcript_api' &>/dev/null; then
+    check_ok "youtube-transcript-api"
+elif command -v pip3 &>/dev/null; then
+    check_install "youtube-transcript-api"
+    if pip3 install -q --user youtube-transcript-api 2>/dev/null \
+       || pip3 install -q --user --break-system-packages youtube-transcript-api 2>/dev/null; then
+        check_ok "youtube-transcript-api (installed via pip3)"
+    else
+        check_missing "youtube-transcript-api" "pip3 install youtube-transcript-api"
+    fi
+else
+    check_missing "youtube-transcript-api" "pip3 install youtube-transcript-api"
+fi
+
 if [[ ${#MISSING_TOOLS[@]} -gt 0 ]]; then
     echo ""
     echo "Warning: ${#MISSING_TOOLS[@]} tool(s) missing — install them before running the agent."

@@ -4,24 +4,36 @@
 
 Produces a source note (see `specs/source-note.md`) from a YouTube video URL.
 
-In every `yt-dlp` command below, `$YT_COOKIES` is the cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome`). It is **optional** — if unset/empty, omit it and run unauthenticated (bot-gating may then yield `NO_TRANSCRIPT`).
+On a datacenter/server IP, YouTube bot-gates yt-dlp's player API ("Sign in to confirm you're not a bot") regardless of player client or JS runtime. So prefer the cookieless endpoints below (oEmbed for metadata, `youtube-transcript-api` for the transcript) and use yt-dlp only as a cookie-backed fallback. `$YT_COOKIES` is the optional cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome` or `--cookies file.txt`); omit when empty.
 
-## Step 1: Get Metadata
+## Step 0: Video ID
+
+Extract the 11-char id from the URL (`youtube.com/watch?v=<id>`, `youtu.be/<id>`, `youtube.com/shorts/<id>`, `youtube.com/embed/<id>`). If none → status `FAILED`.
+
+## Step 1: Get Metadata (oEmbed — cookieless, reliable)
 
 ```bash
-yt-dlp $YT_COOKIES --dump-json --no-download "<url>"
+curl -sL "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=<id>&format=json"
 ```
+JSON → `title`, `author_name` (= `channel`). `upload_date` and `description` are not available here → set them `unknown`.
+Only if `$YT_COOKIES` is set, enrich via `yt-dlp $YT_COOKIES --dump-json --no-download "<url>"` to add `upload_date` + `description` (first 500 chars); if that errors (bot-gated), keep the oEmbed title/channel and continue.
+If oEmbed itself fails → status `FAILED`.
 
-Extract: `title`, `channel`, `upload_date`, `description` (first 500 chars).
+## Step 2: Get Transcript (youtube-transcript-api first — cookieless)
 
-## Step 2: Get Transcript
+```bash
+python3 -m youtube_transcript_api <id> --languages en --format text
+```
+On success the stdout **is** the transcript (plain text, no timestamps to strip). If it errors with "blocking requests from your IP", retry up to 2× — the block is intermittent. Try `--languages en en-US`, then drop `--languages` for any available language.
 
+**Fallback** (only helps when cookies are set, since the gated IP blocks yt-dlp):
 ```bash
 yt-dlp $YT_COOKIES --write-auto-sub --sub-lang en --sub-format vtt \
         --skip-download --output "/tmp/yt-%(id)s" "<url>"
 ```
+Parse the `.vtt`: strip timestamps and `<c>` tags, collapse whitespace.
 
-Parse the `.vtt` file: strip timestamps and `<c>` tags, collapse whitespace. If no English auto-sub exists, try `--sub-lang en-US` then any available language. If no transcript at all → set `status: NO_TRANSCRIPT`, skip Step 3, leave `## Raw Notes` empty and tag note `#needs-review`.
+If **both** the transcript-api and yt-dlp paths fail → status `NO_TRANSCRIPT`: skip Step 3, leave `## Raw Notes` empty, tag the note `#needs-review`. Still create the note from the oEmbed title/channel so it is a usable stub, not a dead end.
 
 ## Step 3: Summarise
 
