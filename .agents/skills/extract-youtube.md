@@ -4,7 +4,7 @@
 
 Produces a source note (see `specs/source-note.md`) from a YouTube video URL.
 
-On a datacenter/server IP, YouTube bot-gates yt-dlp's player API ("Sign in to confirm you're not a bot") regardless of player client or JS runtime. So prefer the cookieless endpoints below (oEmbed for metadata, `youtube-transcript-api` for the transcript) and use yt-dlp only as a cookie-backed fallback. `$YT_COOKIES` is the optional cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome` or `--cookies file.txt`); omit when empty.
+On a datacenter/server IP, YouTube bot-gates yt-dlp's player API ("Sign in to confirm you're not a bot") regardless of player client or JS runtime. So prefer the cookieless endpoints below (oEmbed for metadata, `youtube-transcript-api` for the transcript) and use yt-dlp only as a cookie-backed fallback. `$YT_COOKIES` is the optional cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome` or `--cookies file.txt`); omit when empty. `$YT_PROXY` is an optional proxy URL loaded from `.env.local`; when set, pass it to `youtube-transcript-api` as `--http-proxy "$YT_PROXY" --https-proxy "$YT_PROXY"` and to yt-dlp as `--proxy "$YT_PROXY"`.
 
 ## Step 0: Video ID
 
@@ -22,13 +22,13 @@ If oEmbed itself fails → status `FAILED`.
 ## Step 2: Get Transcript (youtube-transcript-api first — cookieless)
 
 ```bash
-python3 -m youtube_transcript_api <id> --languages en --format text
+python3 -m youtube_transcript_api <id> ${YT_PROXY:+--http-proxy "$YT_PROXY" --https-proxy "$YT_PROXY"} --languages en --format text
 ```
 On success the stdout **is** the transcript (plain text, no timestamps to strip). If it errors with "blocking requests from your IP", retry up to 2× — the block is intermittent. Try `--languages en en-US`, then drop `--languages` for any available language.
 
 **Fallback** (only helps when cookies are set, since the gated IP blocks yt-dlp):
 ```bash
-yt-dlp $YT_COOKIES --write-auto-sub --sub-lang en --sub-format vtt \
+yt-dlp $YT_COOKIES ${YT_PROXY:+--proxy "$YT_PROXY"} --write-auto-sub --sub-lang en --sub-format vtt \
         --skip-download --output "/tmp/yt-%(id)s" "<url>"
 ```
 Parse the `.vtt`: strip timestamps and `<c>` tags, collapse whitespace.

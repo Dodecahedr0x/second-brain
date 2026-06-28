@@ -14,10 +14,18 @@ fi
 source "$ENV_FILE"
 mkdir -p "$LOG_DIR"
 
-# YouTube cookie args for yt-dlp. Configurable via YT_COOKIES in .env.local;
-# defaults to the logged-in Chrome profile (retries are typically run from a
-# desktop where a browser is present).
+# YouTube cookie/proxy args. Configurable via .env.local.
+# YT_COOKIES defaults to the logged-in Chrome profile (retries are typically
+# run from a desktop where a browser is present). YT_PROXY is optional and is
+# passed to both yt-dlp and youtube-transcript-api when set.
 YT_COOKIES="${YT_COOKIES:---cookies-from-browser chrome}"
+YT_PROXY="${YT_PROXY:-}"
+YT_DLP_PROXY_ARGS=""
+YT_TRANSCRIPT_PROXY_ARGS=""
+if [[ -n "$YT_PROXY" ]]; then
+    YT_DLP_PROXY_ARGS="--proxy $YT_PROXY"
+    YT_TRANSCRIPT_PROXY_ARGS="--http-proxy $YT_PROXY --https-proxy $YT_PROXY"
+fi
 
 # Pre-flight: cast a wide net for items that may need retry.
 # Three sources:
@@ -63,7 +71,9 @@ echo "Found $CANDIDATE_COUNT candidate file(s). Starting retry agent..."
 
 Complete the Phase 0 initialization checklist in \`.agents/AGENTS.md\`, then execute \`.agents/specs/retry-failed.md\` through all six loop phases.
 
-When retrying YouTube items, run yt-dlp with \`$YT_COOKIES\` for both metadata and subtitle/transcript commands so browser cookies are available before declaring YouTube bot detection still blocked.
+When retrying YouTube items, run yt-dlp with \`$YT_COOKIES $YT_DLP_PROXY_ARGS\` for both metadata and subtitle/transcript commands so browser cookies and an optional proxy are available before declaring YouTube bot detection still blocked.
+
+For the cookieless transcript path, run \`python3 -m youtube_transcript_api <id> $YT_TRANSCRIPT_PROXY_ARGS --languages en --format text\` (and include the same proxy args on language-retry variants) so \`YT_PROXY\` covers cloud-IP transcript blocks too.
 
 Stop only after Phase 6 cleanup is complete, the Agent Operation Log is updated, and the RETRY SUMMARY block has been printed." \
     >> "$LOG_FILE" 2>&1

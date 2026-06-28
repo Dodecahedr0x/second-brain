@@ -8,7 +8,7 @@ Agent harness that processes an Obsidian vault into structured knowledge: atomic
 ./scripts/setup.sh   # prompts for vault path, writes .env.local
 ```
 
-YouTube transcripts are fetched cookielessly first — title/channel via oEmbed and the transcript via `youtube-transcript-api` (`setup.sh` installs it). This bypasses YouTube's player-API bot-gate for many videos. On a datacenter/cloud IP, YouTube still blocks some videos at the IP level; for those, set `YT_COOKIES` in `.env.local` (e.g. `YT_COOKIES="--cookies-from-browser chrome"` or `--cookies cookies.txt`) so transcript extraction and YouTube discovery can authenticate. Leave it empty to run cookieless (best-effort; discovery is then relevance-only). See `.env.example`.
+YouTube transcripts are fetched cookielessly first — title/channel via oEmbed and the transcript via `youtube-transcript-api` (`setup.sh` installs it). This bypasses YouTube's player-API bot-gate for many videos. On a datacenter/cloud IP, YouTube still blocks some videos at the IP level; for those, set `YT_COOKIES` in `.env.local` (e.g. `YT_COOKIES="--cookies-from-browser chrome"` or `--cookies cookies.txt`) so transcript extraction and YouTube discovery can authenticate. If the block is IP-level, set `YT_PROXY` to a proxy URL (e.g. `socks5://127.0.0.1:9050` or `http://user:pass@host:8080`); it is passed to yt-dlp and `youtube-transcript-api`. Leave both empty to run cookieless/direct (best-effort; discovery is then relevance-only). See `.env.example`.
 
 ## How It Works
 

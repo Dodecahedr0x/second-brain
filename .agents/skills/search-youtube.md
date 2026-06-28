@@ -8,7 +8,7 @@ Returns recent YouTube videos for a topic via `yt-dlp` search. Conforms to the u
 
 `{topic, search_phrases, source_concepts, since_date}`.
 
-`$YT_COOKIES` below is the optional cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome`). Its presence decides the mode. (`ytsearchdate` is unsupported in current yt-dlp builds, so recency is enforced by date-filtering, not a date-sorted search.)
+`$YT_COOKIES` below is the optional cookie args loaded from `.env.local` in Phase 0 (e.g. `--cookies-from-browser chrome`). `$YT_PROXY` is an optional proxy URL; when set, include `--proxy "$YT_PROXY"` on every `yt-dlp` command. Cookie presence decides the metadata mode. (`ytsearchdate` is unsupported in current yt-dlp builds, so recency is enforced by date-filtering, not a date-sorted search.)
 
 ## Step 1: Search
 
@@ -16,12 +16,12 @@ For the first search phrase, one search per topic (budget):
 
 **Cookies configured** (`YT_COOKIES` non-empty) — full extraction yields `upload_date`:
 ```bash
-yt-dlp "ytsearch20:<phrase>" $YT_COOKIES --dump-json --dateafter <since_date as YYYYMMDD> --no-warnings
+yt-dlp "ytsearch20:<phrase>" $YT_COOKIES ${YT_PROXY:+--proxy "$YT_PROXY"} --dump-json --dateafter <since_date as YYYYMMDD> --no-warnings
 ```
 
 **No cookies** — fast flat search (no per-video metadata; YouTube bot-gates full extraction unauthenticated):
 ```bash
-yt-dlp "ytsearch20:<phrase>" --dump-json --flat-playlist --no-warnings
+yt-dlp "ytsearch20:<phrase>" ${YT_PROXY:+--proxy "$YT_PROXY"} --dump-json --flat-playlist --no-warnings
 ```
 
 ## Step 2: Parse + Filter
