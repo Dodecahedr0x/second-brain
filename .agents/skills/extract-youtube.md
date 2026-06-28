@@ -13,10 +13,10 @@ Extract the 11-char id from the URL (`youtube.com/watch?v=<id>`, `youtu.be/<id>`
 ## Step 1: Get Metadata (oEmbed — cookieless, reliable)
 
 ```bash
-curl -sL "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=<id>&format=json"
+curl -sL ${YT_PROXY:+-x "$YT_PROXY"} "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=<id>&format=json"
 ```
 JSON → `title`, `author_name` (= `channel`). `upload_date` and `description` are not available here → set them `unknown`.
-Only if `$YT_COOKIES` is set, enrich via `yt-dlp $YT_COOKIES --dump-json --no-download "<url>"` to add `upload_date` + `description` (first 500 chars); if that errors (bot-gated), keep the oEmbed title/channel and continue.
+Only if `$YT_COOKIES` is set, enrich via `yt-dlp $YT_COOKIES ${YT_PROXY:+--proxy "$YT_PROXY"} --dump-json --no-download "<url>"` to add `upload_date` + `description` (first 500 chars); if that errors (bot-gated), keep the oEmbed title/channel and continue.
 If oEmbed itself fails → status `FAILED`.
 
 ## Step 2: Get Transcript (youtube-transcript-api first — cookieless)
