@@ -1,6 +1,6 @@
 # Skill: Check-in
 
-**Used in**: daily-note pre-generation + `specs/weekly-review.md` / `specs/monthly-review.md` (generate); loop OBSERVE (read-back).
+**Used in**: daily-note pre-generation + `specs/weekly-review.md` / `specs/monthly-review.md` (generate); loop ORIENT (read-back).
 
 Generate positive-confirmation check-in questions from `Agent Interest Model`, and read the user's ticks back into steering updates. Which topics get asked depends on the `tier`.
 

@@ -10,6 +10,8 @@ Infers the user's topics of interest from recent daily notes. No user-maintained
 
 - `mode`: `active` | `faded` | `dormant` — selects the time window and ranking (see Step 3).
 
+Note: the `mode` parameter is vestigial — no current caller passes it; `skills/update-interest-model.md` reuses only the concept-extraction rules below.
+
 ## Step 1: Collect Daily Notes
 
 Read recent daily notes covering the mode's window, newest first: `active` → last ~14 days, `faded` → last ~21 days, `dormant` → last ~90 days. **User zone only** — stop at the `---`/`## Agent` separator; never read agent-zone bullets. Skip `agent_managed: true` notes.

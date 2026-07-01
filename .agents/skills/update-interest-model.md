@@ -1,6 +1,6 @@
 # Skill: Update Interest Model
 
-**Used in**: Loop OBSERVE/ORIENT — refresh `Agent Interest Model` each run from writing + check-in ticks.
+**Used in**: Loop ORIENT — refresh `Agent Interest Model` each run from writing + check-in ticks.
 
 Parse-then-update the co-owned `Agent Interest Model` table. Purely statistical; the only structured inputs are the user's table edits and check-in ticks.
 

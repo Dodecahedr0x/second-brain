@@ -32,4 +32,5 @@ maintenance: <N reserved actions>
 ## Guardrails
 
 - Respect the Phase 3 cap (≤20 actions / oldest-first). Never exceed the split budget.
-- `FETCH` delegates to `specs/discovery.md`; `CONNECT`/`ENHANCE`/`ATOMIZE` use the existing `skills/link-notes.md` / `skills/create-atomic.md` / `skills/update-moc.md`.
+- `FETCH` → `specs/discovery.md`; `ATOMIZE` → `skills/create-atomic.md`; `CONNECT` → `skills/update-moc.md`; `ENHANCE` → `skills/link-notes.md` (executes as the loop's `ENRICH`); `EXPLORE` → deferred (exploration subsystem), no-op for now.
+- The loop executor vocabulary is ENRICH/ATOMIZE/CONNECT/FETCH/SOURCE_CREATE/DEFER — map `ENHANCE`→`ENRICH`; `EXPLORE` is a no-op until the exploration subsystem exists.
