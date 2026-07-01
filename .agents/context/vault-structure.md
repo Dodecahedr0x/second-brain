@@ -24,14 +24,21 @@ $VAULT_PATH/
 
 ### Note Structure
 
-Daily notes have two zones. The user writes freely in the user zone; the agent owns and replaces the agent zone each run.
+Daily notes have two zones. The user writes freely in the user zone; the agent owns and replaces the agent zone each run. Preferred user-zone structure is `## User Inputs` followed by `## Agent Feedback`; checked feedback boxes steer future agent-managed notes/discovery, unchecked boxes are neutral, and the section should show at most 3 positive-confirmation boxes.
 
 ```markdown
 YYYY-MM-DD
 
+## User Inputs
+
 - User bullet 1
 - User bullet 2 with a [[wikilink]]
 - https://url-to-explore.com
+
+## Agent Feedback
+
+- [ ] More on topic A.
+- [ ] Less on topic B.
 
 ---
 ## Agent — YYYY-MM-DD HH:MM

@@ -6,7 +6,8 @@
 
 The vault is jointly maintained by the user and the agent. Today's daily note is the shared workspace:
 
-- **User zone**: everything above the agent boundary (`---\n## Agent`). The user writes freely here — bullets, URLs, tasks, thoughts. The agent annotates (wikilinks) but never rewrites.
+- **User zone**: everything above the agent boundary (`---\n## Agent`). The user writes freely here — bullets, URLs, tasks, thoughts. The agent annotates (wikilinks) but never rewrites. Preferred shape: `## User Inputs` first (freeform user content), then `## Agent Feedback` (user-owned checkboxes).
+- **Feedback checkboxes**: positive-confirmation only, max 3 boxes. Unchecked boxes are neutral prompts, not weak negatives. Checked boxes are explicit steering; read them in Phase 1, update `Agent User Profile` / `Agent Concept Gaps` / discovery priorities as applicable, then leave the checkbox text unchanged.
 - **Agent zone**: everything from `---\n## Agent — YYYY-MM-DD HH:MM` onward. The agent **replaces** this section in full on every run. The user never edits it.
 
 ---
@@ -46,6 +47,7 @@ Scan the user zone diff for:
 |---------|---------|
 | Bare URL | URL as-is |
 | Markdown link `[title](url)` | URL + title hint |
+| Checked feedback `- [x] ...` under `## Agent Feedback` | user steering; update agent-managed notes / discovery priorities only |
 | YouTube `youtu.be/…` or `youtube.com/watch?v=…` | URL, type = video |
 | Book/article mention `"Reading X by Y"` | Author + title (no URL) |
 
