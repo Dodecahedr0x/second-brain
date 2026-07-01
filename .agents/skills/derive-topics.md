@@ -4,6 +4,8 @@
 
 Infers the user's topics of interest from recent daily notes. No user-maintained list — fully automatic.
 
+> **Note**: Concept extraction here feeds `skills/update-interest-model.md`, which owns the persistent `Agent Interest Model`. Callers that need current topics/weights read `Agent Interest Model`, not this skill's ephemeral output.
+
 ## Input
 
 - `mode`: `active` | `faded` | `dormant` — selects the time window and ranking (see Step 3).
