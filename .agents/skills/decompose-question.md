@@ -24,6 +24,7 @@ CHECKLIST:
 - <sub-question 2>
 INITIAL_LEADS:
 - type: question  ref: <sub-question 1>
+- type: source    ref: <paper or URL named in the question>
 - type: entity    ref: <named concept>
 ```
 
