@@ -97,6 +97,22 @@ else
     check_missing "feedparser" "pip3 install feedparser"
 fi
 
+# crawlee stealth-fetch tool (scripts/webtools) — fetch-url last-resort tier
+if [[ -f "$REPO_ROOT/scripts/webtools/package.json" ]]; then
+    if [[ -d "$REPO_ROOT/scripts/webtools/node_modules/crawlee" ]]; then
+        check_ok "crawlee (webtools)"
+    elif command -v npm &>/dev/null; then
+        check_install "crawlee (webtools)"
+        if (cd "$REPO_ROOT/scripts/webtools" && npm install --omit=dev --no-audit --no-fund) >/dev/null 2>&1; then
+            check_ok "crawlee (webtools installed)"
+        else
+            check_missing "crawlee (webtools)" "cd scripts/webtools && npm install"
+        fi
+    else
+        check_missing "crawlee (webtools)" "needs npm; then: cd scripts/webtools && npm install"
+    fi
+fi
+
 if [[ ${#MISSING_TOOLS[@]} -gt 0 ]]; then
     echo ""
     echo "Warning: ${#MISSING_TOOLS[@]} tool(s) missing — install them before running the agent."

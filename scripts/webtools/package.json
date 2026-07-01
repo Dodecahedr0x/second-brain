@@ -1,0 +1,7 @@
+{
+  "name": "second-brain-webtools",
+  "private": true,
+  "type": "module",
+  "description": "Standalone Crawlee-based stealth fetcher used as a fetch-url fallback tier",
+  "dependencies": { "crawlee": "^3" }
+}
