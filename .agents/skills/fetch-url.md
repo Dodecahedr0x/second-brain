@@ -13,10 +13,15 @@ Is the URL a GitHub repo root? (github.com/<user>/<repo> with no further path)
 Is the URL a .md file?
   → WebFetch directly
 
-Otherwise:
-  → defuddle <url>   (strips nav, ads, boilerplate → clean markdown)
-  → fallback: WebFetch if defuddle unavailable (log fallback)
+Otherwise (try in order, stop at first that yields substantive content; log which one succeeded):
+  → defuddle <url>                       (local; strips nav, ads, boilerplate → clean markdown)
+  → curl -sL "https://r.jina.ai/<url>"   (Jina Reader → clean markdown; keyless, remote; good when defuddle is unavailable/empty or the site is JS-heavy)
+  → WebFetch <url>                       (final fallback)
 ```
+
+Notes:
+- Jina Reader (`r.jina.ai`) is remote and rate-limited on the keyless tier — use it as a fallback, not the default; defuddle stays primary (local, no limit).
+- The Jina response is already markdown with a `Title:` / `URL Source:` / `Markdown Content:` preamble — parse `title` from the `Title:` line and the body after `Markdown Content:`.
 
 Failures:
 | Condition | Status |
