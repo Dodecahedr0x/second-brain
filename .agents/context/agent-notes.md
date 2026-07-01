@@ -26,6 +26,6 @@ Every agent-managed note must have this frontmatter property. Tag `#agent-system
 ## Rules
 
 - Agents may freely read and write these notes, including section-level rewrites when needed
-- Users should not edit them manually (agents may overwrite)
+- Users should not edit them manually (agents may overwrite) — **exception**: `Agent Interest Model` is co-owned; user edits (weights, `pin`/`mute`, added rows) are authoritative input, not overwritten.
 - Never delete them — reset their content instead
 - If a note is missing, create it from scratch during Phase 0 before proceeding
