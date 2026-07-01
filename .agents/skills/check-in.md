@@ -6,45 +6,34 @@ Generate positive-confirmation check-in questions from `Agent Interest Model`, a
 
 ## Tiers (which topics to ask about)
 
-| tier | topics asked | checked tick |
-|------|--------------|--------------|
-| daily | `Focus ★` topics + `probationary` topics | `focus` or `promote` |
-| weekly | faded (`established`, `Last seen` 7–21d) | `refresh` |
-| monthly | dormant (`established`, `Last seen` > 21d) | `refresh` |
+| tier | topics asked | questions |
+|------|--------------|-----------|
+| daily | `Focus ★` topics + `probationary` topics | "Focus this week?" (focus), "Keep tracking?" (probationary) |
+| weekly | faded (`established`, `Last seen` 7–21d) | "Still into these?" (refresh) |
+| monthly | dormant (`established`, `Last seen` > 21d) | "Revisit? / Drop?" (refresh / drop) |
 
-Ask at most 3 items per check-in (highest-weight first). Omit the section if none qualify.
+Ask at most 4 items per check-in (highest-weight first). Omit the section if none qualify.
 
 ## Generate
 
-Emit a daily section like:
-
+Emit:
 ```markdown
-## Agent Feedback
-
-- [ ] Focus more on [[Topic A]] this week
-- [ ] Keep tracking [[Topic B]]
-- [ ] Revisit [[Topic C]]
-<!-- steering: unprocessed -->
+## Check-in
+Focus this week?   - [ ] Topic A   - [ ] Topic B
+Keep tracking?     - [ ] Topic C (new)
+                   - [ ] drop [[Topic E]]
 ```
-
-For weekly/monthly review notes, use `## Interest Check-in` but keep the same checkbox semantics.
-
-Every generated box is **positive-confirmation only**:
-- checked = yes, keep / promote / focus / refresh this topic.
-- unchecked = neutral.
-- do not generate negative, deprioritization, or drop boxes.
+Only render the rows relevant to the tier. Every box is **positive-confirmation** (checked = yes); `drop` boxes are the only negative. Leave an HTML comment `<!-- steering: unprocessed -->` at the end of the section.
 
 ## Read-back
 
-Given a check-in section not yet marked processed:
-- Collect checked boxes; map each to `{promote | focus | refresh}` by its label and tier.
-- Return `{promote, focus, refresh, drop}` for `skills/update-interest-model.md` Step 4; generated check-ins normally return `drop: []`.
-- Mark the section processed by replacing `<!-- steering: unprocessed -->` with `<!-- steering: processed YYYY-MM-DD -->`.
-- **Do not un-tick the user's boxes** — their marks stay visible; the processed marker prevents re-applying.
+Given a `## Check-in` section not yet marked processed:
+- Collect checked boxes; map each to `{promote | focus | refresh | drop}` by its question label (see the daily/weekly/monthly rows above).
+- Return the four lists for `skills/update-interest-model.md` Step 4.
+- Mark the section processed by replacing `<!-- steering: unprocessed -->` with `<!-- steering: processed YYYY-MM-DD -->`. **Do not un-tick the user's boxes** — their marks stay visible; the processed marker prevents re-applying.
 
 ## Guardrails
 
 - Unchecked = neutral; never treat a skipped box as a negative.
-- Generated check-ins are capped at 3 boxes.
 - Read-back applies a section at most once (guard on the processed marker).
-- Direct veto/deprioritization is handled in `Agent Interest Model` via `mute`, not via generated daily checkboxes.
+- Direct veto/deprioritization is handled in `Agent Interest Model` via `mute`, not via generated checkboxes.
