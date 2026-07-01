@@ -19,7 +19,7 @@ For each topic receiving effort, inspect its notes in the vault:
 | Thin/new — 0–1 notes, or an open `Agent Concept Gaps` row | `FETCH` (discovery on the topic) then `ATOMIZE` |
 | Disconnected — notes exist but < 2 outbound wikilinks, or absent from any MOC | `CONNECT` (add wikilinks / MOC placement) |
 | Stale/shallow — youngest note > 30 days old, or `## References` has < 2 entries | `ENHANCE` (enrich, add sources, deepen) |
-| Mature/well-woven — none of the above | light touch, or `EXPLORE` (open questions) — reserved for the exploration subsystem |
+| Mature/well-woven — none of the above | light touch, or `EXPLORE` (open questions) |
 
 ## Output
 
@@ -32,5 +32,5 @@ maintenance: <N reserved actions>
 ## Guardrails
 
 - Respect the Phase 3 cap (≤20 actions / oldest-first). Never exceed the split budget.
-- `FETCH` → `specs/discovery.md`; `ATOMIZE` → `skills/create-atomic.md`; `CONNECT` → `skills/update-moc.md`; `ENHANCE` → `skills/link-notes.md` (executes as the loop's `ENRICH`); `EXPLORE` → deferred (exploration subsystem), no-op for now.
-- The loop executor vocabulary is ENRICH/ATOMIZE/CONNECT/FETCH/SOURCE_CREATE/DEFER — map `ENHANCE`→`ENRICH`; `EXPLORE` is a no-op until the exploration subsystem exists.
+- `FETCH` → `specs/discovery.md`; `ATOMIZE` → `skills/create-atomic.md`; `CONNECT` → `skills/update-moc.md`; `ENHANCE` → `skills/link-notes.md` (executes as the loop's `ENRICH`); `EXPLORE` → run `specs/research.md` (advance the active research session by one hop, or start one for a top open question tied to this topic).
+- The loop executor vocabulary is ENRICH/ATOMIZE/CONNECT/FETCH/SOURCE_CREATE/DEFER/EXPLORE — map `ENHANCE`→`ENRICH`.
