@@ -2,13 +2,13 @@
 
 **Used in**: Initialization (AGENTS.md step 3-4), Phase 6 CLEANUP, Abort Protocol
 
-How to create, read, and write the five agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
+How to create, read, and write the six agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
 
 ---
 
 ## Initialisation
 
-Before each session, check that all five notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
+Before each session, check that all six notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
 
 ---
 
@@ -216,3 +216,34 @@ Rows are appended as **markdown table rows** matching the column headers above â
 - After emitting a candidate, add a row to `## Surfaced` with the normalized URL and the source note it became.
 - After covering a topic, upsert its `## Topic Coverage` row with today's date and the pass name.
 - **URL normalization** (apply before any compare or store): lowercase host, strip `www.`, strip `?query` and `#fragment`, strip trailing `/`.
+
+---
+
+## Agent Interest Model
+
+**Purpose**: Single source of truth for what the vault is into. Co-owned: the agent rewrites it each run; the user edits it to override. Read by discovery and the action router.
+
+### Template
+
+```markdown
+---
+agent_managed: true
+---
+
+# Agent Interest Model
+<!-- Edit freely. Commands (Flags column):
+       pin  = freeze this row; the agent won't change its weight/status.
+       mute = force weight 0 and never re-add, even if you keep writing about it.
+     Adjust a Weight directly and the agent starts its update from your number.
+     Add a row to inject an interest; the agent adopts it as established. -->
+
+| Topic | Status | Weight | Focus | Last seen | Flags |
+|-------|--------|--------|-------|-----------|-------|
+
+---
+*Agent-maintained, user-editable.* #agent-system
+```
+
+### Update
+
+Written only by the update-interest-model skill (parse-then-update). Never overwrite a `pin`ned row; hold `mute`d rows at `Weight 0.00`; adopt user-added rows as `established`.
