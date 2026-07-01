@@ -28,8 +28,9 @@ Exit: Change set built. Never empty (today's note is always present).
 2. Cross-reference `Agent Vault Index` for existing notes sharing those concepts
 3. Build **connection map**: `{note: [candidate_links]}`
 4. Flag concepts with no existing note → candidates for `Agent Concept Gaps`
+5. **Steering refresh**: read back today's daily-note `## Check-in` ticks via `skills/check-in.md`, then run `skills/update-interest-model.md` (fresh signal + ticks) to refresh `Agent Interest Model` before planning
 
-Exit: Connection map built. Every change set item has an entry.
+Exit: Connection map built. Every change set item has an entry. `Agent Interest Model` reflects latest user signals.
 
 ---
 
@@ -37,16 +38,17 @@ Exit: Connection map built. Every change set item has an entry.
 
 **Goal**: Produce a precise, bounded action plan before touching any file.
 
-1. For each item, assign exactly one action:
+1. **Action routing**: run `skills/action-router.md` over the current `Agent Interest Model` portfolio — topic work allocated by weight × focus, plus the reserved baseline-maintenance slice; the resulting `{topic, action}` items seed the plan
+2. For each change-set item, assign exactly one action:
    - **ENRICH**: Add wikilinks/tags → `skills/link-notes.md`
    - **ATOMIZE**: Extract concepts into new notes → `skills/create-atomic.md`
    - **CONNECT**: Update a MOC → `skills/update-moc.md`
    - **FETCH**: Extract external content into a source note → `skills/parse-content.md` Part B / `specs/source-note.md`
    - **SOURCE_CREATE**: Create a source note from fetched content → `specs/source-note.md`
    - **DEFER**: Tag `#needs-review`, skip this session
-2. Validate against `context/boundaries.md`
-3. If > 20 actions planned: process oldest first, defer the rest
-4. Write the plan as a numbered list in the log — this is the session **contract**
+3. Validate against `context/boundaries.md`
+4. If > 20 actions planned: process oldest first, defer the rest
+5. Write the plan as a numbered list in the log — this is the session **contract**
 
 Exit: Numbered plan exists. No action is ambiguous.
 
@@ -104,8 +106,9 @@ Exit: All checks pass, or failures explicitly logged as DEFERRED.
    ```
 4. Append new concept gaps to `Agent Concept Gaps`
 5. Verify `Agent Vault Index` is consistent with actual vault contents
+6. **Pre-generate tomorrow's daily note** (runs every cycle): ensure tomorrow's `YYYY-MM-DD.md` exists with an empty input zone and a `## Check-in` generated via `skills/check-in.md` (tier=daily) from the current `Agent Interest Model`. Idempotent & non-clobbering: create if missing; if it exists but is untouched (empty input zone, no ticked boxes, `steering: unprocessed`) refresh its Check-in; once the user has written or ticked anything, leave it unchanged. On weekly/monthly creation days the review note carries its own tier check-in and the daily note wikilinks to it.
 
-Exit: All agent-managed notes updated. Session fully logged.
+Exit: All agent-managed notes updated. Session fully logged. Tomorrow's daily note ready with Check-in.
 
 ---
 
