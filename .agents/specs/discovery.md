@@ -15,7 +15,7 @@
 ## Steps
 
 ### 1. Derive Topics
-Read `Agent Interest Model`; skip rows where Status = `mute`. `pass` scopes candidate rows: `active` → Focus rows, `faded` → faded rows, `dormant` → dormant rows (each scope sets `since_date` per the table above). If no candidate rows remain → return no candidates.
+Read `Agent Interest Model`; skip rows whose `Flags` contain `mute`. `pass` scopes candidate rows: `active` → rows with `Last seen` ≤ 7 days ago, `faded` → `established` rows with `Last seen` 7–21 days ago, `dormant` → `established` rows with `Last seen` > 21 days ago (each scope sets `since_date` per the table above). If no candidate rows remain → return no candidates.
 
 ### 2. Pick Topic(s)
 Read `Agent Discovery Log` → `## Topic Coverage`. From scoped candidates, exclude any covered within the pass exclusion window (active: covered today; faded: covered in last 7 days; dormant: covered in last 30 days). Allocate the per-pass cap (table above) across remaining topics proportional to `Weight × focus_multiplier`, where `Focus ★` → ×1.5, others → ×1.0. Round down; remainder goes to the highest-weight topic. If none remain after exclusion → return no candidates.

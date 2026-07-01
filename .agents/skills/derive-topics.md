@@ -1,6 +1,6 @@
 # Skill: Derive Topics
 
-**Used in**: `specs/discovery.md` (all passes); selects which topics to discover content for.
+**Used in**: `skills/update-interest-model.md` — concept extraction that feeds the persistent Interest Model.
 
 Infers the user's topics of interest from recent daily notes. No user-maintained list — fully automatic.
 
