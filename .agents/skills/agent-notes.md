@@ -293,7 +293,7 @@ agent_managed: true
 |------|----------|---------------|
 
 ---
-*Machine-maintained, readable.* #agent-system
+*Machine-maintained. Do not edit manually.* #agent-system
 ```
 
 ### Update

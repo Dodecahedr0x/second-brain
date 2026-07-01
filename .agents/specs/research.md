@@ -2,7 +2,7 @@
 
 **Trigger**: The `EXPLORE` action from `skills/action-router.md` (Phase 4 ACT). One call = one hop. Subsystem #3; fills the `EXPLORE` socket.
 
-Question-anchored, incremental. Exactly ONE active session at a time in `Agent Research Log`. Adds no fetching primitives — orchestrates existing skills. Bounds: checklist ≤5, hop_budget 12, saturation 3, frontier cap 20, 1 primary fetch/hop.
+Question-anchored, incremental. Exactly ONE active session at a time in `Agent Research Log`. Adds no new fetching primitives — orchestrates existing skills. Bounds: checklist ≤5, hop_budget 12, saturation 3, frontier cap 20, 1 primary fetch/hop.
 
 ## On call
 
@@ -15,12 +15,12 @@ Read `Agent Research Log`.
 1. Fill `## Queue` if empty: harvest open questions from daily-note `## Question for Today`, high-priority `Agent Concept Gaps` (as "What is X?"), `skills/unresolved-threads.md`, and `#stub` notes.
 2. Weight candidates by topic `Weight` in `Agent Interest Model`, then priority/age. If `EXPLORE` names a focus topic, prefer that topic's top question.
 3. Pop the top question into `## Active Session`: `Status: active`, `Hops: 0/12`, `Saturation: 0/3`.
-4. Run `skills/decompose-question.md` to create `### Checklist` (≤5, all `[ ]`) and `### Frontier` (`INITIAL_LEADS`, `Status: open`).
+4. Run `skills/decompose-question.md` to create `### Checklist` (≤5, all `[ ]`) and `### Frontier` (`INITIAL_LEADS`, `Status: open`); score each initial lead as in Advance step 1 (open-checklist fit → authority → hop-distance).
 5. Stop. Starting the session counts as this hop.
 
 ## Advance one hop
 
-1. Pick the best open `### Frontier` lead by `Score`: fills an OPEN checklist item first, then authority/recency, minus hop-distance. No open lead → saturation hop.
+1. Pick the best open `### Frontier` lead by `Score`: fills an OPEN checklist item first, then authority/recency, minus hop-distance. No open lead → skip expansion (steps 2–4) and findings; bump `Saturation` and go straight to the termination check (step 6/7).
 2. Expand by `Type`:
    - `question` → call the `search-*` skills for the sub-question; fetch the top candidate via `skills/parse-content.md` Part B / `skills/fetch-url.md`.
    - `source` → fetch it; harvest citations/outbound links as new `source` leads.
