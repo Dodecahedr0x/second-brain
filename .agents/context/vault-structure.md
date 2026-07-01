@@ -24,47 +24,23 @@ $VAULT_PATH/
 
 ### Note Structure
 
-Daily notes have two zones. The user writes freely in the user zone; the agent owns and replaces the agent zone each run. Preferred user-zone structure is `## User Inputs` followed by `## Agent Feedback`; checked feedback boxes steer future agent-managed notes/discovery, unchecked boxes are neutral, and the section should show at most 3 positive-confirmation boxes.
+Daily notes have three zones. The user writes freely in the **input zone** (top); the agent owns the **Check-in** (positive-confirmation steering questions) and the **agent zone** (replaced each run).
 
 ```markdown
 YYYY-MM-DD
 
-## User Inputs
-
 - User bullet 1
 - User bullet 2 with a [[wikilink]]
-- https://url-to-explore.com
 
-## Agent Feedback
-
-- [ ] More on topic A.
-- [ ] Less on topic B.
+## Check-in
+Focus this week?   - [ ] Topic A
+Keep tracking?     - [ ] Topic C (new)
+<!-- steering: unprocessed -->
 
 ---
 ## Agent — YYYY-MM-DD HH:MM
-
-### New Notes
-- [[Note A]] — one-liner
-
-### Resources
-- [[Source Title]] — summary
-- [External Title](url) — why it connects
-
 ### What's New
-- [[Source Title]] · arxiv · YYYY-MM-DD — abstract line → [[Concept]]
-
-### Explore
-- [Resource](url) — reason
-- [[Concept Gap]] — worth creating
-
-### Routines
-- **Activity** · N-day streak · Next: action
-
-### Question
-> Open question for today?
-
-### Open
-- N items #needs-review · N items #queued
+...
 ```
 
 Atomic notes use the template from `specs/generation.md`.
