@@ -47,7 +47,7 @@ If an action COULD fall into a forbidden category but the agent is uncertain:
 The agent may only touch files that are:
 1. Listed in the current session's change set (from Phase 1), OR
 2. Directly created by the agent this session (new atomic notes, new MOCs), OR
-3. One of the six agent-managed notes, OR
+3. One of the seven agent-managed notes, OR
 4. A related note or MOC explicitly named in the Phase 3 contract
 
 Any other file is out of scope. If a file outside scope needs updating, log it in `Agent Operation Log` under `DEFERRED_SCOPE` and address it next session.

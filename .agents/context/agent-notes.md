@@ -22,6 +22,7 @@ Every agent-managed note must have this frontmatter property. Tag `#agent-system
 | `Agent User Profile` | Observed user preferences and writing patterns |
 | `Agent Discovery Log` | Surfaced discovery URLs + per-topic coverage markers (dedup ledger) |
 | `Agent Interest Model` | Co-owned topic table (weights, status, focus) steering autonomous effort |
+| `Agent Research Log` | Active research session (driving question, checklist, frontier, findings) + seed queue + completed index |
 
 ## Rules
 
