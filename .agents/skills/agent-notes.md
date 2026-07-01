@@ -221,7 +221,7 @@ Rows are appended as **markdown table rows** matching the column headers above â
 
 ## Agent Interest Model
 
-**Purpose**: Single source of truth for what the vault is into. Co-owned: the agent rewrites it each run (`skills/update-interest-model.md`); the user edits it to override. Read by `specs/discovery.md` and the action-router.
+**Purpose**: Single source of truth for what the vault is into. Co-owned: the agent rewrites it each run (`skills/update-interest-model.md`); the user edits it to override. Read by `specs/discovery.md` and `skills/action-router.md`.
 
 ### Template
 
