@@ -55,7 +55,7 @@ Omit any section with no entries.
 | Phase 1 OBSERVE | Collect all notes created/updated in the past 30 days from `Agent Vault Index` |
 | Phase 2 ORIENT | Identify low-frequency concepts (≤ 2 notes); rank by intellectual interest heuristic; read existing MOCs for the niche topics |
 | Phase 3 DECIDE | Plan: up to 5 niche concepts; dormant discovery pass (≤10 source notes); MOC updates; exploration angle per concept |
-| Phase 4 ACT | Run `pass=dormant` discovery (≤10 source notes); add resources to atomic notes; update/create MOCs; write review note |
+| Phase 4 ACT | Run `pass=dormant` discovery (≤10 source notes); add resources to atomic notes; update/create MOCs; write review note; generate check-in; add daily-note wikilink |
 | Phase 5 VERIFY | Review note exists; all wikilinks valid; all added resources verified (not fabricated); MOCs internally consistent |
 | Phase 6 CLEANUP | Log session in `Agent Operation Log`; update `Agent Vault Index` for any enriched notes and MOC changes |
 
@@ -129,7 +129,7 @@ Log:
 
 ### 8. Generate Check-in
 
-Call `skills/check-in.md` with `tier=monthly`. This queries dormant interests (established topics, `Last seen` > 21d). Emit the `## Check-in` section into the review note. Omit the section if no dormant topics qualify.
+Call `skills/check-in.md` with `tier=monthly`. This queries dormant interests (established topics, `Last seen` > 21d). Update the `## Check-in` section in the review note. Omit the section if no dormant topics qualify.
 
 ### 9. Add Daily Note Wikilink
 

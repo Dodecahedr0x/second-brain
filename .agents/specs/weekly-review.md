@@ -60,7 +60,7 @@ Omit any section with no entries.
 | Phase 1 OBSERVE | Collect notes created/updated in the past 7 days from `Agent Vault Index`; collect the 7 daily notes |
 | Phase 2 ORIENT | Group notes by topic tag; compute activity counts; call `skills/identify-routines.md`; read `Agent Concept Gaps` for gaps opened this week |
 | Phase 3 DECIDE | Plan review note content — assign one entry per section; no FETCH or ENRICH actions except the Phase 4 faded-topic discovery pass |
-| Phase 4 ACT | Write `Weekly Review — YYYY-W##.md`; run `pass=faded` discovery (≤5 source notes) |
+| Phase 4 ACT | Write `Weekly Review — YYYY-W##.md`; run `pass=faded` discovery (≤5 source notes); generate check-in; add daily-note wikilink |
 | Phase 5 VERIFY | Confirm file exists, all wikilinks valid, no empty sections emitted |
 | Phase 6 CLEANUP | Log session in `Agent Operation Log`; add review note to `Agent Vault Index` |
 
@@ -113,7 +113,7 @@ Log:
 
 ### 7. Generate Check-in
 
-Call `skills/check-in.md` with `tier=weekly`. This queries faded interests (established topics, `Last seen` 7–21d). Emit the `## Check-in` section into the review note. Omit the section if no faded topics qualify.
+Call `skills/check-in.md` with `tier=weekly`. This queries faded interests (established topics, `Last seen` 7–21d). Update the `## Check-in` section in the review note. Omit the section if no faded topics qualify.
 
 ### 8. Add Daily Note Wikilink
 
@@ -124,6 +124,6 @@ In the day's daily note (`YYYY-MM-DD.md`), append `[[Weekly Review — YYYY-W##]
 ## Constraints
 
 - Do not fetch external URLs **except** via the `### 5b` faded-topic discovery pass (cap 5 notes); the rest of the review is retrospective only
-- Do not modify any vault note other than the weekly review file, the ≤5 source notes created by the 5b faded-topic discovery pass, and `Agent Discovery Log`
+- Do not modify any vault note other than the weekly review file, the ≤5 source notes created by the 5b faded-topic discovery pass, and `Agent Discovery Log`, and the day's daily note (agent zone only).
 - Keep the total note under 30 lines — if more items exist, pick highest-value ones
 - Never invent data — all entries must come from `Agent Vault Index`, daily notes, or `Agent Concept Gaps`
