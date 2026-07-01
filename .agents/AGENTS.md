@@ -11,7 +11,7 @@ Before executing any loop iteration, an agent MUST:
 0. Read `.env.local` in the repo root — load `VAULT_PATH` (abort if missing; tell user to run `scripts/setup.sh`) and the optional YouTube knobs: `YT_COOKIES` (yt-dlp cookie args; may be empty/absent) and `YT_PROXY` (single proxy URL for yt-dlp `--proxy` and youtube-transcript-api `--http-proxy/--https-proxy`; may be empty/absent). These are used by `skills/extract-youtube.md` and `skills/search-youtube.md`.
 1. Read `context/vault-structure.md` — understand current folder layout and conventions
 2. Read `context/agent-notes.md` and `skills/agent-notes.md` — load the agent-managed note convention and templates
-3. Verify all six agent-managed notes exist in the vault; create any missing ones using `skills/agent-notes.md` templates (Phase 0 exception)
+3. Verify all seven agent-managed notes exist in the vault; create any missing ones using `skills/agent-notes.md` templates (Phase 0 exception)
 4. Read `Agent Vault Index` — load last known vault state
 5. Read `Agent Operation Log` — know what was done last time
 6. Read `context/boundaries.md` — internalize what is off-limits

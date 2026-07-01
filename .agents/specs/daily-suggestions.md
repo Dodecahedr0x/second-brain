@@ -112,7 +112,8 @@ Omit this section if no good question can be formed.
 Read `Agent Discovery Log` → `## Surfaced`. Take rows dated today whose `Note` column is filled.
 For each (max 5, newest first): render `- [[Note Title]] · <source> · YYYY-MM-DD — <first line of the note's ## Summary> → <first [[concept]] from the note's ## Concepts>`.
 For HN items, append `([discussion](<permalink from the Surfaced row's Discussion column>))`.
-Omit the section if no discovery rows are dated today.
+Include any research notes finalized today from `Agent Research Log` `## Completed` as `- [[Research Note]] · research — answers: <driving question>`.
+Omit the section if no discovery rows or research notes are dated today.
 
 ### 3f. Generate Check-in (zone ②)
 

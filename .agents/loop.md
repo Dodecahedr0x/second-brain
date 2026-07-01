@@ -45,6 +45,7 @@ Exit: Connection map built. Every change set item has an entry. `Agent Interest 
    - **CONNECT**: Update a MOC → `skills/update-moc.md`
    - **FETCH**: Extract external content into a source note → `skills/parse-content.md` Part B / `specs/source-note.md`
    - **SOURCE_CREATE**: Create a source note from fetched content → `specs/source-note.md`
+   - **EXPLORE**: Advance research by one hop → `specs/research.md`
    - **DEFER**: Tag `#needs-review`, skip this session
 3. Validate against `context/boundaries.md`
 4. If > 20 actions planned: process oldest first, defer the rest
@@ -59,6 +60,7 @@ Exit: Numbered plan exists. No action is ambiguous.
 **Goal**: Execute the plan exactly as written.
 
 1. Execute actions in order, one at a time
+   - **EXPLORE**: run `specs/research.md` for exactly one hop (start/advance/finalize the active session). Counts as one action under the ≤20 cap.
 2. Before each action apply idempotency guards:
    - **ENRICH**: skip any wikilink or tag that already exists verbatim in the target note
    - **ATOMIZE / SOURCE_CREATE**: if the target note already exists, switch to ENRICH instead of creating a duplicate

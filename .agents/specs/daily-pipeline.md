@@ -109,6 +109,9 @@ Write (or replace) the agent zone in today's daily note as the last ACT step.
 - [[Source Title]] — one-line summary
 - [External Title](url) — one-line reason
 
+### What's New
+- [[Note Title]] · <source> · YYYY-MM-DD — one-line abstract → [[Concept]]
+
 ### Explore
 - [Resource](url) — why it connects to recent notes
 - [[Concept Gap]] — stub worth creating
@@ -130,7 +133,7 @@ Write (or replace) the agent zone in today's daily note as the last ACT step.
 - `HH:MM` = local time of this run
 - In idle mode: update timestamp; refresh Open counts; add one Explore item if a resource was found; keep all other sections from the previous zone intact
 
-**Suggestions content** — populate Explore, Routines, and Question by delegating to `specs/daily-suggestions.md` Steps 1–4 (compile knowledge, find resources, identify routines, question). Skip Step 5 (write) — the agent zone is the write target.
+**Suggestions content** — populate What's New, Explore, Routines, and Question by delegating to `specs/daily-suggestions.md` Steps 1–4 (compile knowledge, find resources, identify routines, question) and §3e (What's New: discovery items + research notes finalized today). Skip Step 5 (write) — the agent zone is the write target.
 
 ---
 

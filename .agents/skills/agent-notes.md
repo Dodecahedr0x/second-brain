@@ -2,13 +2,13 @@
 
 **Used in**: Initialization (AGENTS.md step 3-4), Phase 6 CLEANUP, Abort Protocol
 
-How to create, read, and write the six agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
+How to create, read, and write the seven agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
 
 ---
 
 ## Initialisation
 
-Before each session, check that all six notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
+Before each session, check that all seven notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
 
 ---
 
@@ -247,3 +247,55 @@ agent_managed: true
 ### Update
 
 Written only by `skills/update-interest-model.md` (parse-then-update). Never overwrite a `pin`ned row; hold `mute`d rows at `Weight 0.00`; adopt user-added rows as `established`.
+
+---
+
+## Agent Research Log
+
+**Purpose**: State for the multi-hop research agent (subsystem #3). Holds one active session, the pending question queue, and the completed index. Written only by `specs/research.md`; advanced one hop per `EXPLORE` action.
+
+### Template
+
+```markdown
+---
+agent_managed: true
+---
+
+# Agent Research Log
+
+## Active Session
+
+*(none)*
+<!-- when active, replace the line above with:
+**Driving question**: <q> · **Topic**: [[Topic]] · **Status**: active
+**Hops**: 0/12 · **Saturation**: 0/3
+
+### Checklist
+- [ ] <sub-question>
+
+### Frontier
+| Lead | Type | Score | Status |
+|------|------|-------|--------|
+
+### Explored
+
+### Findings
+-->
+
+## Queue
+
+| Question | Topic | Priority |
+|----------|-------|----------|
+
+## Completed
+
+| Date | Question | Research Note |
+|------|----------|---------------|
+
+---
+*Machine-maintained. Do not edit manually.* #agent-system
+```
+
+### Update
+
+Written only by `specs/research.md` (start / advance / finalize). Exactly one `## Active Session`; `Type` ∈ {`question`,`source`,`entity`}; a checklist item flips to `[x]` only when a source-backed finding supports it.
