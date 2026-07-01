@@ -114,7 +114,7 @@ For each (max 5, newest first): render `- [[Note Title]] · <source> · YYYY-MM-
 For HN items, append `([discussion](<permalink from the Surfaced row's Discussion column>))`.
 Omit the section if no discovery rows are dated today.
 
-### 4. Generate Check-in (zone ②)
+### 3f. Generate Check-in (zone ②)
 
 Call `skills/check-in.md` (tier=daily) using `Agent Interest Model` as input. Write the resulting `## Check-in` block — including the `<!-- steering: unprocessed -->` marker — to today's daily note, between the user input zone (top) and the `---` agent-zone separator. Only (re)generate if the section is absent or still carries `<!-- steering: unprocessed -->` and shows no user ticks — do not overwrite a section the user has already interacted with (see Task 6 non-clobber rule).
 
