@@ -24,9 +24,11 @@ Read `Agent Discovery Log` → `## Topic Coverage`.
 - **dormant**: pick the top topics until the cap is reachable, not covered in the last 30 days.
 
 ### 3. Search Each Source
-For each picked topic, call all four search skills with `{topic, search_phrases, source_concepts, since_date}`:
-`skills/search-arxiv.md`, `skills/search-youtube.md`, `skills/search-web.md`, `skills/search-hackernews.md`.
-Collect all `CANDIDATES`. Each skill self-limits to ≤1 call per topic.
+For each picked topic, call the search skills with `{topic, search_phrases, source_concepts, since_date}`:
+`skills/search-arxiv.md`, `skills/search-youtube.md`, `skills/search-web.md`, `skills/search-hackernews.md`, `skills/search-rss.md`, `skills/search-twitter.md`.
+Collect all `CANDIDATES`. Each skill self-limits to ≤1 call per topic (per feed for RSS).
+- `search-rss.md` reads the user's feed list from the vault note `Feeds.md` and is topic-gated (only feed items matching `source_concepts`).
+- `search-twitter.md` is **gated**: it returns empty unless the Agent-Reach Twitter backend + cookies are configured — so it is a no-op until enabled.
 
 ### 4. Dedup
 Reject any candidate whose **normalized URL** (see `skills/agent-notes.md` Discovery Log rule) is:

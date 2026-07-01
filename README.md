@@ -14,7 +14,7 @@ YouTube transcripts are fetched cookielessly first — title/channel via oEmbed 
 
 Agents follow a six-phase loop (`loop.md`): observe changes → orient in the knowledge graph → plan actions → act → verify → clean up state. All behaviour is defined in `.agents/`.
 
-Beyond digesting what you pour in, the agent also **proactively discovers** content for the topics you write about: it infers your active topics from recent daily notes and pulls fresh items from **arxiv, YouTube, the web, and Hacker News** into source notes, surfaced in your daily note's *What's New* section. Weekly and monthly passes resurface topics you've drifted from. See `.agents/specs/discovery.md`.
+Beyond digesting what you pour in, the agent also **proactively discovers** content for the topics you write about: it infers your active topics from recent daily notes and pulls fresh items from **arxiv, YouTube, the web, Hacker News, and your RSS feeds** into source notes, surfaced in your daily note's *What's New* section. Add feeds (one URL per line) to a `Feeds.md` note in your vault — feed items are topic-gated. Twitter/X discovery is available too but off by default (needs a cookie-based backend; see `search-twitter.md`). Weekly and monthly passes resurface topics you've drifted from. See `.agents/specs/discovery.md`.
 
 | Directory | Purpose |
 |-----------|---------|

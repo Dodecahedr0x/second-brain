@@ -82,6 +82,21 @@ else
     check_missing "youtube-transcript-api" "pip3 install youtube-transcript-api"
 fi
 
+# feedparser — RSS/Atom discovery source (used by skills/search-rss.md)
+if python3 -c 'import feedparser' &>/dev/null; then
+    check_ok "feedparser"
+elif command -v pip3 &>/dev/null; then
+    check_install "feedparser"
+    if pip3 install -q --user feedparser 2>/dev/null \
+       || pip3 install -q --user --break-system-packages feedparser 2>/dev/null; then
+        check_ok "feedparser (installed via pip3)"
+    else
+        check_missing "feedparser" "pip3 install feedparser"
+    fi
+else
+    check_missing "feedparser" "pip3 install feedparser"
+fi
+
 if [[ ${#MISSING_TOOLS[@]} -gt 0 ]]; then
     echo ""
     echo "Warning: ${#MISSING_TOOLS[@]} tool(s) missing — install them before running the agent."
