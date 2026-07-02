@@ -23,7 +23,7 @@ Read `Agent Research Log`.
 
 1. Pick the best open `### Frontier` lead by `Score`: fills an OPEN checklist item first, then authority/recency, minus hop-distance. No open lead → skip expansion and findings (steps 2–7); bump `Saturation` and go straight to the counter/termination steps (9–10).
 2. Expand by `Type`:
-   - `question` → call the `search-*` skills for the sub-question; fetch the top candidate via `skills/parse-content.md` Part B / `skills/fetch-url.md`.
+   - `question` → call the `search-*` skills for the sub-question; fetch the top candidate via `skills/parse-content.md` Part B / `skills/fetch-url.md`. **Diversify the source**: match it to the sub-question's intent (arxiv for technical/primary claims; YouTube for explanations & walkthroughs; web/blogs for practitioner takes; Hacker News for discussion) and avoid drawing every hop from arxiv — prefer a source not already dominant in this session's `### Explored`.
    - `source` → fetch it; harvest citations/outbound links as new `source` leads.
    - `entity` → search/fetch the entity; harvest co-occurring named concepts and fetched-source references as new `entity` leads.
 3. Create a source note via `specs/source-note.md`. Dedup by normalized URL: skip if already in `### Explored` or an existing non-stub source note.

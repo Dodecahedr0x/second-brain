@@ -33,7 +33,7 @@ Reject any candidate whose **normalized URL** (see `skills/agent-notes.md` Disco
 - already has a non-stub source note (same guard as `loop.md` Phase 4 FETCH).
 
 ### 5. Score + Cap
-Score each survivor: `recency` (newer better) + `source_priority` (arxiv/hn > web/youtube for research topics; tune by topic nature) + `phrase_match` strength. Keep the top `cap` candidates across all topics/sources. Emit their URLs into the change set as FETCH candidates, tagged `discovered`.
+Score each survivor: `recency` (newer better) + `phrase_match` strength + a **source-diversity boost**. For the diversity boost, count each source's rows in `## Surfaced` over the **last 7 days**: boost under-used sources and penalize over-used ones so no single source (e.g. arxiv) dominates the vault. Match source to intent rather than defaulting to papers — arxiv for primary/technical research, YouTube for explainers & talks, web/blogs for practitioner takes & tutorials, Hacker News for discussion, RSS for the user's followed feeds. Then keep the top `cap` candidates, applying the per-run **source cap** (see Constraints): the emitted set must span **different sources**. Emit their URLs into the change set as FETCH candidates, tagged `discovered`.
 
 ### 6. Record
 For each emitted candidate, append a `## Surfaced` row (date, source, normalized URL, `[[Topic]]`); set the `Note` column to `[[Title]]` after Phase 4 creates the note; for HN items, set the `Discussion` column to the `references` permalink — leave `Discussion` empty for non-HN. Upsert each covered topic's `## Topic Coverage` row with today's date and `pass`.
@@ -48,6 +48,7 @@ DISCOVERED (pass=<pass>): N urls
 ## Constraints
 
 - Hard cap per pass (table above). Never exceed, regardless of how many sources hit.
+- **Source diversity (avoid an arxiv monoculture)**: the emitted candidates must not all come from one source. At most **one per source** for the active pass (cap 2); at most **⌈cap/2⌉ per source** for faded/dormant. When choosing among near-equal candidates, prefer the source least-used in the last 7 days of `## Surfaced`.
 - If a search skill errors, log and skip it — discovery never aborts the loop.
 - Creating > 5 notes in a session (dormant/faded passes) requires the `BULK_CREATION: N notes` log (`context/boundaries.md`).
 - HN candidates carry their discussion permalink in `references`; record it in the Discovery Log `## Surfaced` Discussion column.
