@@ -30,7 +30,8 @@ export PATH="$TMPDIR/bin:$PATH"
 export FAKE_CLAUDE_ARGS="$TMPDIR/claude_args"
 export FAKE_VAULT_NOTE="$TMPDIR/vault/New Note.md"
 
-"$PROJECT/scripts/run.sh" specs/weekly-review.md >/tmp/run_test.out
+"$PROJECT/scripts/run.sh" specs/weekly-review.md >/tmp/run_test.out 2>/tmp/run_test.err
+[[ ! -s /tmp/run_test.err ]] || { echo "run.sh should not print stderr on a fresh clone" >&2; cat /tmp/run_test.err >&2; exit 1; }
 
 grep -F "Execute the entry spec \`.agents/specs/weekly-review.md\`" "$FAKE_CLAUDE_ARGS" >/dev/null
 

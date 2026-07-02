@@ -67,7 +67,12 @@ touch "$RUN_REF"   # marks run start; files newer than this were written during 
 # --- Adaptive load: ramp per-run content actions until a run takes ~10 min ---
 LOAD_FILE="$LOG_DIR/run-load.txt"
 LOAD_TARGET_SEC=600
-LOAD=$(tr -cd '0-9' < "$LOAD_FILE" 2>/dev/null || true); LOAD=${LOAD:-3}
+if [[ -f "$LOAD_FILE" ]]; then
+    LOAD=$(tr -cd '0-9' < "$LOAD_FILE")
+else
+    LOAD=""
+fi
+LOAD=${LOAD:-3}
 (( LOAD < 1 )) && LOAD=3
 
 PROMPT="You are a second-brain processing agent. Your repo is at $REPO_ROOT and the vault is at $VAULT_PATH.
