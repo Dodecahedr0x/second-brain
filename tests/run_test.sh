@@ -45,6 +45,12 @@ CHANGES_LOG="$PROJECT/logs/changes.log"
 grep -F "New Note.md" "$CHANGES_LOG" >/dev/null || { echo "changes.log should list the note the run created" >&2; exit 1; }
 grep -F "+ created" "$CHANGES_LOG" >/dev/null || { echo "changes.log should mark new notes as created" >&2; exit 1; }
 
+# The run should also surface the change summary as a vault-visible agent note.
+CHANGE_NOTE="$TMPDIR/vault/Agent/Agent Change Log.md"
+[[ -f "$CHANGE_NOTE" ]] || { echo "run should write the vault-visible Agent Change Log note" >&2; exit 1; }
+grep -F "New Note.md" "$CHANGE_NOTE" >/dev/null || { echo "Agent Change Log should list the created note" >&2; exit 1; }
+grep -F "agent_managed: true" "$CHANGE_NOTE" >/dev/null || { echo "Agent Change Log should be marked agent_managed" >&2; exit 1; }
+
 git -C "$PROJECT" check-ignore -q .agent.lock || {
     echo ".agent.lock should be ignored; run.sh creates it for flock coordination" >&2
     exit 1

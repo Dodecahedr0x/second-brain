@@ -47,9 +47,10 @@ echo "=== $(date -Iseconds) ===" >> "$LOG_FILE"
 # --- Vault change detection: snapshot before the run (diffed after; see end) ---
 CHANGES_LOG="$LOG_DIR/changes.log"
 list_vault_md() {
-    # All markdown notes except disposable Agent/Temp scratch, paths relative to the vault.
+    # Content notes only: all markdown except the agent's own state/scratch under Agent/
+    # (Operation Log, Vault Index, this Change Log, Temp — they churn every run).
     [[ -d "$VAULT_PATH" ]] || return 0
-    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/Temp/*" 2>/dev/null \
+    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/*" 2>/dev/null \
         | sed "s#^$VAULT_PATH/##" | sort
 }
 VAULT_BEFORE="$(mktemp "${TMPDIR:-/tmp}/sb-before.XXXXXX")"
@@ -86,7 +87,7 @@ list_vault_md > "$VAULT_AFTER"
 comm -13 "$VAULT_BEFORE" "$VAULT_AFTER" > "$CREATED_F"   # in after, not before
 comm -23 "$VAULT_BEFORE" "$VAULT_AFTER" > "$DELETED_F"   # in before, not after
 if [[ -d "$VAULT_PATH" ]]; then
-    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/Temp/*" -newer "$RUN_REF" 2>/dev/null \
+    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/*" -newer "$RUN_REF" 2>/dev/null \
         | sed "s#^$VAULT_PATH/##" | sort > "$NEWER_F"
 fi
 comm -23 "$NEWER_F" "$CREATED_F" > "$MODIFIED_F"         # touched during the run, minus newly created
@@ -94,16 +95,38 @@ comm -23 "$NEWER_F" "$CREATED_F" > "$MODIFIED_F"         # touched during the ru
 n_created=$(wc -l < "$CREATED_F" | tr -d '[:space:]')
 n_modified=$(wc -l < "$MODIFIED_F" | tr -d '[:space:]')
 n_deleted=$(wc -l < "$DELETED_F" | tr -d '[:space:]')
+
+# The change summary block (one entry; starts with the `=== Vault changes:` header).
+BLOCK_F="$(mktemp "${TMPDIR:-/tmp}/sb-block.XXXXXX")"
 {
-    echo ""
     echo "=== Vault changes: ${TYPE} run $(date -Iseconds) (agent exit ${AGENT_RC}) ==="
     sed 's/^/  + created  /' "$CREATED_F"
     sed 's/^/  ~ modified /' "$MODIFIED_F"
     sed 's/^/  - deleted  /' "$DELETED_F"
     echo "  total: ${n_created} created, ${n_modified} modified, ${n_deleted} deleted"
-} | tee -a "$LOG_FILE" >> "$CHANGES_LOG"
+} > "$BLOCK_F"
 
-rm -f "$VAULT_BEFORE" "$VAULT_AFTER" "$RUN_REF" "$CREATED_F" "$DELETED_F" "$NEWER_F" "$MODIFIED_F"
+# 1) Repo logs: the per-run archive log + the cumulative changes.log.
+{ echo ""; cat "$BLOCK_F"; } | tee -a "$LOG_FILE" >> "$CHANGES_LOG"
+
+# 2) Vault-visible agent note (so the change record shows up in Obsidian), script-owned,
+#    newest-first, bounded to the most recent 50 runs. Written by the script, not the agent.
+if [[ -d "$VAULT_PATH" ]]; then
+    mkdir -p "$VAULT_PATH/Agent"
+    CHANGE_NOTE="$VAULT_PATH/Agent/Agent Change Log.md"
+    NOTE_TMP="$(mktemp "${TMPDIR:-/tmp}/sb-note.XXXXXX")"
+    {
+        printf -- '---\nagent_managed: true\n---\n\n'
+        printf '# Agent Change Log\n\n'
+        printf 'Filesystem change record written by `scripts/run.sh` after each run (newest first, most recent 50). Machine-maintained; full history in the repo `logs/changes.log`.\n\n'
+        cat "$BLOCK_F"
+        # carry over the most recent prior entries (up to 49 old blocks)
+        [[ -f "$CHANGE_NOTE" ]] && awk '/^=== Vault changes:/{c++} c>=1 && c<=49 { print ($0 ~ /^=== Vault changes:/ ? "\n" $0 : $0) }' "$CHANGE_NOTE"
+    } > "$NOTE_TMP"
+    mv "$NOTE_TMP" "$CHANGE_NOTE"
+fi
+
+rm -f "$VAULT_BEFORE" "$VAULT_AFTER" "$RUN_REF" "$CREATED_F" "$DELETED_F" "$NEWER_F" "$MODIFIED_F" "$BLOCK_F"
 
 echo "Done: $(date -Iseconds) (agent exit ${AGENT_RC})" >> "$LOG_FILE"
 exit "$AGENT_RC"
