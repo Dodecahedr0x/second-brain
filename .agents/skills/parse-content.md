@@ -53,7 +53,7 @@ Triggered when a reference (URL or citation) is found in Part A, or when a daily
 
 ### Step 2: Call Extractor
 
-Each extractor returns an `EXTRACT_RESULT` with `status`, `note` (filename created), and `concepts`.
+Each extractor returns an `EXTRACT_RESULT` with `status`, `note` (filename created), and `concepts`. Extractor-created source notes must be flat at `$VAULT_PATH/<Title>.md` per `specs/source-note.md`. If the extractor finds an existing note to update, it must apply the Duplicate / Missing-Note Guard from `specs/reconcile.md` and run `skills/classify-note.md` augment-check before editing.
 
 ### Step 3: Surface the Source (never touch the user's bullet)
 
