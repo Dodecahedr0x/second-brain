@@ -78,6 +78,13 @@ Atomic notes use the template from `specs/generation.md`.
 - Subsequent mentions are NOT linked
 - Display text used when title differs: `[[File Title|display text]]`
 
+## Ownership Markers
+
+- User-generated notes carry no ownership tag/frontmatter. The agent may read them but must not annotate or rewrite their user-authored content.
+- Agent-owned state notes in `Agent/` carry `agent_managed: true`; users should not edit them manually because agents may rewrite them.
+- Agent-generated knowledge notes in `Sources/`, `Atomic/`, `MOCs/`, and `Research/` carry `agent_generated: true` and `agent_last_touched: YYYY-MM-DDThh:mm:ssZ`. Both user and agent may edit them.
+- Before rewriting an agent-generated note, compare its file mtime/content against `agent_last_touched`. If the note was modified after that timestamp by something other than the current agent run, preserve the page, add/switch to `agent_augmented: true`, and limit edits to additive sections unless the active spec explicitly says otherwise.
+
 ## Agent-Owned Folder Boundary
 
 The user selected a dedicated-folder boundary for generated content. New agent-created notes MUST live in these folders:

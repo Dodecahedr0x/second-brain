@@ -9,6 +9,11 @@ Create or update a Map of Content note that organizes multiple notes under a sha
 ## MOC Template (new MOC)
 
 ```markdown
+---
+agent_generated: true
+agent_last_touched: YYYY-MM-DDThh:mm:ssZ
+---
+
 # {Topic} MOC
 
 Overview of notes related to {Topic}.

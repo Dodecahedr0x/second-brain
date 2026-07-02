@@ -7,6 +7,11 @@
 An atomic note covers **one concept**. It must contain:
 
 ```markdown
+---
+agent_generated: true
+agent_last_touched: YYYY-MM-DDThh:mm:ssZ
+---
+
 # [Concept Name]
 
 [One to three sentence summary of what this concept is.]

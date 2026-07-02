@@ -23,6 +23,8 @@ Any checklist item still `[ ]` at finalize (budget/saturation) → list it under
 source_type: research
 captured: YYYY-MM-DD
 agent_processed: true
+agent_generated: true
+agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 ---
 
 # <short_form>

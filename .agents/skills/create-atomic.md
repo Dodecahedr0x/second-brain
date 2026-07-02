@@ -15,6 +15,11 @@ Create a well-formed atomic note for a concept, following the standard template 
 ## Template
 
 ```markdown
+---
+agent_generated: true
+agent_last_touched: YYYY-MM-DDThh:mm:ssZ
+---
+
 # {Concept Name}
 
 {One-paragraph summary. Facts only, no speculation. If unknown, write: "Details pending — stub note."}
