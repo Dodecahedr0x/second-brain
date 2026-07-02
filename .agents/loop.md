@@ -39,7 +39,7 @@ Exit: Connection map built. Every change set item has an entry. `Agent Interest 
 **Goal**: Produce a precise, bounded action plan before touching any file.
 
 1. **Action routing**: run `skills/action-router.md` over the current `Agent Interest Model` portfolio — topic work allocated by weight × focus, plus the reserved baseline-maintenance slice; the resulting `{topic, action}` items seed the plan
-   - **No-op guard**: an `idle` daily note (no new user input) and an empty discovery pass do **not** mean an empty plan. Deepening work on *existing* material almost always remains — the mandatory baseline-maintenance slice plus `EXPLORE`/`ENHANCE`/`CONNECT` drawn from open `Agent Concept Gaps`, `#stub` notes, orphan/under-linked notes, and open research questions. A zero-action plan is legitimate only after confirming none of those exist. "Discovery returned nothing" is never on its own a reason to end a run with no changes.
+   - **Content guard**: every run must produce at least one **content** change — a root knowledge note (source / atomic / MOC / research) created or modified — via genuine **depth** (enrich an existing note with a newly-relevant cross-link or sourced fact — a growing graph constantly creates new links for older notes) or **width** (atomize a concept recurring in ≥2 notes; create/extend a MOC; grow the active research note per `specs/research.md`). Changing **only** agent-state notes (`Agent/…`: Operation Log, Vault Index, Research Log state) does **not** satisfy a run — that is the failure the `specs/victory.md` Content Progress check catches. An `idle` daily note and empty discovery never justify a content-free run; a zero-content plan is valid only after confirming no note can be deepened, no concept atomized, no cluster connected, and no research question is open — nearly never true here. "Discovery returned nothing" is never on its own a reason for a content-free run.
 2. For each change-set item, assign exactly one action:
    - **ENRICH**: Add wikilinks/tags → `skills/link-notes.md`
    - **ATOMIZE**: Extract concepts into new notes → `skills/create-atomic.md`
@@ -91,6 +91,7 @@ Checks (from `specs/victory.md`):
 3. All new atomic notes have title, summary, tags, and at least one backlink
 4. MOCs updated for any new notes in tracked topics
 5. No forbidden files modified
+6. **Content progress**: at least one root knowledge note (source / atomic / MOC / research) was created or modified this run (depth or width) — not only `Agent/` state notes. If unmet, return to Phase 3/4 and do genuine deepening before completing (see `specs/victory.md` → Content Progress).
 
 Fail → fix in Phase 4, or log as DEFERRED with reason.
 

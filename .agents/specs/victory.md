@@ -10,6 +10,10 @@ A session is complete ONLY when ALL applicable checks below pass. This prevents 
 - [ ] All wikilinks inserted this session point to files that exist (or are new stubs)
 - [ ] No files listed in `context/boundaries.md` as forbidden were modified
 
+## Content Progress (every session)
+
+- [ ] At least one **content** note — a root knowledge note (source / atomic / MOC / research) — was created or modified this session, via genuine **depth** (a note enriched with a newly-relevant cross-link or sourced fact) or **width** (a concept atomized, a MOC created/extended, or the active research note grown per `specs/research.md` "Advance one hop" step 6). Updating **only** agent-state notes (`Agent/…`: Operation Log, Vault Index, Research Log state, Discovery Log) does **not** satisfy this. A content-free session is valid ONLY after confirming no note can be deepened, no recurring concept atomized, no cluster connected, and no research question is open — nearly never true on an established vault. If unmet, return to Phase 3/4 and do genuine deepening before completing.
+
 ## Ingestion Session Checks
 
 - [ ] All raw/inbox items in the change set are either processed or explicitly tagged `#queued`

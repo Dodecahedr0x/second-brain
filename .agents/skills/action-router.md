@@ -21,6 +21,14 @@ For each topic receiving effort, inspect its notes in the vault:
 | Stale/shallow — youngest note > 30 days old, or `## References` has < 2 entries | `ENHANCE` (enrich, add sources, deepen) |
 | Mature/well-woven — none of the above | `EXPLORE` — advance the active research session, or seed+start one from an open question (an `Agent Concept Gaps` row, a `#stub` note's topic, or an unresolved thread); if no open question remains, `ENHANCE` (deepen a note with a new sourced fact or connection). **Never a no-op.** |
 
+**Depth & width always exist on a growing graph — prefer these over declaring a topic "mature/idle":**
+- A note that gained a **newly-created related note this session** (e.g. a fresh atomic note or research note on an adjacent concept) → `CONNECT`: add the cross-links both ways. Every note the loop creates opens genuine link work for older notes.
+- A concept named in **≥2 notes with no atomic note of its own** → `ATOMIZE` (width; no external fetch needed).
+- A cluster of ≥3 related notes with **no MOC** → `CONNECT`: create/extend the MOC.
+- The active research note → it grows every hop via `specs/research.md` (a content change each run while a session is live).
+
+At least one of these is almost always available; use it to satisfy the loop's Content guard rather than ending a run with only agent-state churn.
+
 ## Output
 
 ```
