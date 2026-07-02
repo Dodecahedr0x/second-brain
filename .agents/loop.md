@@ -39,6 +39,7 @@ Exit: Connection map built. Every change set item has an entry. `Agent Interest 
 **Goal**: Produce a precise, bounded action plan before touching any file.
 
 1. **Action routing**: run `skills/action-router.md` over the current `Agent Interest Model` portfolio — topic work allocated by weight × focus, plus the reserved baseline-maintenance slice; the resulting `{topic, action}` items seed the plan
+   - **No-op guard**: an `idle` daily note (no new user input) and an empty discovery pass do **not** mean an empty plan. Deepening work on *existing* material almost always remains — the mandatory baseline-maintenance slice plus `EXPLORE`/`ENHANCE`/`CONNECT` drawn from open `Agent Concept Gaps`, `#stub` notes, orphan/under-linked notes, and open research questions. A zero-action plan is legitimate only after confirming none of those exist. "Discovery returned nothing" is never on its own a reason to end a run with no changes.
 2. For each change-set item, assign exactly one action:
    - **ENRICH**: Add wikilinks/tags → `skills/link-notes.md`
    - **ATOMIZE**: Extract concepts into new notes → `skills/create-atomic.md`
