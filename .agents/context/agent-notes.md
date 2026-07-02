@@ -26,7 +26,7 @@ Every agent-managed note must have this frontmatter property. Tag `#agent-system
 
 ## Scratch Space
 
-`Agent/tmp/` holds disposable scratch and fetch-context files generated during a run. Never link from real notes to files under `Agent/tmp/`; they are safe to delete between runs.
+`Agent/Temp/` holds disposable scratch and fetch-context files generated during a run. Never link from real notes to files under `Agent/Temp/`; they are safe to delete between runs.
 
 ## Rules
 

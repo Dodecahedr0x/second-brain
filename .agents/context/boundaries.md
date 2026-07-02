@@ -4,7 +4,7 @@ This file defines hard constraints. Violating any of these is an automatic abort
 
 ## Ownership Territory
 
-Agent-generated knowledge notes (source, atomic, MOC, research, recap) are identified by the `agent_generated: true` / `agent_managed: true` frontmatter **markers**, not by folder. `Agent/` and `Agent/tmp/` are the only agent-owned folder territories. Legacy folders (`Sources/`, `Atomic/`, `MOCs/`, `Research/`) are read-only fallbacks — notes there are found but never auto-moved.
+Agent-generated knowledge notes (source, atomic, MOC, research, recap) are identified by the `agent_generated: true` / `agent_managed: true` frontmatter **markers**, not by folder. `Agent/` and `Agent/Temp/` are the only agent-owned folder territories. Legacy folders (`Sources/`, `Atomic/`, `MOCs/`, `Research/`) are read-only fallbacks — notes there are found but never auto-moved.
 
 ## Forbidden Paths (NEVER modify)
 
@@ -38,7 +38,7 @@ Exception: explicit harness-maintenance requests may edit `.agents/` and repo fi
 | Action | Required log |
 |--------|-------------|
 | Adding frontmatter to an existing note | Log: `FRONTMATTER_ADDED: <file>` |
-| Creating a folder in the vault | Log: `FOLDER_CREATED: <path>`; only `Agent/` and `Agent/tmp/` are routine folders |
+| Creating a folder in the vault | Log: `FOLDER_CREATED: <path>`; only `Agent/` and `Agent/Temp/` are routine folders |
 | Creating more than 5 new notes in one session | Log: `BULK_CREATION: N notes` |
 | Editing a note the user modified in the last 1 hour | Log: `RECENT_EDIT_TOUCHED: <file>` — and prefer deferring |
 
