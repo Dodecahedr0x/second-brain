@@ -24,7 +24,7 @@ $VAULT_PATH/
 | MOCs | `<Topic> MOC.md` | `Tools MOC.md` |
 | Research notes | `<Short Research Title>.md` | `Agentic RAG Runtime.md` |
 | Agent state notes | `Agent/Agent <Name>.md` | `Agent/Agent Operation Log.md` |
-| Temporary agent files | `Agent/Temp/<Name>` | `Agent/Temp/fetch-context.json` |
+| Temporary agent files | `Agent/tmp/<Name>` | `Agent/tmp/fetch-context.json` |
 
 ## Note Structure
 
@@ -77,7 +77,7 @@ Atomic notes use the template from `specs/generation.md`.
 ## Ownership Markers
 
 - User-generated notes carry no ownership tag/frontmatter. The agent may read them but must not annotate or rewrite their user-authored content.
-- Agent-owned notes live under `Agent/` (including `Agent/Temp/`) and carry `agent_managed: true` when durable; users should not edit them because agents may rewrite them.
+- Agent-owned notes live under `Agent/` (including `Agent/tmp/`) and carry `agent_managed: true` when durable; users should not edit them because agents may rewrite them.
 - Agent-generated knowledge notes live flat at the vault root, carry `agent_generated: true` and `agent_last_touched: YYYY-MM-DDThh:mm:ssZ`, and are co-editable by user and agent.
 - Before rewriting an agent-generated note, compare its file mtime/content against `agent_last_touched`. If the note was modified after that timestamp by something other than the current agent run, preserve the page, switch/add `agent_augmented: true`, keep `agent_generated: true`, refresh `agent_last_touched`, and limit edits to additive sections unless the active spec explicitly says otherwise.
 - `agent_augmented: true` means the note started as agent-generated but now contains user edits; preserve it as a co-owned page, not disposable output.
@@ -90,7 +90,7 @@ Only these folders are agent-owned:
 
 ```text
 $VAULT_PATH/Agent/       ← machine-written state notes
-$VAULT_PATH/Agent/Temp/  ← temporary scratch/context files; safe to regenerate
+$VAULT_PATH/Agent/tmp/   ← temporary scratch/context files; safe to regenerate
 ```
 
 Daily notes remain at the vault root because they are user-owned entrypoints. The agent may rewrite only the check-in and agent zones inside a daily note.

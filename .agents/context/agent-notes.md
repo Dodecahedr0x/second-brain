@@ -24,6 +24,10 @@ Every agent-managed note must have this frontmatter property. Tag `#agent-system
 | `Agent/Agent Interest Model` | Co-owned topic table (weights, status, focus) steering autonomous effort |
 | `Agent/Agent Research Log` | Active research session (driving question, checklist, frontier, findings) + seed queue + completed index |
 
+## Scratch Space
+
+`Agent/tmp/` holds disposable scratch and fetch-context files generated during a run. Never link from real notes to files under `Agent/tmp/`; they are safe to delete between runs.
+
 ## Rules
 
 - Agents may freely read and write these notes, including section-level rewrites when needed
