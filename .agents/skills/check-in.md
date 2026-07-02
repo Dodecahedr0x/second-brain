@@ -1,8 +1,10 @@
 # Skill: Check-in
 
-**Used in**: daily-note pre-generation + `specs/weekly-review.md` / `specs/monthly-review.md` (generate); loop ORIENT (read-back).
+**Used in**: `skills/recap.md` Build/Refresh (daily generation, top section of the recap); `specs/weekly-review.md` / `specs/monthly-review.md` (generate); loop ORIENT (read-back from today's recap).
 
 Generate positive-confirmation check-in questions from `Agent Interest Model`, and read the user's ticks back into steering updates. Which topics get asked depends on the `tier`.
+
+For daily use: the `## Check-in` section is the **top section of the recap** (`$VAULT_PATH/Recap YYYY-MM-DD.md`), not the daily note. Read-back reads today's recap. Pre-generation for tomorrow: ensure `Recap <tomorrow>.md` exists with a fresh Check-in before the session ends.
 
 ## Tiers (which topics to ask about)
 
@@ -34,6 +36,8 @@ Drop?
 Only render the groups relevant to the tier. Every box is **positive-confirmation** (checked = yes); `drop` boxes are the only negative. Leave the `<!-- steering: unprocessed -->` marker at the end of the section.
 
 ## Read-back
+
+Source for daily read-back: the `## Check-in` section of **today's recap** (`$VAULT_PATH/Recap YYYY-MM-DD.md`), not the daily note.
 
 Given a `## Check-in` section not yet marked processed:
 - Collect checked boxes; map each to `{promote | focus | refresh | drop}` by its question label (see the daily/weekly/monthly rows above).

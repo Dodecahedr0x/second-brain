@@ -2,26 +2,22 @@
 
 **Trigger**: End of each daily pipeline run, after §Knowledge Digest is written.
 
-**Goal**: Write a curated, actionable section to today's daily note so the user opens Obsidian and immediately knows what to explore and do — with hooks that pull them back (open threads, memory, questions, stakes).
+**Goal**: Assemble a curated, actionable set of sections into today's `Recap YYYY-MM-DD` note so the user opens Obsidian and immediately knows what to explore and do — with hooks that pull them back (open threads, memory, questions, stakes).
 
 ---
 
 ## Output Location
 
-Append to `$VAULT_PATH/YYYY-MM-DD.md` (today's date, not the note being processed).
-Create the file if it does not exist yet.
-
-The section is written after any digest and before the processed footer, if present.
+Sections are assembled into `$VAULT_PATH/Recap YYYY-MM-DD.md` (today's date) by `skills/recap.md`.
+Do not write to the daily note — `skills/recap.md` Link handles the `[[Recap YYYY-MM-DD]]` pointer there.
 
 ---
 
 ## Output Template
 
+Sections appear in the recap after `## Check-in` and before `## New Notes` (see `skills/recap.md` for the full section order).
+
 ```markdown
----
-
-## Suggestions — YYYY-MM-DD
-
 ### Loose Ends
 <!-- Open questions or follow-ups from the past 7 days not yet resolved -->
 - *YYYY-MM-DD* — bullet text with [[wikilinks]]
@@ -115,13 +111,10 @@ For HN items, append `([discussion](<permalink from the Surfaced row's Discussio
 Include any research notes finalized today from `Agent Research Log` `## Completed` as `- [[Research Note]] · research — answers: <driving question>`.
 Omit the section if no discovery rows or research notes are dated today.
 
-### 3f. Generate Check-in (zone ②)
+### 5. Write to the Recap
 
-Call `skills/check-in.md` (tier=daily) using `Agent Interest Model` as input. Write the resulting `## Check-in` block — including the `<!-- steering: unprocessed -->` marker — to today's daily note, between the user input zone (top) and the `---` agent-zone separator. Only (re)generate if the section is absent or still carries `<!-- steering: unprocessed -->` and shows no user ticks — do not overwrite a section the user has already interacted with (see Task 6 non-clobber rule).
+Sections from this spec are assembled by `skills/recap.md` into `$VAULT_PATH/Recap YYYY-MM-DD.md` in the order below (highest return-pull first):
 
-### 5. Write to Today's Daily Note
-
-Assemble the template in this section order (highest return-pull first):
 1. **Loose Ends** — accountability hook
 2. **What's New** — proactive discovery feed
 3. **Routines** — stakes hook (fading before active)
@@ -130,7 +123,7 @@ Assemble the template in this section order (highest return-pull first):
 6. **Explore** — discovery (from dominant cluster, then loose ends)
 7. **This Week's Theme** — orientation
 
-Write the section. If today's note already has a `## Suggestions` section, replace only that section — do not append a second one. If individual sub-sections already exist within it, replace each sub-section in place.
+`skills/recap.md` calls the section-builder steps above to get content; it owns writing the assembled result to the recap.
 
 ---
 

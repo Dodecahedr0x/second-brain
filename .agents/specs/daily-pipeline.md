@@ -8,7 +8,7 @@ The vault is jointly maintained by the user and the agent. Today's daily note is
 
 - **User zone**: everything above the agent boundary (`---\n## Agent`). The user writes freely here — bullets, URLs, tasks, thoughts. It is **read-only** to the agent: analyze it, but never annotate, wikilink, append to, or rewrite it. All generated content (source-note links, transcripts, detected concepts) goes in the agent zone. Preferred shape: `## User Inputs` first (freeform user content), then `## Agent Feedback` (user-owned checkboxes).
 - **Feedback checkboxes**: positive-confirmation only, max 3 boxes. Unchecked boxes are neutral prompts, not weak negatives. Checked boxes are explicit steering; read them in Phase 1, update `Agent User Profile` / `Agent Concept Gaps` / discovery priorities as applicable, then leave the checkbox text unchanged.
-- **Agent zone**: everything from `---\n## Agent — YYYY-MM-DD HH:MM` onward. The agent **replaces** this section in full on every run. The user never edits it.
+- **Agent zone**: everything from `---\n## Agent — YYYY-MM-DD HH:MM` onward. Contains only `[[Recap YYYY-MM-DD]]` — a link to the recap note where all generated sections live. The agent replaces this with a single link each run (via `skills/recap.md`). The user never edits it.
 
 ---
 
@@ -91,49 +91,20 @@ When fetched content maps to an existing atomic note:
 
 ## §Agent Zone (Phase 4 — Always)
 
-Write (or replace) the agent zone in today's daily note as the last ACT step.
+Call `skills/recap.md` **Build/Refresh** (today's date) to assemble all generated sections (Check-in, What's New, Explore, Routines, Question for Today, New Notes) into `$VAULT_PATH/Recap YYYY-MM-DD.md`.
 
-**Boundary**: The agent zone starts at the first occurrence of `\n---\n## Agent` in the file. Everything from that line onward is replaced. If the boundary does not exist, append it after all user content.
+Then call `skills/recap.md` **Link** to write or update the daily note's agent zone:
 
-**Template**:
-
-```markdown
+```
 ---
 ## Agent — YYYY-MM-DD HH:MM
 
-### New Notes
-- [[Note A]] — one-liner
-- [[Note B]] — one-liner
-
-### Resources
-- [[Source Title]] — one-line summary
-- [External Title](url) — one-line reason
-
-### What's New
-- [[Note Title]] · <source> · YYYY-MM-DD — one-line abstract → [[Concept]]
-
-### Explore
-- [Resource](url) — why it connects to recent notes
-- [[Concept Gap]] — stub worth creating
-
-### Routines
-- **Activity** · N-day streak · Next: action
-- **Fading activity** · last seen YYYY-MM-DD · Pick back up
-
-### Question
-> Specific open question derived from this week's theme or a stub note.
-
-### Open
-- N items #needs-review · N items #queued
+[[Recap YYYY-MM-DD]]
 ```
 
-**Rules**:
-- Omit any section with no entries
-- Keep under 25 lines total
-- `HH:MM` = local time of this run
-- In idle mode: update timestamp; refresh Open counts; add one Explore item if a resource was found; keep all other sections from the previous zone intact
+The recap note is the write target for all suggestions content. The daily note's agent zone holds only the link.
 
-**Suggestions content** — populate What's New, Explore, Routines, and Question by delegating to `specs/daily-suggestions.md` Steps 1–4 (compile knowledge, find resources, identify routines, question) and §3e (What's New: discovery items + research notes finalized today). Skip Step 5 (write) — the agent zone is the write target.
+In idle mode: call `skills/recap.md` Build/Refresh — it updates `agent_last_touched`, refreshes any counts, and adds one Explore item if a resource was found.
 
 ---
 
@@ -153,7 +124,8 @@ If any limit is hit, defer remaining items with `#queued` and log clearly.
 ## Relationship to Other Specs
 
 - `specs/daily-note.md` — zone ownership rules (governs what agent may touch in the user zone)
-- `specs/daily-suggestions.md` — Steps 1–4 called to populate agent zone §Explore / §Routines / §Question
+- `skills/recap.md` — builds the recap note and writes the `[[Recap YYYY-MM-DD]]` link into the daily note
+- `specs/daily-suggestions.md` — section builders (What's New, Explore, Routines, Question) called from `skills/recap.md`
 - `specs/source-note.md` — source note creation
 - `specs/generation.md` — atomic note creation
 - `skills/fetch-url.md`, `extract-youtube.md`, `extract-twitter.md` — fetching primitives

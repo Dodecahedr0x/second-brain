@@ -9,7 +9,7 @@ Daily notes have two zones separated by `\n---\n## Agent`:
 | Zone | Owner | Rules |
 |------|-------|-------|
 | **User zone** (above the boundary) | User | **Read-only.** Agent reads/analyzes but never modifies it — no annotating, wikilinking, appending, or rewriting. Detected links + source-note refs go in the agent zone |
-| **Agent zone** (from `---\n## Agent` onward) | Agent | Replaced in full each run; user never edits it. All agent-generated content lives here |
+| **Agent zone** (from `---\n## Agent` onward) | Agent | Single `[[Recap YYYY-MM-DD]]` link (via `skills/recap.md`); replaced each run; user never edits it. All generated sections live in the recap note |
 
 If no agent boundary exists yet, the entire note is the user zone. The agent appends the boundary at the end of the first run.
 
@@ -35,4 +35,4 @@ The user zone is **read-only** — analyze it, write nothing into it. All output
 
 This spec covers zone ownership and user-zone **read** rules only (the user zone is never modified).
 
-For URL extraction, note creation, resource finding, and agent zone content, see `specs/daily-pipeline.md`.
+For URL extraction, note creation, resource finding, and recap content, see `specs/daily-pipeline.md` and `skills/recap.md`.
