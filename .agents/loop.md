@@ -9,8 +9,8 @@ Core closed-loop process. Execute all six phases in order — skipping or reorde
 **Goal**: Establish what has changed since the last run.
 
 1. Read `Agent Operation Log` → extract `last_run_timestamp`
-2. **Discovery** (pass=active): run `specs/discovery.md` → obtain ≤2 candidate URLs. Add each to the change set as a FETCH candidate (treated exactly like a daily-note URL bullet). If discovery returns nothing, continue.
-3. Always add today's daily note (`YYYY-MM-DD.md`) to the change set, even if unmodified — it needs an agent zone refresh every run
+2. Run `specs/reconcile.md` in `continuous` mode: add today's daily note, modified notes, active/stub/queued notes, and missing-derived-note repairs to the candidate set; freeze/skip complete past recaps
+3. **Discovery** (pass=active): run `specs/discovery.md` → obtain ≤2 candidate URLs. Add each to the change set as a FETCH candidate (treated exactly like a daily-note URL bullet). If discovery returns nothing, continue.
 4. Find all vault `.md` files modified after `last_run_timestamp` (skip `agent_managed: true` notes and `.obsidian/`, `.stfolder/`)
 5. Identify files tagged `#inbox` or `#raw`, or located in `Inbox/`
 6. Merge and deduplicate → **change set**

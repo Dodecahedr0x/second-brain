@@ -49,8 +49,8 @@ Tags: #{topic} #atomic
 ## File Creation Steps
 
 ```
-1. Determine filename: Atomic/<Concept Name>.md (Title Case, spaces not underscores)
-2. Check for duplicates at both `Atomic/<Concept Name>.md` and legacy `<Concept Name>.md`; if either exists, update/link that note rather than creating a duplicate
+1. Determine filename: `<Concept Name>.md` at the vault root (Title Case, spaces not underscores)
+2. Check for duplicates at both root `<Concept Name>.md` and legacy `Atomic/<Concept Name>.md`; if either exists, update/link that note rather than creating a duplicate
 3. Write file using template
 4. Append to Agent Vault Index:
    | <filename> | <title> | #atomic #<topic> | <key concepts> | <today's date> |

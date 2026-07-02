@@ -102,11 +102,11 @@ Tags: #source #<source_type>
 
 ## Naming
 
-- **Path**: create new source notes under `Sources/`.
-- **Single URL**: use the content's own title, Title Case, stripped of special characters: `Sources/<Title>.md`.
-- **Multiple URLs**: use the site name + a topic qualifier if all pages share a clear sub-topic (e.g., `Sources/Python Documentation — asyncio.md`); otherwise just the site name (`Sources/MDN Web Docs.md`).
-- Fallback if title unknown: `Sources/<Source Type> - <YYYY-MM-DD>.md`.
-- Before creating, check both `Sources/<Title>.md` and legacy root-level `<Title>.md` to avoid duplicates. Do not move legacy notes automatically.
+- **Path**: create new source notes flat at the vault root: `$VAULT_PATH/<Title>.md`.
+- **Single URL**: use the content's own title, Title Case, stripped of special characters: `<Title>.md`.
+- **Multiple URLs**: use the site name + a topic qualifier if all pages share a clear sub-topic (e.g., `Python Documentation — asyncio.md`); otherwise just the site name (`MDN Web Docs.md`).
+- Fallback if title unknown: `<Source Type> - <YYYY-MM-DD>.md`.
+- Before creating, check both root `<Title>.md` and legacy `Sources/<Title>.md` to avoid duplicates. Do not move legacy notes automatically.
 
 ## Linking Back
 

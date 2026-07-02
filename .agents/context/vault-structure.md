@@ -5,32 +5,28 @@
 
 ## Current Structure
 
-```
+```text
 $VAULT_PATH/
 ├── .obsidian/          ← FORBIDDEN: Obsidian config, never touch
 ├── .stfolder/          ← FORBIDDEN: Syncthing metadata, never touch
-├── YYYY-MM-DD.md       ← Daily notes; user-owned input at top, agent zone below
-├── Sources/            ← Agent-created source/reference notes
-├── Atomic/             ← Agent-created concept notes
-├── MOCs/               ← Agent-created maps of content
-├── Research/           ← Agent-created multi-hop research notes
-└── Agent/              ← Agent-managed state notes
+├── YYYY-MM-DD.md       ← Daily notes; user-owned input at top, agent check-in/agent zones below
+├── <Title>.md          ← User notes and flat agent-generated knowledge notes
+└── Agent/              ← Agent-owned machine state + temporary working files
 ```
 
-## Conventions Observed
-
-### File Naming
+## File Naming
 
 | Content Type | Convention | Example |
 |-------------|------------|---------|
 | Daily notes | `YYYY-MM-DD.md` | `2026-06-19.md` |
-| Source notes | `Sources/Title Case.md` | `Sources/Obsidian Agent Skills.md` |
-| Atomic notes | `Atomic/Title Case.md` | `Atomic/Syncthing.md` |
-| MOCs | `MOCs/Topic MOC.md` | `MOCs/Tools MOC.md` |
-| Research notes | `Research/Short Research Title.md` | `Research/Agentic RAG Runtime.md` |
+| Source notes | `<Title Case>.md` | `Obsidian Agent Skills.md` |
+| Atomic notes | `<Title Case>.md` | `Syncthing.md` |
+| MOCs | `<Topic> MOC.md` | `Tools MOC.md` |
+| Research notes | `<Short Research Title>.md` | `Agentic RAG Runtime.md` |
 | Agent state notes | `Agent/Agent <Name>.md` | `Agent/Agent Operation Log.md` |
+| Temporary agent files | `Agent/Temp/<Name>` | `Agent/Temp/fetch-context.json` |
 
-### Note Structure
+## Note Structure
 
 Daily notes have three zones. The user writes freely in the **input zone** (top); the agent owns the **Check-in** (positive-confirmation steering questions) and the **agent zone** (replaced each run).
 
@@ -58,7 +54,7 @@ Check-in checkboxes are **one per line** — Obsidian only renders `- [ ]` as a 
 
 Atomic notes use the template from `specs/generation.md`.
 
-### Tags
+## Tags
 
 | Tag | Meaning |
 |-----|---------|
@@ -72,7 +68,7 @@ Atomic notes use the template from `specs/generation.md`.
 | `#action` | Contains tasks/todos |
 | `#needs-review` | Too ambiguous for agent to process |
 
-### Wikilink Conventions
+## Wikilink Conventions
 
 - First mention of a concept in a note gets linked: `[[Concept]]`
 - Subsequent mentions are NOT linked
@@ -81,27 +77,27 @@ Atomic notes use the template from `specs/generation.md`.
 ## Ownership Markers
 
 - User-generated notes carry no ownership tag/frontmatter. The agent may read them but must not annotate or rewrite their user-authored content.
-- Agent-owned state notes in `Agent/` carry `agent_managed: true`; users should not edit them manually because agents may rewrite them.
-- Agent-generated knowledge notes in `Sources/`, `Atomic/`, `MOCs/`, and `Research/` carry `agent_generated: true` and `agent_last_touched: YYYY-MM-DDThh:mm:ssZ`. Both user and agent may edit them.
-- Before rewriting an agent-generated note, compare its file mtime/content against `agent_last_touched`. If the note was modified after that timestamp by something other than the current agent run, preserve the page, add/switch to `agent_augmented: true`, and limit edits to additive sections unless the active spec explicitly says otherwise.
+- Agent-owned notes live under `Agent/` (including `Agent/Temp/`) and carry `agent_managed: true` when durable; users should not edit them because agents may rewrite them.
+- Agent-generated knowledge notes live flat at the vault root, carry `agent_generated: true` and `agent_last_touched: YYYY-MM-DDThh:mm:ssZ`, and are co-editable by user and agent.
+- Before rewriting an agent-generated note, compare its file mtime/content against `agent_last_touched`. If the note was modified after that timestamp by something other than the current agent run, preserve the page, switch/add `agent_augmented: true`, keep `agent_generated: true`, refresh `agent_last_touched`, and limit edits to additive sections unless the active spec explicitly says otherwise.
+- `agent_augmented: true` means the note started as agent-generated but now contains user edits; preserve it as a co-owned page, not disposable output.
 
-## Agent-Owned Folder Boundary
+## Flat Knowledge Boundary
 
-The user selected a dedicated-folder boundary for generated content. New agent-created notes MUST live in these folders:
+The user selected a flat vault for knowledge notes. New source, atomic, MOC, and research notes MUST be created at `$VAULT_PATH/<Title>.md`, not in type folders.
+
+Only these folders are agent-owned:
+
+```text
+$VAULT_PATH/Agent/       ← machine-written state notes
+$VAULT_PATH/Agent/Temp/  ← temporary scratch/context files; safe to regenerate
 ```
-$VAULT_PATH/
-├── Sources/            ← References and source documents
-├── Atomic/             ← Atomic concept notes
-├── MOCs/               ← Maps of Content
-├── Research/           ← Multi-hop research outputs
-└── Agent/              ← Machine-written state notes
-```
 
-Daily notes remain at the vault root by default because they are user-owned entrypoints. The agent may rewrite only the check-in and agent zones inside a daily note.
+Daily notes remain at the vault root because they are user-owned entrypoints. The agent may rewrite only the check-in and agent zones inside a daily note.
 
-Regenerability invariant: `Sources/`, `Atomic/`, `MOCs/`, `Research/`, and `Agent/` are derived projections of user writing plus external sources. If the user deletes those folders, future loop runs should recreate the folder skeleton and rebuild the same structural classes of notes over time. Content may differ; folder/function boundaries should not.
+Regenerability invariant: agent-owned state/temp files under `Agent/` are disposable machine projections. Agent-generated root knowledge notes are not disposable once written; if the user edits one after `agent_last_touched`, it becomes `agent_augmented: true` and must be preserved.
 
-Migration safety: never move or rename existing vault notes automatically. When reading existing vaults, check both the dedicated-folder path and the legacy root path. Create new notes only in the dedicated folder for their type.
+Migration safety: never move, rename, or delete existing vault notes automatically. When reading existing vaults, check both the new flat root path and legacy folder paths (`Sources/`, `Atomic/`, `MOCs/`, `Research/`) to avoid duplicates. Create new knowledge notes only at the flat root.
 
 ## Obsidian Plugins Detected
 

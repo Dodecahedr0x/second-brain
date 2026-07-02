@@ -187,10 +187,10 @@ echo "  Shell errors:   $CRON_ERR_LOG"
 # unavailable. Setup is already complete by this point, so it is safe to Ctrl-C.
 echo ""
 if [[ -t 0 ]] && command -v "${CLAUDE_BIN:-claude}" &>/dev/null && [[ -x "$RUN_SCRIPT" ]]; then
-    echo "Running a first pass to bootstrap the vault (creates any missing agent-managed notes)..."
+    echo "Running an idempotent first pass to bootstrap/backfill the vault (see .agents/specs/reconcile.md)..."
     echo "This may take a few minutes. Ctrl-C to skip — setup is already complete."
-    if "$RUN_SCRIPT"; then
-        echo "First pass done. Open your vault; the agent-managed notes should now exist."
+    if "$RUN_SCRIPT" specs/reconcile.md "mode=full-backfill; fill gaps only; do not clobber or duplicate existing notes"; then
+        echo "First pass done. Open your vault; missing agent-managed notes/backfill gaps should now be filled."
     else
         echo "First pass exited non-zero — check $LOG_DIR/archive/. Setup itself is complete."
     fi

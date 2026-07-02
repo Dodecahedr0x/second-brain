@@ -53,7 +53,7 @@ agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 Tags: #research
 ```
 
-Update `$VAULT_PATH/Research/<short_form>.md` (or a legacy `$VAULT_PATH/<short_form>.md` if that is where the active session stub already exists) — do not create a new note.
+Update `$VAULT_PATH/<short_form>.md` (or legacy `$VAULT_PATH/Research/<short_form>.md` if that is where the active session stub already exists) — do not create a new note.
 
 ## Guardrails
 

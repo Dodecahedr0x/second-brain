@@ -10,7 +10,7 @@ This file defines hard constraints. Violating any of these is an automatic abort
 | `$VAULT_PATH/.stfolder/` | Syncthing metadata — changes here break sync |
 | `.agents/` itself | Agents do not rewrite their own harness during vault-processing runs |
 | `/home/openclaw/second-brain/` | Repo code is not a vault artifact |
-| `$VAULT_PATH/Sources/`, `$VAULT_PATH/Atomic/`, `$VAULT_PATH/MOCs/`, `$VAULT_PATH/Research/`, `$VAULT_PATH/Agent/` | Agent-owned generated territory; safe to create/update according to the active spec, but still do not delete notes during normal runs |
+| `$VAULT_PATH/Agent/` | Agent-owned state and temporary territory; safe to create/update according to the active spec, but still do not delete durable notes during normal runs |
 
 Exception: explicit harness-maintenance requests may edit `.agents/` and repo files, but must not touch vault user content unless separately requested.
 
@@ -33,7 +33,7 @@ Exception: explicit harness-maintenance requests may edit `.agents/` and repo fi
 | Action | Required log |
 |--------|-------------|
 | Adding frontmatter to an existing note | Log: `FRONTMATTER_ADDED: <file>` |
-| Creating a folder in the vault | Log: `FOLDER_CREATED: <path>` |
+| Creating a folder in the vault | Log: `FOLDER_CREATED: <path>`; only `Agent/` and `Agent/Temp/` are routine folders |
 | Creating more than 5 new notes in one session | Log: `BULK_CREATION: N notes` |
 | Editing a note the user modified in the last 1 hour | Log: `RECENT_EDIT_TOUCHED: <file>` — and prefer deferring |
 
