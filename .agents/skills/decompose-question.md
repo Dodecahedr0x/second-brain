@@ -8,6 +8,10 @@ Turn a driving research question into a bounded checklist of sub-questions and t
 
 `driving_question` (string) + its `topic` (for context).
 
+## Step 0: Short form
+
+Produce a `short_form`: a concise, Title-Case, wikilink-friendly note title for the driving question — a topic phrase, not a sentence (≤6 words, no trailing `?`), e.g. "A2A Protocol vs MCP". This becomes the title of the research note (`specs/research.md` creates it as a stub at session start).
+
 ## Step 1: Decompose
 
 Break the question into **at most 5** concrete sub-questions that together fully answer it. Each must be independently checkable ("has a source-backed answer or not"). Cover the obvious angles: what it is, how it works / compares, when/why to use it, limits/failure modes, evidence/examples. Merge overlaps; drop any beyond 5 (keep the 5 most load-bearing).
@@ -19,6 +23,7 @@ For each sub-question emit a `question`-lead (the sub-question itself). Add any 
 ## Output
 
 ```
+SHORT_FORM: <concise Title-Case note title>
 CHECKLIST:
 - <sub-question 1>
 - <sub-question 2>

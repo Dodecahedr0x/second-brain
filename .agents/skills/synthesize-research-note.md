@@ -6,11 +6,11 @@ Turn a finished session's checklist + findings into one research note answering 
 
 ## Input
 
-The active session's `driving_question`, `checklist` (each item with its source-backed findings), and `findings` list.
+The active session's `short_form` (its research-note title), `driving_question`, `checklist` (each item with its source-backed findings), and `findings` list.
 
 ## Step 1: Assemble
 
-Title: the driving question (as a statement, Title Case). Body structured **by the checklist** — one `##` section per sub-question, each summarising its findings and citing the `[[Source Note]]`s that back them. Lead with a 2–4 sentence answer to the driving question.
+The note already exists as a stub titled by `short_form` (created by `specs/research.md` at session start). **Update it in place — do not create a new note; the title stays `short_form`.** Keep the full driving question as the `> [!question]` callout near the top. Body structured **by the checklist** — one `##` section per sub-question, each summarising its findings and citing the `[[Source Note]]`s that back them. Lead with a 2–4 sentence answer to the driving question. Drop the `#stub` tag and the in-progress marker.
 
 ## Step 2: Honesty
 
@@ -25,7 +25,9 @@ captured: YYYY-MM-DD
 agent_processed: true
 ---
 
-# <Driving question as a statement>
+# <short_form>
+
+> [!question] <full driving question>
 
 > [!info] Research note — <N>/<M> sub-questions answered in <hops> hops
 
@@ -49,7 +51,7 @@ agent_processed: true
 Tags: #research
 ```
 
-Save as `$VAULT_PATH/<Title>.md`.
+Update `$VAULT_PATH/<short_form>.md` (the stub created at session start) — do not create a new note.
 
 ## Guardrails
 

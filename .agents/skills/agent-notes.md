@@ -268,7 +268,7 @@ agent_managed: true
 *(none)*
 <!-- when active, replace the line above with:
 **Driving question**: <q> · **Topic**: [[Topic]] · **Status**: active
-**Hops**: 0/12 · **Saturation**: 0/3
+**Note**: [[<short form>]] · **Hops**: 0/12 · **Saturation**: 0/3
 
 ### Checklist
 - [ ] <sub-question>

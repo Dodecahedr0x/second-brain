@@ -15,8 +15,9 @@ Read `Agent Research Log`.
 1. Fill `## Queue` if empty: harvest open questions from daily-note `## Question for Today`, high-priority `Agent Concept Gaps` (as "What is X?"), `skills/unresolved-threads.md`, and `#stub` notes.
 2. Weight candidates by topic `Weight` in `Agent Interest Model`, then priority/age. If `EXPLORE` names a focus topic, prefer that topic's top question.
 3. Pop the top question into `## Active Session`: `Status: active`, `Hops: 0/12`, `Saturation: 0/3`.
-4. Run `skills/decompose-question.md` to create `### Checklist` (≤5, all `[ ]`) and `### Frontier` (`INITIAL_LEADS`, `Status: open`); score each initial lead as in Advance step 1 (open-checklist fit → authority → hop-distance).
-5. Stop. Starting the session counts as this hop.
+4. Run `skills/decompose-question.md` → `short_form`, `### Checklist` (≤5, all `[ ]`), and `### Frontier` (`INITIAL_LEADS`, `Status: open`); score each initial lead as in Advance step 1 (open-checklist fit → authority → hop-distance).
+5. Create the research note **stub** titled by `short_form`: `$VAULT_PATH/<short_form>.md` — frontmatter `source_type: research` / `agent_processed: false`, tags `#research #stub`, the full driving question as a `> [!question]` callout, and a `<!-- research in progress -->` marker. Record it in `## Active Session` as `**Note**: [[<short_form>]]` (the durable, linkable home for the session).
+6. Stop. Starting the session counts as this hop.
 
 ## Advance one hop
 
@@ -34,11 +35,11 @@ Read `Agent Research Log`.
 
 ## Finalize
 
-1. Run `skills/synthesize-research-note.md` to write the research note: checklist-structured, source-cited, `#research`; `## Open` lists any unchecked item.
-2. Create key concept notes with `skills/create-atomic.md`; wire the research note + atomics with `skills/link-notes.md` and `skills/update-moc.md`.
-3. Mark the origin answered: resolve the `Agent Concept Gaps` row, annotate the daily-note question with `[[Research Note]]`, or fill the stub.
+1. Run `skills/synthesize-research-note.md` to **fill the stub note `[[<short_form>]]`** created at start (do not create a new note): checklist-structured, source-cited; remove the `#stub` tag and the in-progress marker; `## Open` lists any unchecked item.
+2. Create key concept notes with `skills/create-atomic.md`; wire `[[<short_form>]]` + atomics with `skills/link-notes.md` and `skills/update-moc.md`.
+3. Mark the origin answered: resolve the `Agent Concept Gaps` row, annotate the daily-note question with `[[<short_form>]]`, or fill the stub.
 4. Append tangential questions to `## Queue` as future seeds.
-5. Move the session to `## Completed`: `| Date | Question | [[Research Note]] |`.
+5. Move the session to `## Completed`: `| Date | Question | [[<short_form>]] |`.
 6. Clear `## Active Session` to `*(none)*`.
 
 ## Constraints
