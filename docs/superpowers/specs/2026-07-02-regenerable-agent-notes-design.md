@@ -18,7 +18,7 @@ notes.
 | Decision | Choice |
 |----------|--------|
 | Boundary | **Marker-based**, not folder-based. Three ownership classes by frontmatter tag. |
-| Structure | **Flat.** Folders only for `Agent/` (state) and `Agent/tmp/` (scratch). Knowledge notes live flat at the root. |
+| Structure | **Flat.** Folders only for `Agent/` (state) and `Agent/Temp/` (scratch). Knowledge notes live flat at the root. |
 | User-edit escape hatch | **`agent_augmented`** — a user-edited agent note is preserved (additive-only, never regenerated). |
 | Daily output | Moves out of the daily note into a derived **recap note**; the daily note keeps only a `[[Recap]]` link. |
 | Recap lifecycle | **Today's recap = working note; past recaps freeze** (regenerate-once-if-missing, then never edited). |
@@ -39,7 +39,7 @@ Three classes, distinguished by frontmatter marker, laid out flat:
   `agent_last_touched`. On reconcile, if the note's real mtime is newer than that
   stamp, a human edited it: flip the tag to `agent_augmented` and switch to
   **preserve/additive** mode — never overwrite or regenerate it.
-- **Folders only** for `Agent/` (state notes) and `Agent/tmp/` (scratch). All
+- **Folders only** for `Agent/` (state notes) and `Agent/Temp/` (scratch). All
   knowledge notes — including recaps — are **flat at the root**, distinguished by
   tag, so the graph stays interleaved and browsable.
 - **Migration — two distinct parts:**
@@ -107,7 +107,7 @@ regenerated.**
   daily note minus the recap).
 
 **Two-phase creation (temp scratch):** for synthesized notes (research, source
-summaries, MOCs) the agent first **collects raw facts into `Agent/tmp/`** to build
+summaries, MOCs) the agent first **collects raw facts into `Agent/Temp/`** to build
 context, **synthesizes the real note** from it, then **discards the scratch**. Temp
 files are agent-owned, disposable, and never linked from real notes.
 
@@ -153,7 +153,7 @@ heal deletions on demand.
 - `skills/action-router.md` — actions route by note class (per Section 3).
 - `skills/agent-notes.md`, `context/agent-notes.md`, `context/vault-structure.md`,
   `context/boundaries.md` — codify the 3-class marker model, `agent_augmented`,
-  flat layout, `Agent/` + `Agent/tmp/`.
+  flat layout, `Agent/` + `Agent/Temp/`.
 - `scripts/setup.sh` — first pass runs `specs/reconcile.md mode=full-backfill`
   (already wired).
 
@@ -180,7 +180,7 @@ a user note to make sense (user notes carry no agent wikilinks).
 
 Reconcile per-run budget (how many missing/working notes per cycle), the "concrete
 improvement available" threshold for re-touching a regular note, recap section
-order, `Agent/tmp/` retention (discard immediately vs end-of-session), and how far
+order, `Agent/Temp/` retention (discard immediately vs end-of-session), and how far
 back full-backfill scans.
 
 ## Non-goals / out of scope

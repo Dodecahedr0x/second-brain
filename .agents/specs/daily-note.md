@@ -8,8 +8,8 @@ Daily notes have two zones separated by `\n---\n## Agent`:
 
 | Zone | Owner | Rules |
 |------|-------|-------|
-| **User zone** (above the boundary) | User | **Read-only.** Agent reads/analyzes but never modifies it — no annotating, wikilinking, appending, or rewriting. Detected links + source-note refs go in the agent zone |
-| **Agent zone** (from `---\n## Agent` onward) | Agent | Replaced in full each run; user never edits it. All agent-generated content lives here |
+| **User zone** (above the boundary) | User | **Read-only.** Agent reads/analyzes but never modifies it — no annotating, wikilinking, appending, or rewriting. Detected links and source-note refs surface in the recap note (via `skills/recap.md`) |
+| **Agent zone** (from `---\n## Agent` onward) | Agent | Single `[[Recap YYYY-MM-DD]]` link (via `skills/recap.md`); replaced each run; user never edits it. All generated sections live in the recap note |
 
 If no agent boundary exists yet, the entire note is the user zone. The agent appends the boundary at the end of the first run.
 
@@ -19,9 +19,9 @@ The user zone is **read-only** — analyze it, write nothing into it. All output
 
 1. Read top to bottom.
 2. For each bullet, **extract without modifying it**:
-   - Names a known concept → surface it as a link in the agent zone (e.g. `### Resources` / New Notes); do **not** inline-link the user's text.
+   - Names a known concept → surface it in the recap (via `skills/recap.md`); do **not** inline-link the user's text.
    - Names an unknown concept → log in `Agent Concept Gaps`.
-   - Is a pasted URL → route to `skills/parse-content.md` Part B; reference the resulting source note in the agent zone `### Resources`, leaving the user's URL bullet exactly as written.
+   - Is a pasted URL → route to `skills/parse-content.md` Part B; surface the resulting source note in the recap's `## New Notes` (via `skills/recap.md`), leaving the user's URL bullet exactly as written.
    - Is a task or personal reflection → leave alone.
 3. Never inline-link, annotate, append to, delete, reformat, or restructure user content.
 
@@ -35,4 +35,4 @@ The user zone is **read-only** — analyze it, write nothing into it. All output
 
 This spec covers zone ownership and user-zone **read** rules only (the user zone is never modified).
 
-For URL extraction, note creation, resource finding, and agent zone content, see `specs/daily-pipeline.md`.
+For URL extraction, note creation, resource finding, and recap content, see `specs/daily-pipeline.md` and `skills/recap.md`.

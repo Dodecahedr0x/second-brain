@@ -14,12 +14,12 @@ Copied verbatim from `docs/superpowers/specs/2026-07-02-regenerable-agent-notes-
 
 - **Ownership markers (frontmatter):** user note → *no* ownership tag; agent-generated (source/atomic/MOC/research/recap) → `agent_generated: true` + `agent_last_touched: <ISO ts>`; agent-owned state → `agent_managed: true` (in `Agent/`).
 - **`agent_augmented: true`** — if an `agent_generated` note's real mtime is newer than its `agent_last_touched`, a human edited it: flip the tag, then **preserve/additive only** (never overwrite or regenerate).
-- **Flat structure.** New agent notes are created flat at the vault root. Folders exist **only** for `Agent/` (state notes) and `Agent/tmp/` (scratch).
+- **Flat structure.** New agent notes are created flat at the vault root. Folders exist **only** for `Agent/` (state notes) and `Agent/Temp/` (scratch).
 - **Recap note:** `Recap YYYY-MM-DD` (`agent_generated`, flat) absorbs the entire former daily agent zone — sections in order: **Check-in, What's New, Explore, Routines, Question for Today, New Notes**. The daily note's agent zone shrinks to a single `[[Recap YYYY-MM-DD]]` link; the recap (and link) are created if missing.
 - **Recap lifecycle:** today's recap = working note (refreshed each run); a recap dated `< today` is **frozen** (never edited); a missing past recap whose daily note exists is regenerated **once**, then frozen; missing past daily note → log `RECAP_SKIPPED`, invent nothing.
 - **Seed rule (existence test):** a source note should exist iff its URL is still in a note; an atomic note iff its concept still recurs; a research note iff its question is open; a recap iff its daily note exists. **Seed gone → not regenerated.**
 - **Reconcile is need-driven:** touch a note only if missing-with-seed (regenerate once), a current working note, or a regular agent note with a *concrete available improvement*. Present-and-complete notes are left alone. Beyond the change set, at most **5** need-driven repairs per continuous run.
-- **Two-phase creation:** synthesized notes collect raw facts into `Agent/tmp/` first, synthesize the real note, then discard the scratch; temp files are never linked from real notes.
+- **Two-phase creation:** synthesized notes collect raw facts into `Agent/Temp/` first, synthesize the real note, then discard the scratch; temp files are never linked from real notes.
 - **Full-backfill idempotency:** fill gaps only; never duplicate a note; never clobber an `agent_augmented` note; never re-edit a complete past recap; never auto-move/rename/delete notes.
 - **Migration:** new notes go flat; existing notes in legacy `Sources/ Atomic/ MOCs/ Research/` folders are still *read* (legacy-path fallback) but **never auto-moved**.
 - **User content is read-only** (never annotate/append/rewrite user notes — the agent writes only its own notes and the daily note's single recap link).
@@ -46,10 +46,10 @@ Expected every task: only `VERIFY-REFS done` (no `DANGLING:` lines) and `PASS` f
 - `.agents/skills/recap.md` — generate/update `Recap YYYY-MM-DD`; write the `[[Recap]]` link into the daily note; freeze past recaps.
 
 **Modified files:**
-- `.agents/context/vault-structure.md`, `.agents/context/boundaries.md`, `.agents/context/agent-notes.md` — codify the 3-class marker model, `agent_augmented`, flat layout, `Agent/` + `Agent/tmp/`.
+- `.agents/context/vault-structure.md`, `.agents/context/boundaries.md`, `.agents/context/agent-notes.md` — codify the 3-class marker model, `agent_augmented`, flat layout, `Agent/` + `Agent/Temp/`.
 - `.agents/skills/source-note.md`* / `parse-content.md` / `create-atomic.md` / `update-moc.md` / `research.md`* / `synthesize-research-note.md`* — flat placement + `agent_generated`/`agent_last_touched` stamps + legacy read fallback + duplicate guard + `classify-note` before rewrite. *(`source-note.md`, `research.md`, `synthesize-research-note.md` partially edited already — reconcile them.)*
 - `.agents/skills/recap.md` consumers: `.agents/specs/daily-note.md`, `daily-pipeline.md`, `daily-suggestions.md`, `.agents/skills/check-in.md` — agent daily output → recap; daily note gets only the recap link; Check-in generated in and read back from the recap.
-- `.agents/specs/reconcile.md` — reconcile draft revised to the recap model, `classify-note` integration, `Agent/tmp/` naming, per-class routing.
+- `.agents/specs/reconcile.md` — reconcile draft revised to the recap model, `classify-note` integration, `Agent/Temp/` naming, per-class routing.
 - `.agents/loop.md` — reconcile drives Phase 2–4; Phase 6 pre-generates tomorrow's recap.
 - `.agents/skills/action-router.md` — actions route by note class.
 - `scripts/setup.sh` — first-pass full-backfill call (already wired; verify only).
@@ -60,7 +60,7 @@ Expected every task: only `VERIFY-REFS done` (no `DANGLING:` lines) and `PASS` f
 
 ### Task 1: Ownership model in the context files
 
-Establish the authoritative reference the rest of the plan builds on: the 3-class marker lattice, `agent_augmented`, flat layout, and the `Agent/` + `Agent/tmp/` folders. Reconcile the half-written folder-based content.
+Establish the authoritative reference the rest of the plan builds on: the 3-class marker lattice, `agent_augmented`, flat layout, and the `Agent/` + `Agent/Temp/` folders. Reconcile the half-written folder-based content.
 
 **Files:**
 - Modify: `.agents/context/vault-structure.md`
@@ -68,17 +68,17 @@ Establish the authoritative reference the rest of the plan builds on: the 3-clas
 - Modify: `.agents/context/agent-notes.md`
 
 **Interfaces:**
-- Produces (referenced by all later tasks): the ownership vocabulary — markers `agent_generated: true`, `agent_last_touched: <ISO ts>`, `agent_augmented: true`, `agent_managed: true`; the folders `Agent/` and `Agent/tmp/`; the rule "new agent knowledge notes are flat at root; legacy folder notes are read but never moved."
+- Produces (referenced by all later tasks): the ownership vocabulary — markers `agent_generated: true`, `agent_last_touched: <ISO ts>`, `agent_augmented: true`, `agent_managed: true`; the folders `Agent/` and `Agent/Temp/`; the rule "new agent knowledge notes are flat at root; legacy folder notes are read but never moved."
 
 - [ ] **Step 1: Read the three files** to see the current (partly folder-based) content.
 
 Run: `cd /home/openclaw/second-brain && sed -n '1,120p' .agents/context/vault-structure.md; echo ---; sed -n '1,40p' .agents/context/boundaries.md; echo ---; sed -n '1,30p' .agents/context/agent-notes.md`
 
-- [ ] **Step 2: In `vault-structure.md`, make flat the rule and folders the exception.** Ensure an `## Ownership Markers` section states the 3-class lattice verbatim from Global Constraints, and that the structure section shows knowledge notes (source/atomic/MOC/research/recap) **flat at the root** with only `Agent/` and `Agent/tmp/` as folders. Remove any statement that *new* source/atomic/MOC/research notes must live in `Sources/ Atomic/ MOCs/ Research/`; replace with: those folders are **legacy read-only fallbacks** (existing notes there are still found, never auto-moved). Standardize scratch to `Agent/tmp/` (not `Agent/Temp/`). Add a one-line **Regenerability invariant** statement.
+- [ ] **Step 2: In `vault-structure.md`, make flat the rule and folders the exception.** Ensure an `## Ownership Markers` section states the 3-class lattice verbatim from Global Constraints, and that the structure section shows knowledge notes (source/atomic/MOC/research/recap) **flat at the root** with only `Agent/` and `Agent/Temp/` as folders. Remove any statement that *new* source/atomic/MOC/research notes must live in `Sources/ Atomic/ MOCs/ Research/`; replace with: those folders are **legacy read-only fallbacks** (existing notes there are still found, never auto-moved). Standardize scratch to `Agent/Temp/` (not `Agent/Temp/`). Add a one-line **Regenerability invariant** statement.
 
-- [ ] **Step 3: In `boundaries.md`, align the forbidden/agent-owned rows to flat.** Keep the "user zone read-only" and "no auto-move/rename/delete" rows. Change any row that lists `Sources/ Atomic/ MOCs/ Research/` as agent-owned *folders* so it reads: agent-owned generated notes are identified by the `agent_generated`/`agent_managed` **markers** (flat at root), not by folder; `Agent/` (+`Agent/tmp/`) is the only agent-owned folder territory. Add a row: never modify a note that carries `agent_augmented: true` beyond additive edits.
+- [ ] **Step 3: In `boundaries.md`, align the forbidden/agent-owned rows to flat.** Keep the "user zone read-only" and "no auto-move/rename/delete" rows. Change any row that lists `Sources/ Atomic/ MOCs/ Research/` as agent-owned *folders* so it reads: agent-owned generated notes are identified by the `agent_generated`/`agent_managed` **markers** (flat at root), not by folder; `Agent/` (+`Agent/Temp/`) is the only agent-owned folder territory. Add a row: never modify a note that carries `agent_augmented: true` beyond additive edits.
 
-- [ ] **Step 4: In `agent-notes.md` (context), confirm state notes live under `Agent/`** with `agent_managed: true`, and add one line that `Agent/tmp/` holds disposable scratch (never linked from real notes; safe to delete). Keep the legacy-root fallback note.
+- [ ] **Step 4: In `agent-notes.md` (context), confirm state notes live under `Agent/`** with `agent_managed: true`, and add one line that `Agent/Temp/` holds disposable scratch (never linked from real notes; safe to delete). Keep the legacy-root fallback note.
 
 - [ ] **Step 5: Assert the marker vocabulary and flat rule are present, folder-mandate gone.**
 
@@ -272,7 +272,7 @@ Reconcile the draft `reconcile.md` to the recap model and the new skills, then w
 
 Run: `cd /home/openclaw/second-brain && sed -n '1,130p' .agents/specs/reconcile.md; echo ===LOOP===; sed -n '23,78p' .agents/loop.md; echo ===ROUTER===; grep -nE 'EXPLORE|ENRICH|ATOMIZE|CONNECT|FETCH|SOURCE_CREATE|CLEAN' .agents/skills/action-router.md`
 
-- [ ] **Step 2: Fix the "Daily Note as Entry Point" section of `reconcile.md` to the recap model.** Replace the instruction that the daily agent zone is "replaced" with the What's New/Resources/Explore/Open sections. New wording: the agent writes into a daily note **only** the `[[Recap YYYY-MM-DD]]` link (via `skills/recap.md`); all sections live in the recap; the user input zone is preserved exactly. Standardize `Agent/Temp/` → `Agent/tmp/` throughout. Have the per-class routing and augment-check **reference `skills/classify-note.md`** rather than restating it.
+- [ ] **Step 2: Fix the "Daily Note as Entry Point" section of `reconcile.md` to the recap model.** Replace the instruction that the daily agent zone is "replaced" with the What's New/Resources/Explore/Open sections. New wording: the agent writes into a daily note **only** the `[[Recap YYYY-MM-DD]]` link (via `skills/recap.md`); all sections live in the recap; the user input zone is preserved exactly. Standardize `Agent/Temp/` → `Agent/Temp/` throughout. Have the per-class routing and augment-check **reference `skills/classify-note.md`** rather than restating it.
 
 - [ ] **Step 3: Add explicit per-class routing to `reconcile.md`.** A short table/section: `user` (daily) → ensure recap link + extract seeds, else read-only; `agent_generated`/`agent_augmented` → enrich / atomize / clean / fetch·source_create / explore, need-driven, augment-preserving; `agent_managed` → dedicated update (Phase 0 recreates missing). Cap continuous need-driven repairs at 5/run beyond the change set. Confirm the seed rule and backfill idempotency block match Global Constraints.
 
@@ -344,7 +344,7 @@ grep -rniE "daily note.*(What's New|agent zone).*(replace|section)" .agents/spec
 echo "--- C: Agent/Temp remnants anywhere ---"
 grep -rni 'Agent/Temp' .agents || echo "(clean C)"
 ```
-Fix any hit so it conforms (flat for new notes; daily note → recap link only; `Agent/tmp/`). Re-run until A, B, C are all clean.
+Fix any hit so it conforms (flat for new notes; daily note → recap link only; `Agent/Temp/`). Re-run until A, B, C are all clean.
 
 - [ ] **Step 4: Idempotency assertion for full-backfill wording.**
 
@@ -372,7 +372,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 **Spec coverage:**
 - Section 1 (ownership + flat) → Task 1 (context), enforced by Task 2 (classify-note), applied by Task 3 (creators). ✅
 - Section 2 (recap note) → Task 4 (recap skill + daily specs), pre-gen in Task 5 (loop Phase 6). ✅
-- Section 3 (continuous reconcile, seed rule, per-class processing, temp scratch) → Task 5 (reconcile revise + loop + router); temp `Agent/tmp/` in Tasks 1 & 3. ✅
+- Section 3 (continuous reconcile, seed rule, per-class processing, temp scratch) → Task 5 (reconcile revise + loop + router); temp `Agent/Temp/` in Tasks 1 & 3. ✅
 - Section 4 (full-backfill, idempotency) → Task 5 (backfill block) + Task 6 (setup call + idempotency assertion). ✅
 - `agent_augmented` preservation → Task 2 (augment-check) used in Tasks 3–5. ✅
 - Migration (flat new, legacy read, no auto-move) → Tasks 1, 3, 6 sweep. ✅
@@ -380,4 +380,4 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 **Placeholder scan:** No TBD/TODO; every edit step names the exact file and the concrete change; verification steps give exact commands + expected output. Instruction-file edits are described by their required content + asserted by grep (this repo has no unit-test framework — structural verification is the established pattern). ✅
 
-**Type consistency:** Marker names (`agent_generated`, `agent_last_touched`, `agent_augmented`, `agent_managed`), folder names (`Agent/`, `Agent/tmp/`), recap title (`Recap YYYY-MM-DD`), recap section order, mode strings (`mode=continuous`, `mode=full-backfill`), and the two skill names (`classify-note.md`, `recap.md`) are used identically across all tasks and match the spec. ✅
+**Type consistency:** Marker names (`agent_generated`, `agent_last_touched`, `agent_augmented`, `agent_managed`), folder names (`Agent/`, `Agent/Temp/`), recap title (`Recap YYYY-MM-DD`), recap section order, mode strings (`mode=continuous`, `mode=full-backfill`), and the two skill names (`classify-note.md`, `recap.md`) are used identically across all tasks and match the spec. ✅

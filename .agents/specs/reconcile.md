@@ -7,7 +7,7 @@
 Keep a co-owned vault coherent without churn.
 
 - The user owns daily-note input zones and any note without agent frontmatter.
-- The agent owns durable machine state under `Agent/` and scratch files under `Agent/Temp/`.
+- The agent owns durable machine state and scratch files under the `Agent/` folder hierarchy.
 - Flat root knowledge notes with `agent_generated: true` are co-owned: the agent may keep improving them, but user edits are preservation-sensitive.
 - Past daily recaps are frozen after their calendar day passes.
 
@@ -20,7 +20,7 @@ Keep a co-owned vault coherent without churn.
 Run every scheduled loop. Work only from the current change set plus need-driven repairs.
 
 Targets:
-1. Today's daily note and today's recap/agent zone.
+1. Today's daily note (recap link) and today's recap note.
 2. Notes modified since `last_run_timestamp`.
 3. `#inbox`, `#raw`, `#stub`, `#queued`, and active research notes.
 4. Missing derived notes whose seed/source still exists.
@@ -36,13 +36,13 @@ Skip:
 Run during setup's first pass or an explicit bootstrap request. It catches the vault up once, then stops.
 
 Targets:
-1. Create missing `Agent/` and `Agent/Temp/` folders.
+1. Create missing agent-owned folder skeleton (per AGENTS.md initialization).
 2. Create missing agent-managed notes from templates.
 3. Index existing vault notes.
 4. Regenerate missing flat root source/atomic/MOC/research notes only when their seed/source still exists and no duplicate exists at either the flat root path or legacy folder path.
 5. Finalize any missing past recap once, then freeze it.
 
-Idempotency requirements:
+Idempotency requirements (fill gaps only — never re-process complete notes):
 - Rerunning setup on an existing vault fills gaps only.
 - Never duplicate notes.
 - Never clobber `agent_augmented: true` notes.
@@ -55,7 +55,8 @@ Idempotency requirements:
 
 | Note | Behavior |
 |------|----------|
-| Today's daily note / recap | Working note; refresh the agent zone every run |
+| Today's daily note | Ensure recap link via `skills/recap.md`; otherwise read-only |
+| Today's recap note | Working note; update recap content each run |
 | Past daily recap exists | Frozen; do not edit |
 | Past daily recap missing but daily note exists | Regenerate once from that daily note, mark complete, then freeze |
 | Past daily note missing | Log `RECAP_SKIPPED: missing daily note`; do not invent content |
@@ -83,6 +84,22 @@ Allowed improvements:
 
 ---
 
+## Per-Class Routing
+
+Run `skills/classify-note.md` before every write. Routing targets are agent notes or the recap — never user content.
+
+| Class | Action |
+|-------|--------|
+| `user` (daily note) | Ensure recap link via `skills/recap.md` Link; extract URL/concept seeds; otherwise read-only — never write |
+| `agent_generated` / `agent_augmented` | Enrich / atomize / clean / fetch+source_create / explore — need-driven, augment-preserving (run augment-check per `skills/classify-note.md`) |
+| `agent_managed` | Dedicated update per the relevant spec; Phase 0 recreates missing notes |
+
+Cap (continuous mode): at most **5** need-driven repairs per run beyond the change set.
+
+Seed rule: regenerate a missing note only if its seed still exists — source URL still referenced in a note; concept recurs in vault; research question still open; daily note exists for a recap. Seed gone → `REGENERATE_SKIPPED`.
+
+---
+
 ## Duplicate / Missing-Note Guard
 
 For every note to create:
@@ -100,13 +117,11 @@ For every note to create:
 
 ## Daily Note as Entry Point
 
-Every loop should leave today's daily note useful to the user:
+The **only** agent write into a daily note is the recap link. Follow `skills/recap.md` Link procedure:
 
 - Preserve the user input zone exactly.
-- Replace only the agent zone.
-- Surface new/changed resources under concise sections (`What's New`, `Resources`, `Explore`, `Open`).
-- Include links to newly created or improved notes.
-- Keep the agent zone short enough to scan.
+- Replace the agent zone with `[[Recap YYYY-MM-DD]]` only — all sections (What's New, Explore, Routines, New Notes, etc.) live in `Recap YYYY-MM-DD`.
+- Extract URL bullets and concept mentions from the user zone as seeds for knowledge-note creation.
 
 ---
 

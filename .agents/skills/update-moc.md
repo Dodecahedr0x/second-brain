@@ -39,13 +39,15 @@ Tags: #moc #{topic}
 ```
 1. Trigger condition: 3+ notes share a primary topic AND no MOC exists for it
 2. Collect all notes in vault-index with that topic tag
-3. Create file: `{Topic} MOC.md` at the vault root (first check both root `{Topic} MOC.md` and legacy `MOCs/{Topic} MOC.md`)
+3. Apply the Duplicate / Missing-Note Guard from `specs/reconcile.md` (checks flat root and legacy `MOCs/{Topic} MOC.md`). If an existing note is found, skip creation and go to "Updating an Existing MOC". Otherwise: Create file: `{Topic} MOC.md` at the vault root (`$VAULT_PATH/{Topic} MOC.md`).
 4. Fill template with all relevant notes + one-line description each
 5. In each listed note, add at bottom: "See also: [[{Topic} MOC]]"
 6. Update Agent Vault Index: add MOC to MOC Registry
 ```
 
 ### Updating an Existing MOC
+
+Run `skills/classify-note.md` augment-check before editing. If `agent_augmented`, additive edits only. Stamp `agent_last_touched` after every edit.
 
 ```
 1. Open the existing MOC file

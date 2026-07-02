@@ -115,9 +115,9 @@ Log:
 
 Call `skills/check-in.md` with `tier=weekly`. This queries faded interests (established topics, `Last seen` 7–21d). Update the `## Check-in` section in the review note. Omit the section if no faded topics qualify.
 
-### 8. Add Daily Note Wikilink
+### 8. Surface in Recap
 
-In the day's daily note (`YYYY-MM-DD.md`), append `[[Weekly Review — YYYY-W##]]` in the agent zone.
+Surface `[[Weekly Review — YYYY-W##]]` in today's recap (`## New Notes`, via `skills/recap.md`) — a review note created this session. Do not write a wikilink directly into the daily note's agent zone.
 
 ---
 

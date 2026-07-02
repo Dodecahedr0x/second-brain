@@ -9,7 +9,8 @@
 $VAULT_PATH/
 ├── .obsidian/          ← FORBIDDEN: Obsidian config, never touch
 ├── .stfolder/          ← FORBIDDEN: Syncthing metadata, never touch
-├── YYYY-MM-DD.md       ← Daily notes; user-owned input at top, agent check-in/agent zones below
+├── YYYY-MM-DD.md       ← Daily notes; user input at top, a single [[Recap YYYY-MM-DD]] link below
+├── Recap YYYY-MM-DD.md ← Agent's derived daily output (Check-in + exploration); agent_generated
 ├── <Title>.md          ← User notes and flat agent-generated knowledge notes
 └── Agent/              ← Agent-owned machine state + temporary working files
 ```
@@ -28,7 +29,7 @@ $VAULT_PATH/
 
 ## Note Structure
 
-Daily notes have three zones. The user writes freely in the **input zone** (top); the agent owns the **Check-in** (positive-confirmation steering questions) and the **agent zone** (replaced each run).
+A **daily note** holds the user's free input; the agent writes only a single `[[Recap YYYY-MM-DD]]` link into its agent zone (via `skills/recap.md`). Everything the agent generates for the day — the **Check-in** and the exploration sections — lives in the **recap note**, not the daily note.
 
 ```markdown
 YYYY-MM-DD
@@ -36,6 +37,14 @@ YYYY-MM-DD
 - User bullet 1
 - User bullet 2 with a [[wikilink]]
 
+---
+## Agent — YYYY-MM-DD HH:MM
+[[Recap YYYY-MM-DD]]
+```
+
+The recap note (`Recap YYYY-MM-DD.md`, flat, `agent_generated`) holds the day's output — Check-in first, then the exploration sections:
+
+```markdown
 ## Check-in
 Focus this week?
 - [ ] Topic A
@@ -44,9 +53,7 @@ Keep tracking?
 - [ ] Topic C (new)
 <!-- steering: unprocessed -->
 
----
-## Agent — YYYY-MM-DD HH:MM
-### What's New
+## What's New
 ...
 ```
 
@@ -77,7 +84,7 @@ Atomic notes use the template from `specs/generation.md`.
 ## Ownership Markers
 
 - User-generated notes carry no ownership tag/frontmatter. The agent may read them but must not annotate or rewrite their user-authored content.
-- Agent-owned notes live under `Agent/` (including `Agent/Temp/`) and carry `agent_managed: true` when durable; users should not edit them because agents may rewrite them.
+- Durable agent state notes live under `Agent/` and carry `agent_managed: true`; users should not edit them because agents may rewrite them. Temporary scratch files under `Agent/Temp/` carry no durable markers and are safe to delete.
 - Agent-generated knowledge notes live flat at the vault root, carry `agent_generated: true` and `agent_last_touched: YYYY-MM-DDThh:mm:ssZ`, and are co-editable by user and agent.
 - Before rewriting an agent-generated note, compare its file mtime/content against `agent_last_touched`. If the note was modified after that timestamp by something other than the current agent run, preserve the page, switch/add `agent_augmented: true`, keep `agent_generated: true`, refresh `agent_last_touched`, and limit edits to additive sections unless the active spec explicitly says otherwise.
 - `agent_augmented: true` means the note started as agent-generated but now contains user edits; preserve it as a co-owned page, not disposable output.
@@ -90,10 +97,10 @@ Only these folders are agent-owned:
 
 ```text
 $VAULT_PATH/Agent/       ← machine-written state notes
-$VAULT_PATH/Agent/Temp/  ← temporary scratch/context files; safe to regenerate
+$VAULT_PATH/Agent/Temp/   ← temporary scratch/context files; safe to regenerate
 ```
 
-Daily notes remain at the vault root because they are user-owned entrypoints. The agent may rewrite only the check-in and agent zones inside a daily note.
+Daily notes remain at the vault root because they are user-owned entrypoints. The agent may write only the recap link inside a daily note.
 
 Regenerability invariant: agent-owned state/temp files under `Agent/` are disposable machine projections. Agent-generated root knowledge notes are not disposable once written; if the user edits one after `agent_last_touched`, it becomes `agent_augmented: true` and must be preserved.
 

@@ -50,7 +50,7 @@ Tags: #{topic} #atomic
 
 ```
 1. Determine filename: `<Concept Name>.md` at the vault root (Title Case, spaces not underscores)
-2. Check for duplicates at both root `<Concept Name>.md` and legacy `Atomic/<Concept Name>.md`; if either exists, update/link that note rather than creating a duplicate
+2. Apply the Duplicate / Missing-Note Guard from `specs/reconcile.md` (checks flat root and legacy `Atomic/<Concept Name>.md`). If an existing note is found, run `skills/classify-note.md` augment-check; if `agent_augmented`, additive edits only. Stamp `agent_last_touched` after editing. Skip creation if a duplicate exists.
 3. Write file using template
 4. Append to Agent Vault Index:
    | <filename> | <title> | #atomic #<topic> | <key concepts> | <today's date> |

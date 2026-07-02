@@ -131,9 +131,9 @@ Log:
 
 Call `skills/check-in.md` with `tier=monthly`. This queries dormant interests (established topics, `Last seen` > 21d). Update the `## Check-in` section in the review note. Omit the section if no dormant topics qualify.
 
-### 9. Add Daily Note Wikilink
+### 9. Surface in Recap
 
-In the day's daily note (`YYYY-MM-DD.md`), append `[[Monthly Review — YYYY-MM]]` in the agent zone.
+Surface `[[Monthly Review — YYYY-MM]]` in today's recap (`## New Notes`, via `skills/recap.md`) — a review note created this session. Do not write a wikilink directly into the daily note's agent zone.
 
 ---
 

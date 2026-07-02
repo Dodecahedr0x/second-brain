@@ -59,6 +59,8 @@ source_urls:
 source_type: article | docs | other
 captured: YYYY-MM-DD
 agent_processed: true
+agent_generated: true
+agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 ---
 
 # <Site Name>
@@ -106,14 +108,15 @@ Tags: #source #<source_type>
 - **Single URL**: use the content's own title, Title Case, stripped of special characters: `<Title>.md`.
 - **Multiple URLs**: use the site name + a topic qualifier if all pages share a clear sub-topic (e.g., `Python Documentation — asyncio.md`); otherwise just the site name (`MDN Web Docs.md`).
 - Fallback if title unknown: `<Source Type> - <YYYY-MM-DD>.md`.
-- Before creating, check both root `<Title>.md` and legacy `Sources/<Title>.md` to avoid duplicates. Do not move legacy notes automatically.
+- Before creating, apply the Duplicate / Missing-Note Guard from `specs/reconcile.md` (checks flat root and legacy `Sources/<Title>.md`). Do not move legacy notes automatically.
+- When an existing note is found by the guard, run `skills/classify-note.md` augment-check before editing; if `agent_augmented`, additive edits only. Always stamp `agent_last_touched` after editing.
 
 ## Linking Back
 
-**Never modify the user's pasted link or its bullet — the user zone is read-only.** After creating the source note, surface it in the **agent zone** (the daily note's `### Resources`, or the caller's agent-generated section), leaving the user's original bullet exactly as written:
+**Never modify the user's pasted link or its bullet — the user zone is read-only.** After creating the source note, surface it in the **recap's `## New Notes`** via `skills/recap.md`, leaving the user's original bullet exactly as written:
 
 ```
-### Resources
+## New Notes
 - [[Some Video Title]] — from a link in your notes
 - [[Python Documentation — asyncio]] — from a link in your notes
 ```

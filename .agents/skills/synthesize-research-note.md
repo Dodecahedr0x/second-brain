@@ -10,7 +10,7 @@ The active session's `short_form` (its research-note title), `driving_question`,
 
 ## Step 1: Assemble
 
-The note already exists as a stub titled by `short_form` (created by `specs/research.md` at session start). **Update it in place — do not create a new note; the title stays `short_form`.** Keep the full driving question as the `> [!question]` callout near the top. Body structured **by the checklist** — one `##` section per sub-question, each summarising its findings and citing the `[[Source Note]]`s that back them. Lead with a 2–4 sentence answer to the driving question. Drop the `#stub` tag and the in-progress marker.
+The note already exists as a stub titled by `short_form` (created by `specs/research.md` at session start). Run `skills/classify-note.md` augment-check before editing. If `agent_augmented`, additive edits only. **Update it in place — do not create a new note; the title stays `short_form`.** Keep the full driving question as the `> [!question]` callout near the top. Always stamp `agent_last_touched` after editing. Body structured **by the checklist** — one `##` section per sub-question, each summarising its findings and citing the `[[Source Note]]`s that back them. Lead with a 2–4 sentence answer to the driving question. Drop the `#stub` tag and the in-progress marker.
 
 ## Step 2: Honesty
 
@@ -53,7 +53,11 @@ agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 Tags: #research
 ```
 
-Update `$VAULT_PATH/<short_form>.md` (or legacy `$VAULT_PATH/Research/<short_form>.md` if that is where the active session stub already exists) — do not create a new note.
+Update `$VAULT_PATH/<short_form>.md` (or legacy `$VAULT_PATH/Research/<short_form>.md` if that is where the active session stub already exists, per `specs/reconcile.md` legacy-fallback convention) — do not create a new note.
+
+## Scratch (two-phase)
+
+For SYNTHESIZED notes: gather raw findings into `Agent/Temp/<slug>.md`, synthesize the final note from that scratch, then delete the scratch file. Never link real notes to anything under `Agent/Temp/`.
 
 ## Guardrails
 

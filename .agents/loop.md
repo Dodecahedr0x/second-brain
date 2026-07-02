@@ -24,11 +24,11 @@ Exit: Change set built. Never empty (today's note is always present).
 
 **Goal**: Understand each item's place in the knowledge graph.
 
-1. For each item: parse with `skills/parse-content.md` — extract title, tags, concepts, entities
+1. For each item: parse with `skills/parse-content.md` — extract title, tags, concepts, entities; classify via `skills/classify-note.md` (ownership class determines Phase 3 routing)
 2. Cross-reference `Agent Vault Index` for existing notes sharing those concepts
 3. Build **connection map**: `{note: [candidate_links]}`
 4. Flag concepts with no existing note → candidates for `Agent Concept Gaps`
-5. **Steering refresh**: read back `## Check-in` ticks — from today's daily note AND from the current `Weekly Review — YYYY-W##` and `Monthly Review — YYYY-MM` notes if either carries an unprocessed `## Check-in` — via `skills/check-in.md` (which marks each section processed), then run `skills/update-interest-model.md` (fresh signal + all ticks) to refresh `Agent Interest Model` before planning.
+5. **Steering refresh**: read back `## Check-in` ticks — from today's **recap** AND from the current `Weekly Review — YYYY-W##` and `Monthly Review — YYYY-MM` notes if either carries an unprocessed `## Check-in` — via `skills/check-in.md` (which marks each section processed), then run `skills/update-interest-model.md` (fresh signal + all ticks) to refresh `Agent Interest Model` before planning.
 
 Exit: Connection map built. Every change set item has an entry. `Agent Interest Model` reflects latest user signals.
 
@@ -42,6 +42,7 @@ Exit: Connection map built. Every change set item has an entry. `Agent Interest 
 2. For each change-set item, assign exactly one action:
    - **ENRICH**: Add wikilinks/tags → `skills/link-notes.md`
    - **ATOMIZE**: Extract concepts into new notes → `skills/create-atomic.md`
+   - **CLEAN**: Isolate one concept into a new note + link origin → `skills/create-atomic.md` + `skills/link-notes.md`
    - **CONNECT**: Update a MOC → `skills/update-moc.md`
    - **FETCH**: Extract external content into a source note → `skills/parse-content.md` Part B / `specs/source-note.md`
    - **SOURCE_CREATE**: Create a source note from fetched content → `specs/source-note.md`
@@ -59,11 +60,14 @@ Exit: Numbered plan exists. No action is ambiguous.
 
 **Goal**: Execute the plan exactly as written.
 
+Actions follow per-class routing from `specs/reconcile.md` Per-Class Routing — `skills/classify-note.md` gates every write; `user`-class notes route to recap link + seed extraction only.
+
 1. Execute actions in order, one at a time
    - **EXPLORE**: run `specs/research.md` for exactly one hop (start/advance/finalize the active session). Counts as one action under the ≤20 cap.
 2. Before each action apply idempotency guards:
    - **ENRICH**: skip any wikilink or tag that already exists verbatim in the target note
    - **ATOMIZE / SOURCE_CREATE**: if the target note already exists, switch to ENRICH instead of creating a duplicate
+   - **CLEAN**: if the concept note already exists, switch to ENRICH on that note
    - **FETCH**: if a source note for this URL already exists and is not a `#stub`, skip the fetch
 3. After each action, log immediately in `Agent Operation Log`:
    ```
@@ -108,9 +112,9 @@ Exit: All checks pass, or failures explicitly logged as DEFERRED.
    ```
 4. Append new concept gaps to `Agent Concept Gaps`
 5. Verify `Agent Vault Index` is consistent with actual vault contents
-6. **Pre-generate tomorrow's daily note** (runs every cycle): ensure tomorrow's `YYYY-MM-DD.md` exists with an empty input zone and a `## Check-in` generated via `skills/check-in.md` (tier=daily) from the current `Agent Interest Model`. Idempotent & non-clobbering: create if missing; if it exists but is untouched (empty input zone, no ticked boxes, `steering: unprocessed`) refresh its Check-in; once the user has written or ticked anything, leave it unchanged. On weekly/monthly creation days the review note carries its own tier check-in and the daily note wikilinks to it.
+6. **Pre-generate tomorrow's recap** (runs every cycle): call `skills/recap.md` "Pre-generate tomorrow" procedure — creates `Recap <tomorrow>.md` with a fresh `## Check-in` if it does not already exist. Idempotent: skip silently if the file exists.
 
-Exit: All agent-managed notes updated. Session fully logged. Tomorrow's daily note ready with Check-in.
+Exit: All agent-managed notes updated. Session fully logged. Tomorrow's recap stub ready with Check-in.
 
 ---
 

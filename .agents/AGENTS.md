@@ -17,7 +17,7 @@ Before executing any loop iteration, an agent MUST:
 6. Read `Agent/Agent Operation Log` (or legacy `Agent Operation Log`) — know what was done last time
 7. Read `context/boundaries.md` — internalize what is off-limits
 8. Read `loop.md` — load the six-phase execution model
-9. Load relevant skills from `skills/` for the current task type
+9. Load core skills always needed: `skills/classify-note.md` (ownership gate), `skills/recap.md` (daily-note recap link + pre-gen), then load task-specific skills from `skills/` as required
 
 ## Core Principles (Harness Engineering)
 
@@ -40,8 +40,15 @@ All agents start with Phase 0 initialization, then execute `loop.md`. No direct 
 ## Scope Boundaries (Summary)
 
 Full detail in `context/boundaries.md`. Quick reference:
-- **Allowed**: Creating flat root-level `.md` knowledge notes with `agent_generated: true`, updating co-owned `agent_generated`/`agent_augmented` notes per the active spec, updating agent-managed notes under `Agent/`, using `Agent/Temp/` for scratch files, adding wikilinks inside agent-generated content, and rewriting only the check-in/agent zones of daily notes
+- **Allowed**: Creating flat root-level `.md` knowledge notes with `agent_generated: true`, updating co-owned `agent_generated`/`agent_augmented` notes per the active spec, updating agent-managed notes under `Agent/`, using `Agent/Temp/` for scratch files, adding wikilinks inside agent-generated content, and writing only the `[[Recap YYYY-MM-DD]]` link in daily notes
 - **Forbidden during vault-processing runs**: Deleting vault files, modifying `.obsidian/` config, modifying repo files, touching `.stfolder/`
+
+## Core Skills (always loaded)
+
+| Skill | Role |
+|-------|------|
+| `skills/classify-note.md` | Ownership gate — determines note class before every write |
+| `skills/recap.md` | Recap link insertion + pre-generation; used on every daily-note interaction |
 
 ## Agent Types
 

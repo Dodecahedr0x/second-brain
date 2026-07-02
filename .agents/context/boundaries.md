@@ -2,6 +2,10 @@
 
 This file defines hard constraints. Violating any of these is an automatic abort (Harness Engineering Principle 6: Scope Control).
 
+## Ownership Territory
+
+Ownership is marker-based, not folder-based. Agent-generated knowledge notes (source, atomic, MOC, research, recap) carry `agent_generated: true` and live flat at the root; agent-owned state notes carry `agent_managed: true` and live under `Agent/`. `Agent/` and `Agent/Temp/` are the only agent-owned folder territories. Legacy folders (`Sources/`, `Atomic/`, `MOCs/`, `Research/`) are read-only fallbacks — notes there are found but never auto-moved.
+
 ## Forbidden Paths (NEVER modify)
 
 | Path | Reason |
@@ -10,7 +14,7 @@ This file defines hard constraints. Violating any of these is an automatic abort
 | `$VAULT_PATH/.stfolder/` | Syncthing metadata — changes here break sync |
 | `.agents/` itself | Agents do not rewrite their own harness during vault-processing runs |
 | `/home/openclaw/second-brain/` | Repo code is not a vault artifact |
-| `$VAULT_PATH/Agent/` | Agent-owned state and temporary territory; safe to create/update according to the active spec, but still do not delete durable notes during normal runs |
+| `$VAULT_PATH/Agent/` | *Restricted, not forbidden* — the agent creates/updates state notes and `Agent/Temp/` scratch here per the active spec; never delete durable notes or hand-edit outside a spec |
 
 Exception: explicit harness-maintenance requests may edit `.agents/` and repo files, but must not touch vault user content unless separately requested.
 
@@ -24,6 +28,7 @@ Exception: explicit harness-maintenance requests may edit `.agents/` and repo fi
 | Overwrite a user-authored file's full content | Risks destroying user content |
 | **Modify the user zone / user-authored unstructured content** — annotate, wikilink, append to, or rewrite the user's bullets, pasted URLs, or prose | The user's writing is **read-only**. Analyze it but write nothing into it; all generated content (source-note links, transcripts, detected concepts) goes in the **agent zone** or new agent-created notes |
 | Modify task items (`- [ ]`) | Tasks belong to the user |
+| Modify a note carrying `agent_augmented: true` beyond additive edits | That note is co-owned; only additive changes allowed unless the active spec explicitly says otherwise |
 | Alter personal reflections or diary entries | Not the agent's domain |
 | Push to any git remote | Requires explicit user instruction |
 | Modify `.obsidian/` plugin config | Not the agent's domain |
