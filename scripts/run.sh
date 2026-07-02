@@ -47,10 +47,16 @@ echo "=== $(date -Iseconds) ===" >> "$LOG_FILE"
 # --- Vault change detection: snapshot before the run (diffed after; see end) ---
 CHANGES_LOG="$LOG_DIR/changes.log"
 list_vault_md() {
-    # Content notes only: all markdown except the agent's own state/scratch under Agent/
-    # (Operation Log, Vault Index, this Change Log, Temp — they churn every run).
+    # Content notes + substantive agent state (Research Log, Concept Gaps, Interest
+    # Model, Discovery Log, User Profile — their changes are real progress). Excludes
+    # only mechanical churn: the Operation Log, Vault Index, this Change Log, and Temp
+    # scratch, which change every run regardless of whether real work happened.
     [[ -d "$VAULT_PATH" ]] || return 0
-    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/*" 2>/dev/null \
+    find "$VAULT_PATH" -type f -name '*.md' \
+        -not -path "$VAULT_PATH/Agent/Temp/*" \
+        -not -name 'Agent Operation Log.md' \
+        -not -name 'Agent Vault Index.md' \
+        -not -name 'Agent Change Log.md' 2>/dev/null \
         | sed "s#^$VAULT_PATH/##" | sort
 }
 VAULT_BEFORE="$(mktemp "${TMPDIR:-/tmp}/sb-before.XXXXXX")"
@@ -87,7 +93,11 @@ list_vault_md > "$VAULT_AFTER"
 comm -13 "$VAULT_BEFORE" "$VAULT_AFTER" > "$CREATED_F"   # in after, not before
 comm -23 "$VAULT_BEFORE" "$VAULT_AFTER" > "$DELETED_F"   # in before, not after
 if [[ -d "$VAULT_PATH" ]]; then
-    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/*" -newer "$RUN_REF" 2>/dev/null \
+    find "$VAULT_PATH" -type f -name '*.md' \
+        -not -path "$VAULT_PATH/Agent/Temp/*" \
+        -not -name 'Agent Operation Log.md' \
+        -not -name 'Agent Vault Index.md' \
+        -not -name 'Agent Change Log.md' -newer "$RUN_REF" 2>/dev/null \
         | sed "s#^$VAULT_PATH/##" | sort > "$NEWER_F"
 fi
 comm -23 "$NEWER_F" "$CREATED_F" > "$MODIFIED_F"         # touched during the run, minus newly created
