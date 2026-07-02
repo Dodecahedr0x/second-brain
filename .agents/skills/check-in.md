@@ -16,14 +16,22 @@ Ask at most 4 items per check-in (highest-weight first). Omit the section if non
 
 ## Generate
 
-Emit:
+Emit — **one checkbox per line**. Obsidian only renders `- [ ]` as a task when the box is alone on its own line; never put two boxes on one line or any text before the `- [ ]`. Each question is a plain label line above its checkbox group, with a blank line between groups:
 ```markdown
 ## Check-in
-Focus this week?   - [ ] Topic A   - [ ] Topic B
-Keep tracking?     - [ ] Topic C (new)
-                   - [ ] drop [[Topic E]]
+Focus this week?
+- [ ] Topic A
+- [ ] Topic B
+
+Keep tracking?
+- [ ] Topic C (new)
+
+Drop?
+- [ ] [[Topic E]]
+
+<!-- steering: unprocessed -->
 ```
-Only render the rows relevant to the tier. Every box is **positive-confirmation** (checked = yes); `drop` boxes are the only negative. Leave an HTML comment `<!-- steering: unprocessed -->` at the end of the section.
+Only render the groups relevant to the tier. Every box is **positive-confirmation** (checked = yes); `drop` boxes are the only negative. Leave the `<!-- steering: unprocessed -->` marker at the end of the section.
 
 ## Read-back
 
@@ -34,6 +42,7 @@ Given a `## Check-in` section not yet marked processed:
 
 ## Guardrails
 
+- **One checkbox per line** — each `- [ ]` alone on its own line (Obsidian requirement); never inline multiple boxes or put text before a box.
 - Unchecked = neutral; never treat a skipped box as a negative.
 - Read-back applies a section at most once (guard on the processed marker).
 - Direct veto/deprioritization is handled in `Agent Interest Model` via `mute`, not via generated checkboxes.

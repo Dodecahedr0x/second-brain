@@ -33,8 +33,11 @@ YYYY-MM-DD
 - User bullet 2 with a [[wikilink]]
 
 ## Check-in
-Focus this week?   - [ ] Topic A
-Keep tracking?     - [ ] Topic C (new)
+Focus this week?
+- [ ] Topic A
+
+Keep tracking?
+- [ ] Topic C (new)
 <!-- steering: unprocessed -->
 
 ---
@@ -42,6 +45,8 @@ Keep tracking?     - [ ] Topic C (new)
 ### What's New
 ...
 ```
+
+Check-in checkboxes are **one per line** — Obsidian only renders `- [ ]` as a task when the box is alone on its own line (never inline two boxes or put text before a box). The question is a plain label line above its group.
 
 Atomic notes use the template from `specs/generation.md`.
 
