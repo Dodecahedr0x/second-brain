@@ -82,7 +82,7 @@ fi
 
 PROMPT="$PROMPT
 
-This run's load target is ${LOAD} content actions: create or substantially deepen about ${LOAD} knowledge notes this run, drawn from genuine depth/width work — advance the research session one or more hops, atomize surfaced or recurring concepts, connect/enrich notes, build or extend MOCs. Do the full ${LOAD} wherever genuine work exists; never fabricate filler. This load target is the run's action budget (it overrides the default ≤20 cap)."
+This run's load target is ${LOAD} content actions: create or substantially deepen about ${LOAD} knowledge notes this run. Fill the target with genuine work — atomize surfaced or recurring concepts, connect/enrich notes, build or extend MOCs — and spend whatever budget remains on **additional research hops**: advance the active research session by as many hops as needed to reach ${LOAD} (each hop performs a fresh external fetch and grows the research note), and immediately start the next queued question if a session finalizes. Research always has hops available, so use it to reach the full ${LOAD} rather than stopping early. Do genuine work every hop — real fetches, real findings; never fabricate filler. This load target is the run's action budget (it overrides the default ≤20 cap)."
 
 # CLAUDE_BIN lets callers (e.g. the Obsidian plugin) point at a claude binary
 # that isn't on the GUI PATH. CLAUDE_EXTRA_ARGS passes through extra flags.
