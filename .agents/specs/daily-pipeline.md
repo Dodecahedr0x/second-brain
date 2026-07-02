@@ -67,7 +67,7 @@ For each URL group:
 1. Fetch via `skills/parse-content.md` Part B (using `extract-youtube.md`, `extract-twitter.md`, or `fetch-url.md`)
 2. Merge results across group (union concepts, synthesize summary)
 3. Create one source note via `specs/source-note.md`
-4. Surface the source note in the agent zone `### Resources` (`- [[source note title]] — from a link in your notes`); **leave the user's URL bullets untouched**
+4. Surface the source note in the recap's `## New Notes` (via `skills/recap.md`); **leave the user's URL bullets untouched**
 5. Schedule ENRICH for matched concepts; ATOMIZE or add to gaps for new ones
 
 **Failure handling**:

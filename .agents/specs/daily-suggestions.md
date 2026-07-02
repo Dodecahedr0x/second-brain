@@ -113,17 +113,7 @@ Omit the section if no discovery rows or research notes are dated today.
 
 ### 5. Write to the Recap
 
-Sections from this spec are assembled by `skills/recap.md` into `$VAULT_PATH/Recap YYYY-MM-DD.md` in the order below (highest return-pull first):
-
-1. **Loose Ends** — accountability hook
-2. **What's New** — proactive discovery feed
-3. **Routines** — stakes hook (fading before active)
-4. **On This Day** — memory hook
-5. **Question for Today** — curiosity hook
-6. **Explore** — discovery (from dominant cluster, then loose ends)
-7. **This Week's Theme** — orientation
-
-`skills/recap.md` calls the section-builder steps above to get content; it owns writing the assembled result to the recap.
+Sections from this spec are assembled into the recap by `skills/recap.md`, in the order `skills/recap.md` defines. `skills/recap.md` calls the section-builder steps above to get content; it owns placement, ordering, and writing the assembled result to `$VAULT_PATH/Recap YYYY-MM-DD.md`.
 
 ---
 

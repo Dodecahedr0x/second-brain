@@ -16,13 +16,25 @@ Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from curr
 
 1. Run `skills/classify-note.md` augment-check if the file already exists.
 2. Collect section content — call each provider; omit any section with no entries:
-   - **Check-in** — call `skills/check-in.md` (tier=daily); top section.
+   - **Check-in** — call `skills/check-in.md` (tier=daily); always first.
    - **What's New** — from `specs/daily-suggestions.md` Step 3e.
    - **Explore** — from `specs/daily-suggestions.md` Step 2.
    - **Routines** — from `specs/daily-suggestions.md` Step 3.
-   - **Question for Today** — from `specs/daily-suggestions.md` Step 3d.
-   - **New Notes** — notes created or substantially updated this session.
-3. Assemble in the order above.
+   - **On This Day** *(optional)* — from `specs/daily-suggestions.md` Step 3b; omit if empty.
+   - **Loose Ends** *(optional)* — from `specs/daily-suggestions.md` Step 3c; omit if empty.
+   - **This Week's Theme** *(optional)* — from `specs/daily-suggestions.md` Step 4; omit if empty.
+   - **Question for Today** — from `specs/daily-suggestions.md` Step 3d; omit if empty.
+   - **New Notes** — notes created or substantially updated this session; always last.
+3. Assemble in this canonical order:
+   1. Check-in
+   2. What's New
+   3. Explore
+   4. Routines
+   5. On This Day *(if any)*
+   6. Loose Ends *(if any)*
+   7. This Week's Theme *(if any)*
+   8. Question for Today
+   9. New Notes
 4. Write (or fully rewrite if `agent_generated`) `$VAULT_PATH/Recap <date>.md`:
 
 ```markdown
@@ -49,6 +61,15 @@ Focus this week?
 ## Routines
 - **Activity** · N-day streak · Next: action
 - **Fading activity** · last seen YYYY-MM-DD · Pick back up — fading
+
+## On This Day
+- *N days ago* — bullet text with [[wikilinks]]
+
+## Loose Ends
+- *YYYY-MM-DD* — bullet text with [[wikilinks]]
+
+## This Week's Theme
+One sentence + optional [[MOC suggestion]]
 
 ## Question for Today
 > Specific open question derived from this week's theme or a stub note.
@@ -92,3 +113,31 @@ A recap dated `< today` is frozen:
 | Recap exists (past date) | Do not edit — log `PAST_RECAP_FROZEN: <date>` |
 | Recap missing, daily note exists | Regenerate once (Build/Refresh cold run using that day's state), then freeze — log `REGENERATED: Recap <date>` |
 | Recap missing, daily note also missing | Log `RECAP_SKIPPED: missing daily note <date>`; invent nothing |
+
+---
+
+## Pre-generate tomorrow
+
+Ensure `$VAULT_PATH/Recap <tomorrow>.md` exists with a fresh `## Check-in` before the session ends. **Idempotent** — skip silently if the file already exists.
+
+1. Compute tomorrow's date (today + 1 day, ISO 8601: `YYYY-MM-DD`).
+2. Check whether `$VAULT_PATH/Recap <tomorrow>.md` exists.
+   - If it exists: log `PRE_GEN_SKIPPED: Recap <tomorrow> already exists`; stop.
+3. Call `skills/check-in.md` Generate (tier=daily) to produce a `## Check-in` block.
+4. Write `$VAULT_PATH/Recap <tomorrow>.md`:
+
+```markdown
+---
+agent_generated: true
+agent_last_touched: YYYY-MM-DDThh:mm:ssZ
+---
+
+# Recap <tomorrow>
+
+## Check-in
+<generated check-in block from step 3>
+```
+
+5. Log `PRE_GEN: created Recap <tomorrow>`.
+
+This procedure is called by Loop Phase 6 (CLEANUP).

@@ -4,7 +4,7 @@
 
 Generate positive-confirmation check-in questions from `Agent Interest Model`, and read the user's ticks back into steering updates. Which topics get asked depends on the `tier`.
 
-For daily use: the `## Check-in` section is the **top section of the recap** (`$VAULT_PATH/Recap YYYY-MM-DD.md`), not the daily note. Read-back reads today's recap. Pre-generation for tomorrow: ensure `Recap <tomorrow>.md` exists with a fresh Check-in before the session ends.
+For daily use: the `## Check-in` section is the **top section of the recap** (`$VAULT_PATH/Recap YYYY-MM-DD.md`), not the daily note. Read-back reads today's recap. Pre-generation for tomorrow: call `skills/recap.md` **Pre-generate tomorrow** before the session ends.
 
 ## Tiers (which topics to ask about)
 
