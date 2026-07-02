@@ -33,7 +33,7 @@ maintenance: <N reserved actions>
 
 - Respect the Phase 3 cap (≤20 actions / oldest-first). Never exceed the split budget.
 - `FETCH` → `specs/discovery.md`; `ATOMIZE` → `skills/create-atomic.md`; `CONNECT` → `skills/update-moc.md`; `ENHANCE` → `skills/link-notes.md` (executes as the loop's `ENRICH`); `EXPLORE` → run `specs/research.md` (advance the active research session by one hop, or start one for a top open question tied to this topic).
-- The loop executor vocabulary is ENRICH/ATOMIZE/CONNECT/FETCH/SOURCE_CREATE/DEFER/EXPLORE — map `ENHANCE`→`ENRICH`.
+- The loop executor vocabulary is ENRICH/ATOMIZE/CLEAN/CONNECT/FETCH/SOURCE_CREATE/DEFER/EXPLORE — map `ENHANCE`→`ENRICH`; `CLEAN` → `skills/create-atomic.md` + `skills/link-notes.md`.
 
 ## Note-Class Gate
 

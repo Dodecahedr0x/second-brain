@@ -55,6 +55,10 @@ Tags: #research
 
 Update `$VAULT_PATH/<short_form>.md` (or legacy `$VAULT_PATH/Research/<short_form>.md` if that is where the active session stub already exists, per `specs/reconcile.md` legacy-fallback convention) — do not create a new note.
 
+## Scratch (two-phase)
+
+For SYNTHESIZED notes: gather raw findings into `Agent/Temp/<slug>.md`, synthesize the final note from that scratch, then delete the scratch file. Never link real notes to anything under `Agent/Temp/`.
+
 ## Guardrails
 
 - Every claim cites a `[[Source Note]]` created during the session — no uncited assertions.

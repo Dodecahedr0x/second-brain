@@ -20,7 +20,7 @@ Keep a co-owned vault coherent without churn.
 Run every scheduled loop. Work only from the current change set plus need-driven repairs.
 
 Targets:
-1. Today's daily note and today's recap/agent zone.
+1. Today's daily note (recap link) and today's recap note.
 2. Notes modified since `last_run_timestamp`.
 3. `#inbox`, `#raw`, `#stub`, `#queued`, and active research notes.
 4. Missing derived notes whose seed/source still exists.
@@ -42,7 +42,7 @@ Targets:
 4. Regenerate missing flat root source/atomic/MOC/research notes only when their seed/source still exists and no duplicate exists at either the flat root path or legacy folder path.
 5. Finalize any missing past recap once, then freeze it.
 
-Idempotency requirements:
+Idempotency requirements (fill gaps only — never re-process complete notes):
 - Rerunning setup on an existing vault fills gaps only.
 - Never duplicate notes.
 - Never clobber `agent_augmented: true` notes.
@@ -55,7 +55,8 @@ Idempotency requirements:
 
 | Note | Behavior |
 |------|----------|
-| Today's daily note / recap | Working note; refresh the agent zone every run |
+| Today's daily note | Ensure recap link via `skills/recap.md`; otherwise read-only |
+| Today's recap note | Working note; update recap content each run |
 | Past daily recap exists | Frozen; do not edit |
 | Past daily recap missing but daily note exists | Regenerate once from that daily note, mark complete, then freeze |
 | Past daily note missing | Log `RECAP_SKIPPED: missing daily note`; do not invent content |

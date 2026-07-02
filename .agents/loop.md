@@ -42,6 +42,7 @@ Exit: Connection map built. Every change set item has an entry. `Agent Interest 
 2. For each change-set item, assign exactly one action:
    - **ENRICH**: Add wikilinks/tags → `skills/link-notes.md`
    - **ATOMIZE**: Extract concepts into new notes → `skills/create-atomic.md`
+   - **CLEAN**: Isolate one concept into a new note + link origin → `skills/create-atomic.md` + `skills/link-notes.md`
    - **CONNECT**: Update a MOC → `skills/update-moc.md`
    - **FETCH**: Extract external content into a source note → `skills/parse-content.md` Part B / `specs/source-note.md`
    - **SOURCE_CREATE**: Create a source note from fetched content → `specs/source-note.md`
