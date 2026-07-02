@@ -21,7 +21,7 @@ Read `Agent Research Log`.
 
 ## Advance one hop
 
-1. Pick the best open `### Frontier` lead by `Score`: fills an OPEN checklist item first, then authority/recency, minus hop-distance. No open lead → skip expansion (steps 2–4) and findings; bump `Saturation` and go straight to the termination check (step 6/7).
+1. Pick the best open `### Frontier` lead by `Score`: fills an OPEN checklist item first, then authority/recency, minus hop-distance. No open lead → skip expansion and findings (steps 2–7); bump `Saturation` and go straight to the counter/termination steps (9–10).
 2. Expand by `Type`:
    - `question` → call the `search-*` skills for the sub-question; fetch the top candidate via `skills/parse-content.md` Part B / `skills/fetch-url.md`.
    - `source` → fetch it; harvest citations/outbound links as new `source` leads.
@@ -30,9 +30,10 @@ Read `Agent Research Log`.
 4. Mark the lead explored: append to `### Explored`; set its Frontier `Status: done`.
 5. Extract findings answering OPEN checklist items into `### Findings` as `— [[Source Note]] (sub-q N)`. Flip an item to `[x]` only when source-backed.
 6. Append the same source-backed findings to the session stub note `[[<short_form>]]` under `## Research Progress` with hop number, source link, and checklist item; preserve `#stub` + `<!-- research in progress -->` until Finalize. If no answer-relevant finding, append a terse `Hop N: explored [[Source Note]]; no checklist item resolved.` note only when a source was actually explored. Stamp `agent_last_touched` after every edit. This makes the readable research note grow every hop, not only at finalization.
-7. Add new leads to `### Frontier`, deduped, scored, `open`; keep top 20.
-8. Update counters: `Hops` +1; `Saturation` +1 if no answer-relevant finding, else 0.
-9. Terminate in order: all checklist `[x]` → `Status: answered`; `Hops ≥ 12` → `Status: budget`; `Saturation ≥ 3` → `Status: saturated`. If terminated → **Finalize**. Else stop.
+7. **Incremental width**: if this hop surfaced a substantive, reusable concept with no atomic note yet, create it now via `skills/create-atomic.md` (flat, `agent_generated`) and wikilink it from `[[<short_form>]]` and any related existing note — do **not** defer every concept note to Finalize. Cap at 1 new atomic note per hop to avoid churn; skip only if the hop surfaced nothing note-worthy. This gives each hop **width** (a new/updated concept note) alongside the **depth** of the growing research note.
+8. Add new leads to `### Frontier`, deduped, scored, `open`; keep top 20.
+9. Update counters: `Hops` +1; `Saturation` +1 if no answer-relevant finding, else 0.
+10. Terminate in order: all checklist `[x]` → `Status: answered`; `Hops ≥ 12` → `Status: budget`; `Saturation ≥ 3` → `Status: saturated`. If terminated → **Finalize**. Else stop.
 
 ## Finalize
 
