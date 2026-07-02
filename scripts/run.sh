@@ -64,6 +64,12 @@ RUN_REF="$(mktemp "${TMPDIR:-/tmp}/sb-ref.XXXXXX")"
 list_vault_md > "$VAULT_BEFORE"
 touch "$RUN_REF"   # marks run start; files newer than this were written during the run
 
+# --- Adaptive load: ramp per-run content actions until a run takes ~10 min ---
+LOAD_FILE="$LOG_DIR/run-load.txt"
+LOAD_TARGET_SEC=600
+LOAD=$(tr -cd '0-9' < "$LOAD_FILE" 2>/dev/null || true); LOAD=${LOAD:-3}
+(( LOAD < 1 )) && LOAD=3
+
 PROMPT="You are a second-brain processing agent. Your repo is at $REPO_ROOT and the vault is at $VAULT_PATH.
 
 Read \`.agents/AGENTS.md\` and complete the initialization checklist in order. $SPEC_INSTRUCTION Stop only after Phase 6 cleanup is complete and all agent-managed vault notes are updated."
@@ -74,14 +80,30 @@ if [[ -n "$EXTRA_CONTEXT" ]]; then
 Additional context for this run: $EXTRA_CONTEXT"
 fi
 
+PROMPT="$PROMPT
+
+This run's load target is ${LOAD} content actions: create or substantially deepen about ${LOAD} knowledge notes this run, drawn from genuine depth/width work — advance the research session one or more hops, atomize surfaced or recurring concepts, connect/enrich notes, build or extend MOCs. Do the full ${LOAD} wherever genuine work exists; never fabricate filler. This load target is the run's action budget (it overrides the default ≤20 cap)."
+
 # CLAUDE_BIN lets callers (e.g. the Obsidian plugin) point at a claude binary
 # that isn't on the GUI PATH. CLAUDE_EXTRA_ARGS passes through extra flags.
+START_EPOCH=$(date +%s)
 set +e
 "${CLAUDE_BIN:-claude}" --dangerously-skip-permissions ${CLAUDE_EXTRA_ARGS:-} -p \
     "$PROMPT" \
     >> "$LOG_FILE" 2>&1
 AGENT_RC=$?
 set -e
+ELAPSED=$(( $(date +%s) - START_EPOCH ))
+
+# Adaptive-load control: nudge next run's load toward the ~10-min target.
+PREV_LOAD=$LOAD
+if (( ELAPSED < LOAD_TARGET_SEC - 60 )); then
+    LOAD=$(( LOAD + 1 ))                     # under target → ramp the load up slowly
+elif (( ELAPSED > LOAD_TARGET_SEC + 60 )); then
+    (( LOAD > 1 )) && LOAD=$(( LOAD - 1 ))   # over target → ease off
+fi
+(( LOAD > 40 )) && LOAD=40                    # safety ceiling
+echo "$LOAD" > "$LOAD_FILE"
 
 # --- Vault change detection: diff after the run, log what changed ---
 VAULT_AFTER="$(mktemp "${TMPDIR:-/tmp}/sb-after.XXXXXX")"
@@ -114,6 +136,7 @@ BLOCK_F="$(mktemp "${TMPDIR:-/tmp}/sb-block.XXXXXX")"
     sed 's/^/  ~ modified /' "$MODIFIED_F"
     sed 's/^/  - deleted  /' "$DELETED_F"
     echo "  total: ${n_created} created, ${n_modified} modified, ${n_deleted} deleted"
+    echo "  run time: ${ELAPSED}s (target ${LOAD_TARGET_SEC}s) · load ${PREV_LOAD} -> ${LOAD}"
 } > "$BLOCK_F"
 
 # 1) Repo logs: the per-run archive log + the cumulative changes.log.
@@ -138,5 +161,5 @@ fi
 
 rm -f "$VAULT_BEFORE" "$VAULT_AFTER" "$RUN_REF" "$CREATED_F" "$DELETED_F" "$NEWER_F" "$MODIFIED_F" "$BLOCK_F"
 
-echo "Done: $(date -Iseconds) (agent exit ${AGENT_RC})" >> "$LOG_FILE"
+echo "Done: $(date -Iseconds) (agent exit ${AGENT_RC}, ${ELAPSED}s, load ${PREV_LOAD}->${LOAD})" >> "$LOG_FILE"
 exit "$AGENT_RC"

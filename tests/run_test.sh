@@ -45,6 +45,16 @@ CHANGES_LOG="$PROJECT/logs/changes.log"
 grep -F "New Note.md" "$CHANGES_LOG" >/dev/null || { echo "changes.log should list the note the run created" >&2; exit 1; }
 grep -F "+ created" "$CHANGES_LOG" >/dev/null || { echo "changes.log should mark new notes as created" >&2; exit 1; }
 
+# The run should log how long it took, and maintain an adaptive load file.
+grep -F "run time:" "$LOG_FILE" >/dev/null || { echo "run log should record the run time" >&2; exit 1; }
+grep -F "run time:" "$CHANGES_LOG" >/dev/null || { echo "changes.log should record the run time" >&2; exit 1; }
+LOAD_FILE="$PROJECT/logs/run-load.txt"
+[[ -f "$LOAD_FILE" ]] || { echo "run should persist the adaptive load file" >&2; exit 1; }
+grep -Eq '^[0-9]+$' "$LOAD_FILE" || { echo "run-load.txt should hold an integer load" >&2; exit 1; }
+# Fast stub run (<< 10 min) should have ramped the load up from the default 3 to 4.
+[[ "$(cat "$LOAD_FILE")" == "4" ]] || { echo "a fast run should ramp load 3 -> 4; got $(cat "$LOAD_FILE")" >&2; exit 1; }
+grep -F "load target is" "$FAKE_CLAUDE_ARGS" >/dev/null || { echo "agent prompt should carry the load target" >&2; exit 1; }
+
 # The run should also surface the change summary as a vault-visible agent note.
 CHANGE_NOTE="$TMPDIR/vault/Agent/Agent Change Log.md"
 [[ -f "$CHANGE_NOTE" ]] || { echo "run should write the vault-visible Agent Change Log note" >&2; exit 1; }

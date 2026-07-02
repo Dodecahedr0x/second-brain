@@ -50,7 +50,7 @@ Exit: Connection map built. Every change set item has an entry. `Agent Interest 
    - **EXPLORE**: Advance research by one hop → `specs/research.md`
    - **DEFER**: Tag `#needs-review`, skip this session
 3. Validate against `context/boundaries.md`
-4. If > 20 actions planned: process oldest first, defer the rest
+4. Size the plan to the run's **load target** (the "load target is N content actions" line in the run context; default 20 if absent): aim to fill that many genuine content actions; if more are available, take the highest-value first and defer the rest; if fewer genuine actions exist, do what's real — never fabricate to hit the number
 5. Write the plan as a numbered list in the log — this is the session **contract**
 
 Exit: Numbered plan exists. No action is ambiguous.

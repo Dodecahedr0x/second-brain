@@ -6,7 +6,7 @@ Rule: **weight decides how much, graph-state decides what kind.**
 
 ## Step 1: Split the cycle budget
 
-Given the run's total action budget (from `loop.md` Phase 3, ≤20 as today):
+Given the run's total action budget (the **load target** from run context — the "load target is N content actions" line; default 20 if absent):
 - **Baseline maintenance (mandatory — at least 1 action every run whenever any such work exists)**: reserve ~20% (min 1) for whole-graph tidying, independent of hot topics **and of new external content** — link an orphan note, fill an open `Agent Concept Gaps` row (`ATOMIZE` or `EXPLORE`), weave a `#stub` into the graph (`ENRICH`/`CONNECT` — a stub whose source can't be fetched is still linkable and can seed research), or add a missing MOC placement. Do **not** skip this slice because discovery/ingestion returned nothing — that is exactly when it matters.
 - **Topic work**: the rest, allocated across live topics **proportional to `Weight` × focus multiplier** (`Focus ★` → ×1.5). Skip `mute`d (weight 0) topics. Low-weight topics may get 0 actions this cycle (touched a later cycle) — never cut off.
 
