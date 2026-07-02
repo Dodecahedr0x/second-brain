@@ -6,6 +6,8 @@
 
 Insert wikilinks into a note where concepts are mentioned but not yet linked.
 
+**Scope — agent-owned content only.** Operate only on agent-created notes (atomic / source / MOC) and the agent zone of daily notes. **Never** rewrite the user zone or any user-authored unstructured content (read-only per `context/boundaries.md`) — skip such targets entirely; surface the connection in the agent zone instead.
+
 ## Procedure
 
 ```

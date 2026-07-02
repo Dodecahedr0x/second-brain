@@ -6,7 +6,7 @@
 
 The vault is jointly maintained by the user and the agent. Today's daily note is the shared workspace:
 
-- **User zone**: everything above the agent boundary (`---\n## Agent`). The user writes freely here — bullets, URLs, tasks, thoughts. The agent annotates (wikilinks) but never rewrites. Preferred shape: `## User Inputs` first (freeform user content), then `## Agent Feedback` (user-owned checkboxes).
+- **User zone**: everything above the agent boundary (`---\n## Agent`). The user writes freely here — bullets, URLs, tasks, thoughts. It is **read-only** to the agent: analyze it, but never annotate, wikilink, append to, or rewrite it. All generated content (source-note links, transcripts, detected concepts) goes in the agent zone. Preferred shape: `## User Inputs` first (freeform user content), then `## Agent Feedback` (user-owned checkboxes).
 - **Feedback checkboxes**: positive-confirmation only, max 3 boxes. Unchecked boxes are neutral prompts, not weak negatives. Checked boxes are explicit steering; read them in Phase 1, update `Agent User Profile` / `Agent Concept Gaps` / discovery priorities as applicable, then leave the checkbox text unchanged.
 - **Agent zone**: everything from `---\n## Agent — YYYY-MM-DD HH:MM` onward. The agent **replaces** this section in full on every run. The user never edits it.
 
@@ -67,7 +67,7 @@ For each URL group:
 1. Fetch via `skills/parse-content.md` Part B (using `extract-youtube.md`, `extract-twitter.md`, or `fetch-url.md`)
 2. Merge results across group (union concepts, synthesize summary)
 3. Create one source note via `specs/source-note.md`
-4. Annotate every URL bullet in the user zone with `[[source note title]]`
+4. Surface the source note in the agent zone `### Resources` (`- [[source note title]] — from a link in your notes`); **leave the user's URL bullets untouched**
 5. Schedule ENRICH for matched concepts; ATOMIZE or add to gaps for new ones
 
 **Failure handling**:

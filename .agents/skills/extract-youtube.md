@@ -62,4 +62,4 @@ EXTRACT_RESULT:
   concepts: [A, B, C]
 ```
 
-The caller (daily pipeline) replaces the raw URL bullet in the daily note with `[[<Title>]]`.
+The caller (daily pipeline) surfaces the new source note in the agent zone `### Resources` (`- [[<Title>]] — from a link in your notes`); the user's URL bullet is left untouched.

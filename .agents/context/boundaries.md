@@ -21,6 +21,7 @@ Exception: explicit harness-maintenance requests may edit `.agents/` and repo fi
 | Rename existing files | Breaks all existing wikilinks pointing to that file |
 | Move files between folders | Same as rename — breaks links |
 | Overwrite a user-authored file's full content | Risks destroying user content |
+| **Modify the user zone / user-authored unstructured content** — annotate, wikilink, append to, or rewrite the user's bullets, pasted URLs, or prose | The user's writing is **read-only**. Analyze it but write nothing into it; all generated content (source-note links, transcripts, detected concepts) goes in the **agent zone** or new agent-created notes |
 | Modify task items (`- [ ]`) | Tasks belong to the user |
 | Alter personal reflections or diary entries | Not the agent's domain |
 | Push to any git remote | Requires explicit user instruction |

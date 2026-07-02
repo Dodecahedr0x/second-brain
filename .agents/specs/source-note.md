@@ -46,7 +46,7 @@ Tags: #source #<source_type>
 
 ## Template — Multiple URLs (same site)
 
-Use when two or more URLs from the same site are processed together. All bullets in the originating note that pointed to any of these URLs get annotated with `[[<Title>]]`.
+Use when two or more URLs from the same site are processed together. The user's original bullets are left untouched; the single source note is surfaced in the agent zone (see Linking Back).
 
 ```markdown
 ---
@@ -106,14 +106,15 @@ Tags: #source #<source_type>
 
 ## Linking Back
 
-After creating the source note, annotate every originating URL bullet:
+**Never modify the user's pasted link or its bullet — the user zone is read-only.** After creating the source note, surface it in the **agent zone** (the daily note's `### Resources`, or the caller's agent-generated section), leaving the user's original bullet exactly as written:
 
 ```
-- [[Some Video Title]] — <one-line personal note if any>
-- [[Python Documentation — asyncio]] — used in project
+### Resources
+- [[Some Video Title]] — from a link in your notes
+- [[Python Documentation — asyncio]] — from a link in your notes
 ```
 
-For multi-URL notes, **all** bullets from the group get replaced with the same `[[Note Title]]` wikilink. The original URLs are preserved in the `source_urls` frontmatter field — do not keep them in the daily note text.
+The `source_url` (and `source_urls` for multi-URL notes) lives in the source note's frontmatter, so the reference is preserved without touching the user's text. Do not annotate, replace, or append to the user's bullets.
 
 ## Relationship to Atomic Notes
 

@@ -55,13 +55,13 @@ Triggered when a reference (URL or citation) is found in Part A, or when a daily
 
 Each extractor returns an `EXTRACT_RESULT` with `status`, `note` (filename created), and `concepts`.
 
-### Step 3: Update Source
+### Step 3: Surface the Source (never touch the user's bullet)
 
 After the extractor creates the source note:
-1. Annotate the raw URL bullet in the originating vault note with `[[<source note title>]]`; keep the original URL in the source note frontmatter
+1. **Do not modify the user's URL bullet** (user zone is read-only). Surface the new source note in the **agent zone** `### Resources`: `- [[<source note title>]] — from a link in your notes`. The URL stays in the source note's frontmatter.
 2. If additional concepts were returned, add them to `Agent Concept Gaps` for atomic note generation
 3. If additional URLs/references were returned, schedule or defer FETCH; do not treat URLs as concepts
 
 ### Failure
 
-If the extractor returns `BLOCKED`, `FAILED`, or `EMPTY`, leave the original bullet untouched and append `#needs-review` only if safe.
+If the extractor returns `BLOCKED`, `FAILED`, or `EMPTY`, leave the user's bullet **exactly as written** — do not tag it. Record the failure in `Agent Operation Log` (and, if the item warrants retry, note it in the agent zone / `Agent Concept Gaps`), never on the user's line.
