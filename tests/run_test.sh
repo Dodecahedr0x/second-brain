@@ -20,12 +20,15 @@ cat > "$TMPDIR/bin/claude" <<'STUB'
 #!/usr/bin/env bash
 set -euo pipefail
 printf '%s\n' "$*" > "${FAKE_CLAUDE_ARGS:?}"
+# Simulate the agent creating a vault note, so change detection has something to log.
+if [[ -n "${FAKE_VAULT_NOTE:-}" ]]; then printf 'content\n' > "$FAKE_VAULT_NOTE"; fi
 STUB
 chmod +x "$TMPDIR/bin/claude"
 cp "$TMPDIR/bin/claude" "$TMPDIR/home/.local/bin/claude"
 export HOME="$TMPDIR/home"
 export PATH="$TMPDIR/bin:$PATH"
 export FAKE_CLAUDE_ARGS="$TMPDIR/claude_args"
+export FAKE_VAULT_NOTE="$TMPDIR/vault/New Note.md"
 
 "$PROJECT/scripts/run.sh" specs/weekly-review.md >/tmp/run_test.out
 
@@ -34,6 +37,13 @@ grep -F "Execute the entry spec \`.agents/specs/weekly-review.md\`" "$FAKE_CLAUD
 LOG_FILE=$(find "$PROJECT/logs/archive" -type f -name '*_weekly.log' -print -quit)
 [[ -n "$LOG_FILE" ]] || { echo "weekly archive log should be written" >&2; exit 1; }
 grep -F "Done:" "$LOG_FILE" >/dev/null
+
+# The run should log what changed in the vault, both in the run log and a cumulative changes.log
+grep -F "Vault changes" "$LOG_FILE" >/dev/null || { echo "run log should include the vault-changes summary" >&2; exit 1; }
+CHANGES_LOG="$PROJECT/logs/changes.log"
+[[ -f "$CHANGES_LOG" ]] || { echo "logs/changes.log should be written each run" >&2; exit 1; }
+grep -F "New Note.md" "$CHANGES_LOG" >/dev/null || { echo "changes.log should list the note the run created" >&2; exit 1; }
+grep -F "+ created" "$CHANGES_LOG" >/dev/null || { echo "changes.log should mark new notes as created" >&2; exit 1; }
 
 git -C "$PROJECT" check-ignore -q .agent.lock || {
     echo ".agent.lock should be ignored; run.sh creates it for flock coordination" >&2

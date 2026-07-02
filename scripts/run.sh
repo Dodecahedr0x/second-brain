@@ -44,6 +44,19 @@ LOG_FILE="$ARCHIVE_DIR/$(date +%Y-%m-%d_%H-%M-%S)_${TYPE}.log"
 
 echo "=== $(date -Iseconds) ===" >> "$LOG_FILE"
 
+# --- Vault change detection: snapshot before the run (diffed after; see end) ---
+CHANGES_LOG="$LOG_DIR/changes.log"
+list_vault_md() {
+    # All markdown notes except disposable Agent/Temp scratch, paths relative to the vault.
+    [[ -d "$VAULT_PATH" ]] || return 0
+    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/Temp/*" 2>/dev/null \
+        | sed "s#^$VAULT_PATH/##" | sort
+}
+VAULT_BEFORE="$(mktemp "${TMPDIR:-/tmp}/sb-before.XXXXXX")"
+RUN_REF="$(mktemp "${TMPDIR:-/tmp}/sb-ref.XXXXXX")"
+list_vault_md > "$VAULT_BEFORE"
+touch "$RUN_REF"   # marks run start; files newer than this were written during the run
+
 PROMPT="You are a second-brain processing agent. Your repo is at $REPO_ROOT and the vault is at $VAULT_PATH.
 
 Read \`.agents/AGENTS.md\` and complete the initialization checklist in order. $SPEC_INSTRUCTION Stop only after Phase 6 cleanup is complete and all agent-managed vault notes are updated."
@@ -56,8 +69,41 @@ fi
 
 # CLAUDE_BIN lets callers (e.g. the Obsidian plugin) point at a claude binary
 # that isn't on the GUI PATH. CLAUDE_EXTRA_ARGS passes through extra flags.
+set +e
 "${CLAUDE_BIN:-claude}" --dangerously-skip-permissions ${CLAUDE_EXTRA_ARGS:-} -p \
     "$PROMPT" \
     >> "$LOG_FILE" 2>&1
+AGENT_RC=$?
+set -e
 
-echo "Done: $(date -Iseconds)" >> "$LOG_FILE"
+# --- Vault change detection: diff after the run, log what changed ---
+VAULT_AFTER="$(mktemp "${TMPDIR:-/tmp}/sb-after.XXXXXX")"
+CREATED_F="$(mktemp "${TMPDIR:-/tmp}/sb-c.XXXXXX")"
+DELETED_F="$(mktemp "${TMPDIR:-/tmp}/sb-d.XXXXXX")"
+NEWER_F="$(mktemp "${TMPDIR:-/tmp}/sb-n.XXXXXX")"
+MODIFIED_F="$(mktemp "${TMPDIR:-/tmp}/sb-m.XXXXXX")"
+list_vault_md > "$VAULT_AFTER"
+comm -13 "$VAULT_BEFORE" "$VAULT_AFTER" > "$CREATED_F"   # in after, not before
+comm -23 "$VAULT_BEFORE" "$VAULT_AFTER" > "$DELETED_F"   # in before, not after
+if [[ -d "$VAULT_PATH" ]]; then
+    find "$VAULT_PATH" -type f -name '*.md' -not -path "$VAULT_PATH/Agent/Temp/*" -newer "$RUN_REF" 2>/dev/null \
+        | sed "s#^$VAULT_PATH/##" | sort > "$NEWER_F"
+fi
+comm -23 "$NEWER_F" "$CREATED_F" > "$MODIFIED_F"         # touched during the run, minus newly created
+
+n_created=$(wc -l < "$CREATED_F" | tr -d '[:space:]')
+n_modified=$(wc -l < "$MODIFIED_F" | tr -d '[:space:]')
+n_deleted=$(wc -l < "$DELETED_F" | tr -d '[:space:]')
+{
+    echo ""
+    echo "=== Vault changes: ${TYPE} run $(date -Iseconds) (agent exit ${AGENT_RC}) ==="
+    sed 's/^/  + created  /' "$CREATED_F"
+    sed 's/^/  ~ modified /' "$MODIFIED_F"
+    sed 's/^/  - deleted  /' "$DELETED_F"
+    echo "  total: ${n_created} created, ${n_modified} modified, ${n_deleted} deleted"
+} | tee -a "$LOG_FILE" >> "$CHANGES_LOG"
+
+rm -f "$VAULT_BEFORE" "$VAULT_AFTER" "$RUN_REF" "$CREATED_F" "$DELETED_F" "$NEWER_F" "$MODIFIED_F"
+
+echo "Done: $(date -Iseconds) (agent exit ${AGENT_RC})" >> "$LOG_FILE"
+exit "$AGENT_RC"

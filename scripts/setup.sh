@@ -178,6 +178,7 @@ echo "  Daily loop:     every hour"
 echo "  Weekly review:  Mondays at ${HOUR}:00"
 echo "  Monthly review: 1st of month at ${HOUR}:00"
 echo "  Run logs:       $LOG_DIR/archive/YYYY-MM-DD_HH-MM-SS_<type>.log"
+echo "  Change log:     $LOG_DIR/changes.log (what each run created/modified/deleted)"
 echo "  Shell errors:   $CRON_ERR_LOG"
 
 # --- First pass (bootstrap the vault) ---
