@@ -11,12 +11,13 @@ Before executing any loop iteration, an agent MUST:
 0. Read `.env.local` in the repo root — load `VAULT_PATH` (abort if missing; tell user to run `scripts/setup.sh`) and the optional YouTube knobs: `YT_COOKIES` (yt-dlp cookie args; may be empty/absent) and `YT_PROXY` (single proxy URL for yt-dlp `--proxy` and youtube-transcript-api `--http-proxy/--https-proxy`; may be empty/absent). These are used by `skills/extract-youtube.md` and `skills/search-youtube.md`.
 1. Read `context/vault-structure.md` — understand current folder layout and conventions
 2. Read `context/agent-notes.md` and `skills/agent-notes.md` — load the agent-managed note convention and templates
-3. Verify all seven agent-managed notes exist in the vault; create any missing ones using `skills/agent-notes.md` templates (Phase 0 exception)
-4. Read `Agent Vault Index` — load last known vault state
-5. Read `Agent Operation Log` — know what was done last time
-6. Read `context/boundaries.md` — internalize what is off-limits
-7. Read `loop.md` — load the six-phase execution model
-8. Load relevant skills from `skills/` for the current task type
+3. Ensure the agent-owned folder skeleton exists: `Sources/`, `Atomic/`, `MOCs/`, `Research/`, `Agent/` (create missing folders and log `FOLDER_CREATED` in the operation log once available)
+4. Verify all seven agent-managed notes exist in `Agent/`; if missing, fall back to legacy root-level notes, otherwise create from `skills/agent-notes.md` templates (Phase 0 exception)
+5. Read `Agent/Agent Vault Index` (or legacy `Agent Vault Index`) — load last known vault state
+6. Read `Agent/Agent Operation Log` (or legacy `Agent Operation Log`) — know what was done last time
+7. Read `context/boundaries.md` — internalize what is off-limits
+8. Read `loop.md` — load the six-phase execution model
+9. Load relevant skills from `skills/` for the current task type
 
 ## Core Principles (Harness Engineering)
 
@@ -39,7 +40,7 @@ All agents start with Phase 0 initialization, then execute `loop.md`. No direct 
 ## Scope Boundaries (Summary)
 
 Full detail in `context/boundaries.md`. Quick reference:
-- **Allowed**: Creating `.md` files in the vault, editing current change-set notes, updating agent-managed notes, adding wikilinks, creating/updating MOC files named in the Phase 3 contract
+- **Allowed**: Creating `.md` files in the vault's agent-owned folders (`Sources/`, `Atomic/`, `MOCs/`, `Research/`, `Agent/`), editing current change-set agent-owned notes, updating agent-managed notes, adding wikilinks inside agent-owned content, and rewriting only the check-in/agent zones of daily notes
 - **Forbidden during vault-processing runs**: Deleting vault files, modifying `.obsidian/` config, modifying repo files, touching `.stfolder/`
 
 ## Agent Types

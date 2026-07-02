@@ -9,7 +9,12 @@
 $VAULT_PATH/
 ├── .obsidian/          ← FORBIDDEN: Obsidian config, never touch
 ├── .stfolder/          ← FORBIDDEN: Syncthing metadata, never touch
-└── 2026-06-19.md       ← Daily note (inbox)
+├── YYYY-MM-DD.md       ← Daily notes; user-owned input at top, agent zone below
+├── Sources/            ← Agent-created source/reference notes
+├── Atomic/             ← Agent-created concept notes
+├── MOCs/               ← Agent-created maps of content
+├── Research/           ← Agent-created multi-hop research notes
+└── Agent/              ← Agent-managed state notes
 ```
 
 ## Conventions Observed
@@ -19,8 +24,11 @@ $VAULT_PATH/
 | Content Type | Convention | Example |
 |-------------|------------|---------|
 | Daily notes | `YYYY-MM-DD.md` | `2026-06-19.md` |
-| Atomic notes | `Title Case.md` | `Syncthing.md` |
-| MOCs | `Topic MOC.md` | `Tools MOC.md` |
+| Source notes | `Sources/Title Case.md` | `Sources/Obsidian Agent Skills.md` |
+| Atomic notes | `Atomic/Title Case.md` | `Atomic/Syncthing.md` |
+| MOCs | `MOCs/Topic MOC.md` | `MOCs/Tools MOC.md` |
+| Research notes | `Research/Short Research Title.md` | `Research/Agentic RAG Runtime.md` |
+| Agent state notes | `Agent/Agent <Name>.md` | `Agent/Agent Operation Log.md` |
 
 ### Note Structure
 
@@ -70,19 +78,23 @@ Atomic notes use the template from `specs/generation.md`.
 - Subsequent mentions are NOT linked
 - Display text used when title differs: `[[File Title|display text]]`
 
-## Folder Structure Plan
+## Agent-Owned Folder Boundary
 
-As the vault grows, use this folder structure:
+The user selected a dedicated-folder boundary for generated content. New agent-created notes MUST live in these folders:
 ```
 $VAULT_PATH/
-├── Daily/              ← Daily notes (YYYY-MM-DD.md)
+├── Sources/            ← References and source documents
 ├── Atomic/             ← Atomic concept notes
 ├── MOCs/               ← Maps of Content
-├── Inbox/              ← Raw drops that aren't daily notes
-└── Sources/            ← References and source documents
+├── Research/           ← Multi-hop research outputs
+└── Agent/              ← Machine-written state notes
 ```
 
-*Do not create these folders yet — wait for the vault to accumulate enough notes to warrant it. Current state: flat structure is fine.*
+Daily notes remain at the vault root by default because they are user-owned entrypoints. The agent may rewrite only the check-in and agent zones inside a daily note.
+
+Regenerability invariant: `Sources/`, `Atomic/`, `MOCs/`, `Research/`, and `Agent/` are derived projections of user writing plus external sources. If the user deletes those folders, future loop runs should recreate the folder skeleton and rebuild the same structural classes of notes over time. Content may differ; folder/function boundaries should not.
+
+Migration safety: never move or rename existing vault notes automatically. When reading existing vaults, check both the dedicated-folder path and the legacy root path. Create new notes only in the dedicated folder for their type.
 
 ## Obsidian Plugins Detected
 

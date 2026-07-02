@@ -38,7 +38,7 @@ Tags: #[topic] #atomic
 1. Check `Agent Vault Index` — confirm the note does NOT already exist under a different name
 2. Name the file exactly as the concept appears in wikilinks: `[[Syncthing]]` → `Syncthing.md`
 3. Fill the template above. Do not hallucinate facts — if information is unknown, use "Information pending" and tag `#stub`
-4. Save to the vault root (or appropriate topic folder if one exists)
+4. Save to `Atomic/<Concept>.md` (check legacy root path first to avoid duplicates; do not move legacy notes automatically)
 5. Update `Agent Vault Index` with the new note
 6. Update `Agent Concept Gaps` — move concept from Pending to Created
 7. Return to `specs/connection.md` — link the new note to/from related notes

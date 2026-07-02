@@ -34,7 +34,7 @@ Tags: #moc #{topic}
 ```
 1. Trigger condition: 3+ notes share a primary topic AND no MOC exists for it
 2. Collect all notes in vault-index with that topic tag
-3. Create file: "{Topic} MOC.md" in vault root (or topic folder)
+3. Create file: `MOCs/{Topic} MOC.md` (first check both `MOCs/{Topic} MOC.md` and legacy `{Topic} MOC.md`)
 4. Fill template with all relevant notes + one-line description each
 5. In each listed note, add at bottom: "See also: [[{Topic} MOC]]"
 6. Update Agent Vault Index: add MOC to MOC Registry
@@ -52,7 +52,7 @@ Tags: #moc #{topic}
 
 ## MOC Naming Rules
 
-- Format: `{Topic} MOC.md`
+- Format: `MOCs/{Topic} MOC.md` for new MOCs
 - Topic should be a noun or noun phrase (not an adjective)
 - Example: `Tools MOC.md`, `Productivity MOC.md`, `Programming MOC.md`
 

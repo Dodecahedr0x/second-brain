@@ -2,13 +2,13 @@
 
 **Used in**: Initialization (AGENTS.md step 3-4), Phase 6 CLEANUP, Abort Protocol
 
-How to create, read, and write the seven agent-managed vault notes. See `context/agent-notes.md` for the naming and marker convention.
+How to create, read, and write the seven agent-managed vault notes. See `context/agent-notes.md` for the `Agent/` path, naming, marker convention, and legacy-root fallback.
 
 ---
 
 ## Initialisation
 
-Before each session, check that all seven notes exist in `$VAULT_PATH`. If any is missing, create it from the template below before proceeding.
+Before each session, ensure `$VAULT_PATH/Agent/` exists, then check that all seven notes exist there. If a note is missing, read the legacy root-level `<note>.md` if present; otherwise create it from the template below under `Agent/`.
 
 ---
 

@@ -10,6 +10,7 @@ This file defines hard constraints. Violating any of these is an automatic abort
 | `$VAULT_PATH/.stfolder/` | Syncthing metadata — changes here break sync |
 | `.agents/` itself | Agents do not rewrite their own harness during vault-processing runs |
 | `/home/openclaw/second-brain/` | Repo code is not a vault artifact |
+| `$VAULT_PATH/Sources/`, `$VAULT_PATH/Atomic/`, `$VAULT_PATH/MOCs/`, `$VAULT_PATH/Research/`, `$VAULT_PATH/Agent/` | Agent-owned generated territory; safe to create/update according to the active spec, but still do not delete notes during normal runs |
 
 Exception: explicit harness-maintenance requests may edit `.agents/` and repo files, but must not touch vault user content unless separately requested.
 
@@ -19,7 +20,7 @@ Exception: explicit harness-maintenance requests may edit `.agents/` and repo fi
 |--------|--------|
 | Delete any `.md` file | Irreversible — user content loss |
 | Rename existing files | Breaks all existing wikilinks pointing to that file |
-| Move files between folders | Same as rename — breaks links |
+| Move files between folders automatically | Same as rename — breaks links; use dedicated folders for new notes only unless the user explicitly requests a migration |
 | Overwrite a user-authored file's full content | Risks destroying user content |
 | **Modify the user zone / user-authored unstructured content** — annotate, wikilink, append to, or rewrite the user's bullets, pasted URLs, or prose | The user's writing is **read-only**. Analyze it but write nothing into it; all generated content (source-note links, transcripts, detected concepts) goes in the **agent zone** or new agent-created notes |
 | Modify task items (`- [ ]`) | Tasks belong to the user |

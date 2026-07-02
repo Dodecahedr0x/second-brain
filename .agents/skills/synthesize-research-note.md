@@ -51,7 +51,7 @@ agent_processed: true
 Tags: #research
 ```
 
-Update `$VAULT_PATH/<short_form>.md` (the stub created at session start) — do not create a new note.
+Update `$VAULT_PATH/Research/<short_form>.md` (or a legacy `$VAULT_PATH/<short_form>.md` if that is where the active session stub already exists) — do not create a new note.
 
 ## Guardrails
 
