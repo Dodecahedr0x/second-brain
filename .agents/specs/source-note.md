@@ -113,10 +113,10 @@ Tags: #source #<source_type>
 
 ## Linking Back
 
-**Never modify the user's pasted link or its bullet — the user zone is read-only.** After creating the source note, surface it in the **agent zone** (the daily note's `### Resources`, or the caller's agent-generated section), leaving the user's original bullet exactly as written:
+**Never modify the user's pasted link or its bullet — the user zone is read-only.** After creating the source note, surface it in the **recap's `## New Notes`** via `skills/recap.md`, leaving the user's original bullet exactly as written:
 
 ```
-### Resources
+## New Notes
 - [[Some Video Title]] — from a link in your notes
 - [[Python Documentation — asyncio]] — from a link in your notes
 ```

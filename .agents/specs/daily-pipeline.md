@@ -16,7 +16,7 @@ The vault is jointly maintained by the user and the agent. Today's daily note is
 
 ### Active mode — user zone changed since `last_run_timestamp`
 
-Full pipeline: process new content, fetch URLs, create notes, find resources, write agent zone.
+Full pipeline: process new content, fetch URLs, create notes, find resources, write the recap note and update the daily note's recap link.
 
 ### Idle mode — no user zone changes
 
@@ -33,7 +33,7 @@ The mode is determined in Phase 1 and stays fixed for the session.
 | 1 OBSERVE | Classify mode; diff user zone; extract change set | Classify mode only |
 | 2 ORIENT | Parse URLs, citations, new concepts | — |
 | 3 DECIDE | Plan FETCHes, CREATEs, ENRICHes, ATOMIZEs | Plan 1 resource lookup for top concept gap |
-| 4 ACT | Execute plan; write agent zone | Find resource; write agent zone |
+| 4 ACT | Execute plan; write recap note + daily recap link | Find resource; write recap note + daily recap link |
 | 5 VERIFY | Zone written; wikilinks valid; no user zone rewritten | Zone written |
 | 6 CLEANUP | Update Agent logs; persist state | Update timestamp only |
 

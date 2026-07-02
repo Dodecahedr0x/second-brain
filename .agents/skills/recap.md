@@ -100,7 +100,7 @@ Ensure the daily note's agent zone contains exactly `[[Recap <date>]]`:
 [[Recap YYYY-MM-DD]]
 ```
 
-The user zone above the boundary is **never touched**. This replacement is the sole agent write into any daily note.
+The user zone above the boundary is **never touched**. This replacement is the sole agent write into any daily note. Sibling agent links (weekly/monthly review notes) surface in the recap's `## New Notes`, not in the daily note's agent zone.
 
 ---
 

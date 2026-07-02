@@ -40,7 +40,7 @@ All agents start with Phase 0 initialization, then execute `loop.md`. No direct 
 ## Scope Boundaries (Summary)
 
 Full detail in `context/boundaries.md`. Quick reference:
-- **Allowed**: Creating flat root-level `.md` knowledge notes with `agent_generated: true`, updating co-owned `agent_generated`/`agent_augmented` notes per the active spec, updating agent-managed notes under `Agent/`, using `Agent/Temp/` for scratch files, adding wikilinks inside agent-generated content, and rewriting only the check-in/agent zones of daily notes
+- **Allowed**: Creating flat root-level `.md` knowledge notes with `agent_generated: true`, updating co-owned `agent_generated`/`agent_augmented` notes per the active spec, updating agent-managed notes under `Agent/`, using `Agent/Temp/` for scratch files, adding wikilinks inside agent-generated content, and writing only the `[[Recap YYYY-MM-DD]]` link in daily notes
 - **Forbidden during vault-processing runs**: Deleting vault files, modifying `.obsidian/` config, modifying repo files, touching `.stfolder/`
 
 ## Core Skills (always loaded)

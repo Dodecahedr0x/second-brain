@@ -19,7 +19,7 @@ The user zone is **read-only** — analyze it, write nothing into it. All output
 
 1. Read top to bottom.
 2. For each bullet, **extract without modifying it**:
-   - Names a known concept → surface it in the recap's `## New Notes` (via `skills/recap.md`); do **not** inline-link the user's text.
+   - Names a known concept → surface it in the recap (via `skills/recap.md`); do **not** inline-link the user's text.
    - Names an unknown concept → log in `Agent Concept Gaps`.
    - Is a pasted URL → route to `skills/parse-content.md` Part B; surface the resulting source note in the recap's `## New Notes` (via `skills/recap.md`), leaving the user's URL bullet exactly as written.
    - Is a task or personal reflection → leave alone.

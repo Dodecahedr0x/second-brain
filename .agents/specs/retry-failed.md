@@ -114,7 +114,7 @@ Call the appropriate extraction skill with the item's URL.
 ### 4b. On success (`status: OK`)
 
 **Type A (URL bullet)**:
-1. Surface the source note in the agent zone `### Resources` of the relevant daily note (`- [[Source Note Title]] — from a link in your notes`). **Do not modify the user's bullet** — the URL stays in the source note frontmatter.
+1. Surface the source note in the **recap's `## New Notes`** (via `skills/recap.md`) for the relevant daily note (`- [[Source Note Title]] — from a link in your notes`). **Do not modify the user's bullet** — the URL stays in the source note frontmatter.
 2. For each concept returned by the skill:
    - Matches existing note → schedule ENRICH (add to a deferred list; the next daily run will pick it up)
    - No match → add to `Agent Concept Gaps`
@@ -123,12 +123,12 @@ Call the appropriate extraction skill with the item's URL.
 **Type B/C (stub source note)**:
 1. Fill in the stub: overwrite `## Summary`, `## Key Points`, `## Raw Notes`, `## Concepts` with extracted content.
 2. Remove `#needs-review` from the Tags line if present.
-3. If the originating daily note can be found (search for the URL in all daily notes), surface the source note in that day's agent zone `### Resources`; leave the user's bullet untouched.
+3. If the originating daily note can be found (search for the URL in all daily notes), surface the source note in that day's recap's `## New Notes` (via `skills/recap.md`); leave the user's bullet untouched.
 4. Log: `[TIMESTAMP] RETRY_OK: <note_filename> filled from <url>`
 
 **Type D (bare URL bullet, never attempted)**:
 1. Same as Type A success — the URL was never tried before, so this is a first extraction.
-2. Create the source note and surface it in the daily note's agent zone `### Resources`; leave the user's bullet untouched.
+2. Create the source note and surface it in the **recap's `## New Notes`** (via `skills/recap.md`); leave the user's bullet untouched.
 3. Log: `[TIMESTAMP] RETRY_OK (first attempt): <url> → [[Source Note Title]]`
 
 **After success**: tag the item `#queued` only if enrichment of atomic notes was deferred. Otherwise it is fully processed.

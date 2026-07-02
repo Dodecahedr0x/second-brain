@@ -93,7 +93,7 @@ $VAULT_PATH/Agent/       ← machine-written state notes
 $VAULT_PATH/Agent/Temp/   ← temporary scratch/context files; safe to regenerate
 ```
 
-Daily notes remain at the vault root because they are user-owned entrypoints. The agent may rewrite only the check-in and agent zones inside a daily note.
+Daily notes remain at the vault root because they are user-owned entrypoints. The agent may write only the recap link inside a daily note.
 
 Regenerability invariant: agent-owned state/temp files under `Agent/` are disposable machine projections. Agent-generated root knowledge notes are not disposable once written; if the user edits one after `agent_last_touched`, it becomes `agent_augmented: true` and must be preserved.
 

@@ -28,7 +28,7 @@ Exit: Change set built. Never empty (today's note is always present).
 2. Cross-reference `Agent Vault Index` for existing notes sharing those concepts
 3. Build **connection map**: `{note: [candidate_links]}`
 4. Flag concepts with no existing note → candidates for `Agent Concept Gaps`
-5. **Steering refresh**: read back `## Check-in` ticks — from today's daily note AND from the current `Weekly Review — YYYY-W##` and `Monthly Review — YYYY-MM` notes if either carries an unprocessed `## Check-in` — via `skills/check-in.md` (which marks each section processed), then run `skills/update-interest-model.md` (fresh signal + all ticks) to refresh `Agent Interest Model` before planning.
+5. **Steering refresh**: read back `## Check-in` ticks — from today's **recap** AND from the current `Weekly Review — YYYY-W##` and `Monthly Review — YYYY-MM` notes if either carries an unprocessed `## Check-in` — via `skills/check-in.md` (which marks each section processed), then run `skills/update-interest-model.md` (fresh signal + all ticks) to refresh `Agent Interest Model` before planning.
 
 Exit: Connection map built. Every change set item has an entry. `Agent Interest Model` reflects latest user signals.
 
@@ -67,6 +67,7 @@ Actions follow per-class routing from `specs/reconcile.md` Per-Class Routing —
 2. Before each action apply idempotency guards:
    - **ENRICH**: skip any wikilink or tag that already exists verbatim in the target note
    - **ATOMIZE / SOURCE_CREATE**: if the target note already exists, switch to ENRICH instead of creating a duplicate
+   - **CLEAN**: if the concept note already exists, switch to ENRICH on that note
    - **FETCH**: if a source note for this URL already exists and is not a `#stub`, skip the fetch
 3. After each action, log immediately in `Agent Operation Log`:
    ```

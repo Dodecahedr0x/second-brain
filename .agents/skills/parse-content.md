@@ -58,7 +58,7 @@ Each extractor returns an `EXTRACT_RESULT` with `status`, `note` (filename creat
 ### Step 3: Surface the Source (never touch the user's bullet)
 
 After the extractor creates the source note:
-1. **Do not modify the user's URL bullet** (user zone is read-only). Surface the new source note in the **agent zone** `### Resources`: `- [[<source note title>]] — from a link in your notes`. The URL stays in the source note's frontmatter.
+1. **Do not modify the user's URL bullet** (user zone is read-only). Surface the new source note in the **recap's `## New Notes`** via `skills/recap.md`: `- [[<source note title>]] — from a link in your notes`. The URL stays in the source note's frontmatter.
 2. If additional concepts were returned, add them to `Agent Concept Gaps` for atomic note generation
 3. If additional URLs/references were returned, schedule or defer FETCH; do not treat URLs as concepts
 
