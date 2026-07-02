@@ -9,7 +9,8 @@
 $VAULT_PATH/
 ├── .obsidian/          ← FORBIDDEN: Obsidian config, never touch
 ├── .stfolder/          ← FORBIDDEN: Syncthing metadata, never touch
-├── YYYY-MM-DD.md       ← Daily notes; user-owned input at top, agent check-in/agent zones below
+├── YYYY-MM-DD.md       ← Daily notes; user input at top, a single [[Recap YYYY-MM-DD]] link below
+├── Recap YYYY-MM-DD.md ← Agent's derived daily output (Check-in + exploration); agent_generated
 ├── <Title>.md          ← User notes and flat agent-generated knowledge notes
 └── Agent/              ← Agent-owned machine state + temporary working files
 ```
@@ -28,7 +29,7 @@ $VAULT_PATH/
 
 ## Note Structure
 
-Daily notes have three zones. The user writes freely in the **input zone** (top); the agent owns the **Check-in** (positive-confirmation steering questions) and the **agent zone** (replaced each run).
+A **daily note** holds the user's free input; the agent writes only a single `[[Recap YYYY-MM-DD]]` link into its agent zone (via `skills/recap.md`). Everything the agent generates for the day — the **Check-in** and the exploration sections — lives in the **recap note**, not the daily note.
 
 ```markdown
 YYYY-MM-DD
@@ -36,6 +37,14 @@ YYYY-MM-DD
 - User bullet 1
 - User bullet 2 with a [[wikilink]]
 
+---
+## Agent — YYYY-MM-DD HH:MM
+[[Recap YYYY-MM-DD]]
+```
+
+The recap note (`Recap YYYY-MM-DD.md`, flat, `agent_generated`) holds the day's output — Check-in first, then the exploration sections:
+
+```markdown
 ## Check-in
 Focus this week?
 - [ ] Topic A
@@ -44,9 +53,7 @@ Keep tracking?
 - [ ] Topic C (new)
 <!-- steering: unprocessed -->
 
----
-## Agent — YYYY-MM-DD HH:MM
-### What's New
+## What's New
 ...
 ```
 
