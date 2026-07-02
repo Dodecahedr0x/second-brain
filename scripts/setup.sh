@@ -179,3 +179,22 @@ echo "  Weekly review:  Mondays at ${HOUR}:00"
 echo "  Monthly review: 1st of month at ${HOUR}:00"
 echo "  Run logs:       $LOG_DIR/archive/YYYY-MM-DD_HH-MM-SS_<type>.log"
 echo "  Shell errors:   $CRON_ERR_LOG"
+
+# --- First pass (bootstrap the vault) ---
+# Run one agent pass now so Phase 0 creates any missing agent-managed notes and
+# builds the initial index — the vault shouldn't sit empty until the first cron
+# tick. Skipped when non-interactive (CI / tests) or when claude/run.sh are
+# unavailable. Setup is already complete by this point, so it is safe to Ctrl-C.
+echo ""
+if [[ -t 0 ]] && command -v "${CLAUDE_BIN:-claude}" &>/dev/null && [[ -x "$RUN_SCRIPT" ]]; then
+    echo "Running a first pass to bootstrap the vault (creates any missing agent-managed notes)..."
+    echo "This may take a few minutes. Ctrl-C to skip — setup is already complete."
+    if "$RUN_SCRIPT"; then
+        echo "First pass done. Open your vault; the agent-managed notes should now exist."
+    else
+        echo "First pass exited non-zero — check $LOG_DIR/archive/. Setup itself is complete."
+    fi
+else
+    echo "Skipping the first pass (non-interactive shell, or claude/run.sh unavailable)."
+    echo "Bootstrap the vault yourself anytime with: $RUN_SCRIPT"
+fi
