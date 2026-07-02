@@ -24,7 +24,7 @@ Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from curr
    - **Loose Ends** *(optional)* — from `specs/daily-suggestions.md` Step 3c; omit if empty.
    - **This Week's Theme** *(optional)* — from `specs/daily-suggestions.md` Step 4; omit if empty.
    - **Question for Today** — from `specs/daily-suggestions.md` Step 3d; omit if empty.
-   - **New Notes** — notes created or substantially updated this session; always last.
+   - **New Notes** — notes created or substantially updated this session **that are not already surfaced in What's New** (typically atomic notes, MOCs, and enriched notes; What's New already covers new source and finalized research notes). **Omit if empty** — never repeat a note that already appears in What's New. Always last.
 3. Assemble in this canonical order:
    1. Check-in
    2. What's New
@@ -75,6 +75,7 @@ One sentence + optional [[MOC suggestion]]
 > Specific open question derived from this week's theme or a stub note.
 
 ## New Notes
+<!-- only notes NOT already in What's New (atomic / MOC / enriched); omit this section if none -->
 - [[Note A]] — one-liner
 - [[Note B]] — one-liner
 ```
