@@ -29,9 +29,10 @@ Read `Agent Research Log`.
 3. Create a source note via `specs/source-note.md`. Dedup by normalized URL: skip if already in `### Explored` or an existing non-stub source note.
 4. Mark the lead explored: append to `### Explored`; set its Frontier `Status: done`.
 5. Extract findings answering OPEN checklist items into `### Findings` as `— [[Source Note]] (sub-q N)`. Flip an item to `[x]` only when source-backed.
-6. Add new leads to `### Frontier`, deduped, scored, `open`; keep top 20.
-7. Update counters: `Hops` +1; `Saturation` +1 if no answer-relevant finding, else 0.
-8. Terminate in order: all checklist `[x]` → `Status: answered`; `Hops ≥ 12` → `Status: budget`; `Saturation ≥ 3` → `Status: saturated`. If terminated → **Finalize**. Else stop.
+6. Append the same source-backed findings to the session stub note `[[<short_form>]]` under `## Research Progress` with hop number, source link, and checklist item; preserve `#stub` + `<!-- research in progress -->` until Finalize. If no answer-relevant finding, append a terse `Hop N: explored [[Source Note]]; no checklist item resolved.` note only when a source was actually explored. Stamp `agent_last_touched` after every edit. This makes the readable research note grow every hop, not only at finalization.
+7. Add new leads to `### Frontier`, deduped, scored, `open`; keep top 20.
+8. Update counters: `Hops` +1; `Saturation` +1 if no answer-relevant finding, else 0.
+9. Terminate in order: all checklist `[x]` → `Status: answered`; `Hops ≥ 12` → `Status: budget`; `Saturation ≥ 3` → `Status: saturated`. If terminated → **Finalize**. Else stop.
 
 ## Finalize
 

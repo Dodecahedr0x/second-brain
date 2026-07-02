@@ -34,6 +34,7 @@ require_literal ".agents/specs/source-note.md" 'agent_last_touched: YYYY-MM-DDTh
 require_literal ".agents/specs/generation.md" 'Save to `<Concept>.md` at the vault root'
 require_literal ".agents/skills/update-moc.md" 'Create file: `{Topic} MOC.md` at the vault root'
 require_literal ".agents/specs/research.md" '$VAULT_PATH/<short_form>.md'
+require_literal ".agents/specs/research.md" 'This makes the readable research note grow every hop, not only at finalization.'
 require_literal ".agents/context/vault-structure.md" 'Migration safety: never move, rename, or delete existing vault notes automatically.'
 require_literal ".agents/specs/reconcile.md" 'Regular flat root notes can keep improving over time.'
 require_literal ".agents/specs/reconcile.md" 'Past daily recap exists | Frozen; do not edit'
