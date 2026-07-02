@@ -77,7 +77,7 @@ Atomic notes use the template from `specs/generation.md`.
 ## Ownership Markers
 
 - User-generated notes carry no ownership tag/frontmatter. The agent may read them but must not annotate or rewrite their user-authored content.
-- Agent-owned notes live under `Agent/` (including `Agent/Temp/`) and carry `agent_managed: true` when durable; users should not edit them because agents may rewrite them.
+- Durable agent state notes live under `Agent/` and carry `agent_managed: true`; users should not edit them because agents may rewrite them. Temporary scratch files under `Agent/Temp/` carry no durable markers and are safe to delete.
 - Agent-generated knowledge notes live flat at the vault root, carry `agent_generated: true` and `agent_last_touched: YYYY-MM-DDThh:mm:ssZ`, and are co-editable by user and agent.
 - Before rewriting an agent-generated note, compare its file mtime/content against `agent_last_touched`. If the note was modified after that timestamp by something other than the current agent run, preserve the page, switch/add `agent_augmented: true`, keep `agent_generated: true`, refresh `agent_last_touched`, and limit edits to additive sections unless the active spec explicitly says otherwise.
 - `agent_augmented: true` means the note started as agent-generated but now contains user edits; preserve it as a co-owned page, not disposable output.

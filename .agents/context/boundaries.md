@@ -4,7 +4,7 @@ This file defines hard constraints. Violating any of these is an automatic abort
 
 ## Ownership Territory
 
-Agent-generated knowledge notes (source, atomic, MOC, research, recap) are identified by the `agent_generated: true` / `agent_managed: true` frontmatter **markers**, not by folder. `Agent/` and `Agent/Temp/` are the only agent-owned folder territories. Legacy folders (`Sources/`, `Atomic/`, `MOCs/`, `Research/`) are read-only fallbacks — notes there are found but never auto-moved.
+Ownership is marker-based, not folder-based. Agent-generated knowledge notes (source, atomic, MOC, research, recap) carry `agent_generated: true` and live flat at the root; agent-owned state notes carry `agent_managed: true` and live under `Agent/`. `Agent/` and `Agent/Temp/` are the only agent-owned folder territories. Legacy folders (`Sources/`, `Atomic/`, `MOCs/`, `Research/`) are read-only fallbacks — notes there are found but never auto-moved.
 
 ## Forbidden Paths (NEVER modify)
 
@@ -14,7 +14,7 @@ Agent-generated knowledge notes (source, atomic, MOC, research, recap) are ident
 | `$VAULT_PATH/.stfolder/` | Syncthing metadata — changes here break sync |
 | `.agents/` itself | Agents do not rewrite their own harness during vault-processing runs |
 | `/home/openclaw/second-brain/` | Repo code is not a vault artifact |
-| `$VAULT_PATH/Agent/` | Agent-owned state and temporary territory; safe to create/update according to the active spec, but still do not delete durable notes during normal runs |
+| `$VAULT_PATH/Agent/` | *Restricted, not forbidden* — the agent creates/updates state notes and `Agent/Temp/` scratch here per the active spec; never delete durable notes or hand-edit outside a spec |
 
 Exception: explicit harness-maintenance requests may edit `.agents/` and repo files, but must not touch vault user content unless separately requested.
 
