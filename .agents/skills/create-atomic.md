@@ -12,6 +12,14 @@ Create a well-formed atomic note for a concept, following the standard template 
 2. Confirm no file named `<Concept>.md` already exists in the vault
 3. Confirm the concept has enough information to write at minimum a stub (title + 1 sentence)
 
+## Gather (depth + breadth) — do this before writing
+
+A single source makes a shallow note. Unless the current session already fetched enough (e.g. from a research hop):
+
+1. Pull the concept from **≥2 sources of different kinds** via the search skills — `skills/search-wikipedia.md` for the foundational definition, plus one of `skills/search-arxiv.md` / `skills/search-web.md` / `skills/search-youtube.md` / `skills/search-reddit.md` for mechanism, current practice, or discussion. Fetch each via `skills/fetch-url.md`.
+2. **Depth**: synthesize what it is, *how it works*, a key distinction/trade-off, and an example from across the sources — not a lone definition.
+3. **Breadth**: list the related concepts it connects to; wikilink them inline, and add any important ones that lack a note to `Agent Concept Gaps` so exploration keeps widening from this note.
+
 ## Template
 
 ```markdown
@@ -22,29 +30,30 @@ agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 
 # {Concept Name}
 
-{One-paragraph summary. Facts only, no speculation. If unknown, write: "Details pending — stub note."}
+{2–4 sentence summary — what it is and what it's for. Facts only, no speculation. Wikilink related concepts inline. If unknown, write "Details pending — stub note."}
 
-## Key Properties
+## How It Works
 
-- {Property or characteristic}
-- {Property or characteristic}
+- {Mechanism, key property, or distinction — substantive; wikilink related concepts}
+- {A trade-off or comparison to [[Alternative]]}
 
-## Context
+## Examples
 
-{How this concept relates to other notes in the vault. What broader topic does it belong to?}
+- {Concrete example or application, if known}
 
 ## References
 
-- {Source, URL, or "From: [[Source Note]]"}
+- {2+ sources of different kinds where available; or "From: [[Source Note]]"}
 
 ## See Also
 
-- [[Related Note 1]]
-- [[Related Note 2]]
+- [[Related Note]]
 
 ---
 Tags: #{topic} #atomic
 ```
+
+**Depth & breadth**: aim past a one-line definition (how it works + a distinction/example, from ≥2 different kinds of source where available), wikilink every related concept inline, and add important new sub-concepts to `Agent Concept Gaps`. **No `## Context` section** — placement comes from the wikilinks + backlinks, not prose.
 
 ## File Creation Steps
 

@@ -18,7 +18,7 @@ For each topic receiving effort, inspect its notes in the vault:
 |-------------|--------|
 | Thin/new — 0–1 notes, or an open `Agent Concept Gaps` row | `FETCH` (discovery on the topic) then `ATOMIZE` |
 | Disconnected — notes exist but < 2 outbound wikilinks, or absent from any MOC | `CONNECT` (add wikilinks / MOC placement) |
-| Stale/shallow — youngest note > 30 days old, or `## References` has < 2 entries | `ENHANCE` (enrich, add sources, deepen) |
+| Stale/shallow — youngest note > 30 days old, `## References` < 2 entries, or a thin body (little past a definition) | `ENHANCE` — deepen to the `specs/generation.md` standard: add ≥2 sources of **different kinds** (Wikipedia + a paper/blog/video/discussion), a *how it works* + a distinction/example, and wikilink more related concepts (spawn `Agent Concept Gaps` rows for new ones) |
 | Mature/well-woven — none of the above | `EXPLORE` — advance the active research session, or seed+start one from an open question (an `Agent Concept Gaps` row, a `#stub` note's topic, or an unresolved thread); if no open question remains, `ENHANCE` (deepen a note with a new sourced fact or connection). **Never a no-op.** |
 
 **Depth & width always exist on a growing graph — prefer these over declaring a topic "mature/idle":**

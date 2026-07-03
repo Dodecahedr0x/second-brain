@@ -4,7 +4,11 @@
 
 ## Atomic Note Standard
 
-An atomic note covers **one concept**. It must contain:
+An atomic note covers **one concept** with real substance — not a surface one-liner:
+
+- **Depth**: explain what it is, how it works, and its key distinctions / trade-offs, synthesized from **≥2 sources of different kinds** where available (e.g. a paper *and* a video/blog *and* a discussion) — go past the dictionary definition.
+- **Breadth**: wikilink every related concept **inline in the body** and in `## See Also`; when the note introduces an important sub-concept with no note yet, add it to `Agent Concept Gaps` so exploration keeps widening.
+- **No `## Context` section**: a note's place in the graph is carried by its inline `[[wikilinks]]`, its `## See Also`, and the **backlinks** other notes point at it — never a prose section explaining why the note exists.
 
 ```markdown
 ---
@@ -14,25 +18,24 @@ agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 
 # [Concept Name]
 
-[One to three sentence summary of what this concept is.]
+[2–4 sentence summary: what it is and what it's for. Wikilink related concepts inline as they appear, e.g. "a [[Transformer]] variant that ...".]
 
-## Key Properties
+## How It Works
 
-- Property 1
-- Property 2
+- [Mechanism, key property, or distinction — substantive, not a single word. Wikilink related concepts.]
+- [A trade-off, a comparison to [[Alternative]], or when to use it.]
 
-## Context
+## Examples
 
-[How this concept fits into the vault's knowledge graph — what it relates to.]
+- [A concrete example or application, if known.]
 
 ## References
 
-- [Source if known]
+- [2+ sources of different kinds where available — e.g. a paper, a video/blog, a discussion — not a single link.]
 
 ## See Also
 
-- [[Related Note 1]]
-- [[Related Note 2]]
+- [[Related Note]] — the neighbours this concept sits between (context comes from these links + backlinks)
 
 ---
 Tags: #[topic] #atomic

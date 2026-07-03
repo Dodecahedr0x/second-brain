@@ -22,8 +22,9 @@ Read `Agent Discovery Log` → `## Topic Coverage`. From scoped candidates, excl
 
 ### 3. Search Each Source
 For each picked topic, call the search skills with `{topic, search_phrases, source_concepts, since_date}`:
-`skills/search-arxiv.md`, `skills/search-youtube.md`, `skills/search-web.md`, `skills/search-hackernews.md`, `skills/search-rss.md`, `skills/search-twitter.md`.
+`skills/search-arxiv.md`, `skills/search-youtube.md`, `skills/search-web.md`, `skills/search-hackernews.md`, `skills/search-reddit.md`, `skills/search-wikipedia.md`, `skills/search-rss.md`, `skills/search-twitter.md`.
 Collect all `CANDIDATES`. Each skill self-limits to ≤1 call per topic (per feed for RSS).
+- `skills/search-wikipedia.md` is **evergreen** (ignores `since_date`): it grounds a topic's foundational concept — include it especially when the topic is thin/new or a concept lacks a definition.
 - `search-rss.md` reads the user's feed list from the vault note `Feeds.md` and is topic-gated (only feed items matching `source_concepts`).
 - `search-twitter.md` is **gated**: it returns empty unless the Agent-Reach Twitter backend + cookies are configured — so it is a no-op until enabled.
 
@@ -33,7 +34,7 @@ Reject any candidate whose **normalized URL** (see `skills/agent-notes.md` Disco
 - already has a non-stub source note (same guard as `loop.md` Phase 4 FETCH).
 
 ### 5. Score + Cap
-Score each survivor: `recency` (newer better) + `phrase_match` strength + a **source-diversity boost**. For the diversity boost, count each source's rows in `## Surfaced` over the **last 7 days**: boost under-used sources and penalize over-used ones so no single source (e.g. arxiv) dominates the vault. Match source to intent rather than defaulting to papers — arxiv for primary/technical research, YouTube for explainers & talks, web/blogs for practitioner takes & tutorials, Hacker News for discussion, RSS for the user's followed feeds. Then keep the top `cap` candidates, applying the per-run **source cap** (see Constraints): the emitted set must span **different sources**. Emit their URLs into the change set as FETCH candidates, tagged `discovered`.
+Score each survivor: `recency` (newer better) + `phrase_match` strength + a **source-diversity boost**. For the diversity boost, count each source's rows in `## Surfaced` over the **last 7 days**: boost under-used sources and penalize over-used ones so no single source (e.g. arxiv) dominates the vault. Match source to intent rather than defaulting to papers — arxiv for primary/technical research, YouTube for explainers & talks, web/blogs for practitioner takes & tutorials, Hacker News & **Reddit** for discussion & practitioner Q&A, **Wikipedia** for foundational definitions, RSS for the user's followed feeds. Then keep the top `cap` candidates, applying the per-run **source cap** (see Constraints): the emitted set must span **different sources**. Emit their URLs into the change set as FETCH candidates, tagged `discovered`.
 
 ### 6. Record
 For each emitted candidate, append a `## Surfaced` row (date, source, normalized URL, `[[Topic]]`); set the `Note` column to `[[Title]]` after Phase 4 creates the note; for HN items, set the `Discussion` column to the `references` permalink — leave `Discussion` empty for non-HN. Upsert each covered topic's `## Topic Coverage` row with today's date and `pass`.

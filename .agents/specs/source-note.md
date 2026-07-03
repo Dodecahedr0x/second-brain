@@ -34,7 +34,7 @@ agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 
 ## Concepts
 
-Links to atomic notes for concepts mentioned in this source:
+Wikilink **every substantive concept** in this source (aim for breadth — not just one or two); create an atomic note or add an `Agent Concept Gaps` row for each, so a single source widens the graph:
 - [[Concept A]]
 - [[Concept B]]
 
