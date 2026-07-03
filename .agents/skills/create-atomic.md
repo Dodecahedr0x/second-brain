@@ -53,7 +53,7 @@ agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 Tags: #{topic} #atomic
 ```
 
-**Depth & breadth**: aim past a one-line definition (how it works + a distinction/example, from ≥2 different kinds of source where available), wikilink every related concept inline, and add important new sub-concepts to `Agent Concept Gaps`. **No `## Context` section** — placement comes from the wikilinks + backlinks, not prose.
+**Depth & breadth**: aim past a one-line definition (how it works + a distinction/example, from ≥2 different kinds of source where available), wikilink every related concept inline, and add important new sub-concepts to `Agent Concept Gaps`. **No placement/"why this note exists" section under any heading** — not `## Context`, `## Why it exists`, `## Background`, `## Relation`, etc. Use only the sections above (`How It Works` / `Examples` / `References` / `See Also`); placement comes from wikilinks + `See Also` + backlinks, never prose.
 
 ## File Creation Steps
 

@@ -8,7 +8,7 @@ An atomic note covers **one concept** with real substance — not a surface one-
 
 - **Depth**: explain what it is, how it works, and its key distinctions / trade-offs, synthesized from **≥2 sources of different kinds** where available (e.g. a paper *and* a video/blog *and* a discussion) — go past the dictionary definition.
 - **Breadth**: wikilink every related concept **inline in the body** and in `## See Also`; when the note introduces an important sub-concept with no note yet, add it to `Agent Concept Gaps` so exploration keeps widening.
-- **No `## Context` section**: a note's place in the graph is carried by its inline `[[wikilinks]]`, its `## See Also`, and the **backlinks** other notes point at it — never a prose section explaining why the note exists.
+- **No "why this note exists" section at all** — not `## Context`, `## Why it exists`, `## Background`, `## Relation`, `## Relationship`, or any renamed variant. A note's place in the graph is carried **only** by its inline `[[wikilinks]]`, its `## See Also`, and the **backlinks** other notes point at it. Use exactly the sections in the template below (`How It Works` / `Examples` / `References` / `See Also`); do not invent a placement/purpose section under any heading.
 
 ```markdown
 ---
