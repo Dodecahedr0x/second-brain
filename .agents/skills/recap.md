@@ -18,23 +18,25 @@ Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from curr
 2. Collect section content — call each provider; omit any section with no entries:
    - **Check-in** — call `skills/check-in.md` (tier=daily); always first.
    - **What's New** — from `specs/daily-suggestions.md` Step 3e.
+   - **Synthesis** — a **1–3 paragraph narrative** reasoning over the notes created or substantially updated this session: *why* they're interesting and *how* they connect to each other and to existing notes. Lengthier prose (not bullets); wikilink concepts liberally so the connections are navigable. This is the recap's substantive read — the reasoning the terse New Notes list omits. Omit only if nothing new was created this session.
    - **Explore** — from `specs/daily-suggestions.md` Step 2.
    - **Routines** — from `specs/daily-suggestions.md` Step 3.
    - **On This Day** *(optional)* — from `specs/daily-suggestions.md` Step 3b; omit if empty.
    - **Loose Ends** *(optional)* — from `specs/daily-suggestions.md` Step 3c; omit if empty.
    - **This Week's Theme** *(optional)* — from `specs/daily-suggestions.md` Step 4; omit if empty.
    - **Question for Today** — from `specs/daily-suggestions.md` Step 3d; omit if empty.
-   - **New Notes** — notes created or substantially updated this session **that are not already surfaced in What's New** (typically atomic notes, MOCs, and enriched notes; What's New already covers new source and finalized research notes). **Omit if empty** — never repeat a note that already appears in What's New. Always last.
+   - **New Notes** — a **succinct index** (one line per note: `[[Note]] — ≤6-word descriptor`) of notes created or substantially updated this session **that are not already surfaced in What's New** (typically atomic notes, MOCs, enriched notes). The *reasoning* lives in Synthesis, so keep this list terse. **Omit if empty**; never repeat a note already in What's New. Always last.
 3. Assemble in this canonical order:
    1. Check-in
    2. What's New
-   3. Explore
-   4. Routines
-   5. On This Day *(if any)*
-   6. Loose Ends *(if any)*
-   7. This Week's Theme *(if any)*
-   8. Question for Today
-   9. New Notes
+   3. Synthesis
+   4. Explore
+   5. Routines
+   6. On This Day *(if any)*
+   7. Loose Ends *(if any)*
+   8. This Week's Theme *(if any)*
+   9. Question for Today
+   10. New Notes
 4. Write (or fully rewrite if `agent_generated`) `$VAULT_PATH/Recap <date>.md`:
 
 ```markdown
@@ -53,6 +55,10 @@ Focus this week?
 
 ## What's New
 - [[Source Title]] · <source> · YYYY-MM-DD — abstract → [[Concept]]
+
+## Synthesis
+
+Today's [[Note A]] and [[Note B]] both bear on <the day's thread>: <a substantive paragraph on why they're interesting and how they connect — e.g. [[Note A]] extends [[Existing Note]] with a mechanism the earlier note left open, while [[Note B]] complicates [[Other Concept]] by showing where it breaks down>. <Optional second paragraph tracing the thread across the day's reading and where it points next.>
 
 ## Explore
 - [Resource](url) — why it connects to recent notes
@@ -75,9 +81,9 @@ One sentence + optional [[MOC suggestion]]
 > Specific open question derived from this week's theme or a stub note.
 
 ## New Notes
-<!-- only notes NOT already in What's New (atomic / MOC / enriched); omit this section if none -->
-- [[Note A]] — one-liner
-- [[Note B]] — one-liner
+<!-- terse index only — the reasoning is in Synthesis; omit if empty; skip anything already in What's New -->
+- [[Note A]] — 4–6 word descriptor
+- [[Note B]] — 4–6 word descriptor
 ```
 
 5. Stamp `agent_last_touched` (see `skills/classify-note.md`).
