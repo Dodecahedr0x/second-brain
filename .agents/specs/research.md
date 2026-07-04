@@ -12,7 +12,7 @@ Read `Agent Research Log`.
 
 ## Start a session
 
-1. Fill `## Queue` if empty: harvest open questions from daily-note `## Question for Today`, high-priority `Agent Concept Gaps` (as "What is X?"), `skills/unresolved-threads.md`, and `#stub` notes.
+1. Fill `## Queue` if empty: harvest open questions from the recap **Explore** section (today's new-notes / Check-in / interest questions — `specs/daily-suggestions.md` Step 2, which already appends them here), the recap `## Question for Today`, high-priority `Agent Concept Gaps` (as "What is X?"), `skills/unresolved-threads.md`, and `#stub` notes.
 2. Weight candidates by topic `Weight` in `Agent Interest Model`, then priority/age. If `EXPLORE` names a focus topic, prefer that topic's top question.
 3. Pop the top question into `## Active Session`: `Status: active`, `Hops: 0/12`, `Saturation: 0/3`.
 4. Run `skills/decompose-question.md` → `short_form`, `### Checklist` (≤5, all `[ ]`), and `### Frontier` (`INITIAL_LEADS`, `Status: open`); score each initial lead as in Advance step 1 (open-checklist fit → authority → hop-distance).

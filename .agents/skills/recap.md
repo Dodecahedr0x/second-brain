@@ -19,7 +19,7 @@ Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from curr
    - **Check-in** — call `skills/check-in.md` (tier=daily); always first.
    - **Synthesis** — a **1–3 paragraph narrative** reasoning over the notes created or substantially updated this session: *why* they're interesting and *how* they connect to each other and to existing notes. Lengthier prose (not bullets); wikilink concepts liberally so the connections are navigable. This is the recap's substantive read — the reasoning the terse New Notes list omits. Omit only if nothing new was created this session.
    - **What's New** — from `specs/daily-suggestions.md` Step 3e.
-   - **Explore** — from `specs/daily-suggestions.md` Step 2.
+   - **Explore** — from `specs/daily-suggestions.md` Step 2: open questions raised by today's new notes, Check-in ticks, and interests (each queued for research), plus the exploration currently running on them.
    - **Routines** — from `specs/daily-suggestions.md` Step 3.
    - **On This Day** *(optional)* — from `specs/daily-suggestions.md` Step 3b; omit if empty.
    - **Loose Ends** *(optional)* — from `specs/daily-suggestions.md` Step 3c; omit if empty.
@@ -61,8 +61,13 @@ Today's [[Note A]] and [[Note B]] both bear on <the day's thread>: <a substantiv
 - [[Source Title]] · <source> · YYYY-MM-DD — abstract → [[Concept]]
 
 ## Explore
-- [Resource](url) — why it connects to recent notes
-- [[Concept Gap]] — stub worth creating
+
+**Questions raised today**
+- *New notes* — <question a note created today opens up>?
+- *Check-in* — <question tied to a topic you ticked>?
+- *Interests* — <question on a top focus topic>?
+
+**Now exploring** — *<active driving question>* · hop N/12 · M/5 answered → [[Research Note]]
 
 ## Routines
 - **Activity** · N-day streak · Next: action

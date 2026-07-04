@@ -62,11 +62,20 @@ Read `Agent Vault Index`:
 - Group by topic/tag to find clusters
 - Identify notes still tagged `#stub` or with no outbound wikilinks — these are loose ends
 
-### 2. Find Resources
+### 2. Explore — questions + exploration
 
-For each cluster of ≥ 2 recently-touched concepts, call `skills/find-resources.md`:
-- Get 1–2 high-quality external resources per cluster (article, video, docs page)
-- Prefer resources not already in any vault note's `## References` section
+This builds the recap's **Explore** section. State clear open questions, then hand them to the research agent and report the exploration running on them.
+
+**a. Generate 2–4 open questions**, each tagged with its origin:
+- **New notes** — a question today's created/updated notes raise or leave open (e.g. "how does [[X]] actually work?", "how does [[X]] relate to [[Y]]?"). Draw on the day's new notes, `#stub` notes, and open `Agent Concept Gaps` rows.
+- **Check-in** — a question tied to a topic the user just ticked in **today's recap Check-in** (a confirmed interest worth digging into).
+- **Interests** — a question on a top `Agent Interest Model` focus topic whose coverage is still thin.
+
+Each question must go one level past what the vault already answers (see Constraints).
+
+**b. Queue them.** Append each genuinely-new question to `Agent Research Log` `## Queue` (`| Question | Topic | Priority |`), deduped against `## Completed` and the active session. These become the research agent's driving questions.
+
+**c. Report the running exploration.** Show what is being explored *now*: the active research session's driving question, hop progress (`hop N/12`, `M/5 answered`), and its `[[research note]]`. If no session is active, name the top queued question that `EXPLORE` will start next. The loop's `EXPLORE` action advances this exploration one hop per run — so the section states the questions **and** the exploration running on them.
 
 ### 3. Identify Routines
 
