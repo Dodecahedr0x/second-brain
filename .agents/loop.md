@@ -92,6 +92,7 @@ Checks (from `specs/victory.md`):
 4. MOCs updated for any new notes in tracked topics
 5. No forbidden files modified
 6. **Content progress**: at least one root knowledge note (source / atomic / MOC / research) was created or modified this run (depth or width) — not only `Agent/` state notes. If unmet, return to Phase 3/4 and do genuine deepening before completing (see `specs/victory.md` → Content Progress).
+7. **Recap completeness**: if any note was created/updated or a research hop ran this session, today's `Recap YYYY-MM-DD` includes a non-empty **Synthesis** section (the reasoning) and a non-empty **Explore** section (origin-tagged questions **and** the running exploration). A stripped recap (only Check-in / What's New / New Notes) is a fail — fully rebuild it via `skills/recap.md` Build/Refresh before completing.
 
 Fail → fix in Phase 4, or log as DEFERRED with reason.
 

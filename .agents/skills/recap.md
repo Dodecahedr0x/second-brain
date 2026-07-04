@@ -15,11 +15,11 @@ Recap notes are `agent_generated` (flat at vault root), not `agent_managed`. The
 Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from current day state.
 
 1. Run `skills/classify-note.md` augment-check if the file already exists.
-2. Collect section content — call each provider; omit any section with no entries:
+2. Collect section content — call **every** provider and **fully regenerate** the recap (a build is a complete rewrite, not a partial patch of a few sections; never drop a section that has material). Omit a section only when it genuinely has no entries — but **Synthesis and Explore are REQUIRED on any run that created/updated a note or has an active or queued research session** (i.e. essentially every run). If `EXPLORE` ran this session, the Explore section MUST report it.
    - **Check-in** — call `skills/check-in.md` (tier=daily); always first.
-   - **Synthesis** — a **1–3 paragraph narrative** reasoning over the notes created or substantially updated this session: *why* they're interesting and *how* they connect to each other and to existing notes. Lengthier prose (not bullets); wikilink concepts liberally so the connections are navigable. This is the recap's substantive read — the reasoning the terse New Notes list omits. Omit only if nothing new was created this session.
+   - **Synthesis** — a **1–3 paragraph narrative** reasoning over the notes created or substantially updated this session: *why* they're interesting and *how* they connect to each other and to existing notes. Lengthier prose (not bullets); wikilink concepts liberally so the connections are navigable. This is the recap's substantive read — the reasoning the terse New Notes list omits. **Required** whenever any note was created or updated this session (nearly every run — see the loop's Content guard); omit only on a genuine no-op run.
    - **What's New** — from `specs/daily-suggestions.md` Step 3e.
-   - **Explore** — from `specs/daily-suggestions.md` Step 2: open questions raised by today's new notes, Check-in ticks, and interests (each queued for research), plus the exploration currently running on them.
+   - **Explore** — from `specs/daily-suggestions.md` Step 2: open questions raised by today's new notes, Check-in ticks, and interests (each queued for research), plus the exploration currently running on them. **Required** whenever a research session is active or queued, or any question can be raised from new notes / Check-in / interests — essentially every run. Never omit it while research is active; it must state the questions **and** report the running exploration.
    - **Routines** — from `specs/daily-suggestions.md` Step 3.
    - **On This Day** *(optional)* — from `specs/daily-suggestions.md` Step 3b; omit if empty.
    - **Loose Ends** *(optional)* — from `specs/daily-suggestions.md` Step 3c; omit if empty.

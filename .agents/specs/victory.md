@@ -14,6 +14,10 @@ A session is complete ONLY when ALL applicable checks below pass. This prevents 
 
 - [ ] At least one **content** note — a root knowledge note (source / atomic / MOC / research) — was created or modified this session, via genuine **depth** (a note enriched with a newly-relevant cross-link or sourced fact) or **width** (a concept atomized, a MOC created/extended, or the active research note grown per `specs/research.md` "Advance one hop" step 6). Updating **only** agent-state notes (`Agent/…`: Operation Log, Vault Index, Research Log state, Discovery Log) does **not** satisfy this. A content-free session is valid ONLY after confirming no note can be deepened, no recurring concept atomized, no cluster connected, and no research question is open — nearly never true on an established vault. If unmet, return to Phase 3/4 and do genuine deepening before completing.
 
+## Recap Completeness (every session that changed anything)
+
+- [ ] If any note was created/updated or a research hop ran this session, today's `Recap YYYY-MM-DD` is a **full** recap — it includes a non-empty **Synthesis** section (1–3 paragraph reasoning over the day's notes) and a non-empty **Explore** section (origin-tagged questions from new notes / Check-in / interests **and** a report of the running exploration). A stripped recap (only Check-in / What's New / New Notes) does NOT pass — rebuild it via `skills/recap.md` Build/Refresh.
+
 ## Ingestion Session Checks
 
 - [ ] All raw/inbox items in the change set are either processed or explicitly tagged `#queued`
