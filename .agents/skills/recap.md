@@ -17,7 +17,7 @@ Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from curr
 1. Run `skills/classify-note.md` augment-check if the file already exists.
 2. Collect section content — call **every** provider and **fully regenerate** the recap (a build is a complete rewrite, not a partial patch of a few sections; never drop a section that has material). Omit a section only when it genuinely has no entries — but **Synthesis and Explore are REQUIRED on any run that created/updated a note or has an active or queued research session** (i.e. essentially every run). If `EXPLORE` ran this session, the Explore section MUST report it.
    - **Check-in** — call `skills/check-in.md` (tier=daily); always first.
-   - **Synthesis** — a **tight one-paragraph synthesis (≈3–5 sentences, one short paragraph max)** reasoning over the notes created or substantially updated this session: *why* they matter and *how* they connect to each other and to existing notes, ending on the open question they raise. High-signal prose, not bullets; wikilink concepts so the connections are navigable. **Be concise** — this is the connective thread, not a summary; cut throat-clearing and anything already stated in the notes themselves. **Required** whenever any note was created or updated this session (nearly every run — see the loop's Content guard); omit only on a genuine no-op run.
+   - **Synthesis** — a concise, **bulleted** synthesis of the notes created or substantially updated this session: **2–4 bullets, each a distinct thread**, leading with a bold thread label, then 1–2 tight sentences on *why* it matters and *how* the day's notes connect to each other and to existing notes, ending on the open question it raises. Wikilink concepts so the connections are navigable; organize by thread so the structure reads at a glance. **Be concise** — cut throat-clearing and anything already stated in the notes. **Required** whenever any note was created or updated this session (nearly every run — see the loop's Content guard); omit only on a genuine no-op run.
    - **What's New** — from `specs/daily-suggestions.md` Step 3e.
    - **Explore** — from `specs/daily-suggestions.md` Step 2: open questions raised by today's new notes, Check-in ticks, and interests (each queued for research), plus the exploration currently running on them. **Required** whenever a research session is active or queued, or any question can be raised from new notes / Check-in / interests — essentially every run. Never omit it while research is active; it must state the questions **and** report the running exploration.
    - **Routines** — from `specs/daily-suggestions.md` Step 3.
@@ -55,7 +55,8 @@ Focus this week?
 
 ## Synthesis
 
-Today's [[Note A]] and [[Note B]] converge on <the thread>: <3–5 tight sentences — [[Note A]] fills the mechanism [[Existing Note]] left open, while [[Note B]] shows where [[Other Concept]] breaks down; end on the open question they raise next>.
+- **<Thread 1>** — [[Note A]] fills the mechanism [[Existing Note]] left open; <why it matters in one clause>. Open: <the question it raises>?
+- **<Thread 2>** — [[Note B]] shows where [[Other Concept]] breaks down, tying it back to [[Related Note]].
 
 ## What's New
 - [[Source Title]] · <source> · YYYY-MM-DD — abstract → [[Concept]]
