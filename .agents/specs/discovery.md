@@ -1,6 +1,6 @@
 # Spec: Discovery
 
-**Trigger**: Called by `loop.md` Phase 1 (`pass=active`, every hourly run); by `specs/weekly-review.md` (`pass=faded`); by `specs/monthly-review.md` (`pass=dormant`).
+**Trigger**: Called by `loop.md` Phase 1 (`pass=active`, every scheduled run); by `specs/weekly-review.md` (`pass=faded`); by `specs/monthly-review.md` (`pass=dormant`).
 
 **Goal**: Produce candidate URLs for recent content on the user's topics and hand them to the existing FETCH pipeline. Discovery only *produces URLs* — it never writes source notes itself.
 

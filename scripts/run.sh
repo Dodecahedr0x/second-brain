@@ -18,7 +18,7 @@ source "$ENV_FILE"
 
 mkdir -p "$ARCHIVE_DIR"
 
-# Prevent concurrent runs (e.g. hourly cron firing while a previous run is still live)
+# Prevent concurrent runs (e.g. a scheduled cron run firing while a previous run is still live)
 LOCK_FILE="$REPO_ROOT/.agent.lock"
 exec 9>"$LOCK_FILE"
 if ! flock -n 9; then

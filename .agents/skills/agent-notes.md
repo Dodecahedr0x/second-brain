@@ -184,7 +184,7 @@ Add bullet points under the relevant section when new patterns are observed. Nev
 
 ## Agent Discovery Log
 
-**Purpose**: Dedup ledger for proactive discovery. Records every URL surfaced and per-topic coverage markers so the hourly loop never re-surfaces the same item. Read in `specs/discovery.md` (dedup filter + rotation); written to this note after each emit (see `specs/discovery.md`).
+**Purpose**: Dedup ledger for proactive discovery. Records every URL surfaced and per-topic coverage markers so the loop never re-surfaces the same item. Read in `specs/discovery.md` (dedup filter + rotation); written to this note after each emit (see `specs/discovery.md`).
 
 ### Template
 

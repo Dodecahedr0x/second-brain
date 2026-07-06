@@ -1,6 +1,6 @@
 # Spec: Daily Notes Processing Pipeline
 
-**Trigger**: Every hour (via `scripts/run.sh`, cron `0 * * * *`). Always targets today's daily note.
+**Trigger**: Every scheduled run (via `scripts/run.sh`, cron `0 */6 * * *`). Always targets today's daily note.
 
 ## Co-Ownership Model
 
