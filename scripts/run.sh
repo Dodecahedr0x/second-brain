@@ -100,9 +100,24 @@ AGENT_RC=$?
 set -e
 ELAPSED=$(( $(date +%s) - START_EPOCH ))
 
+# --- Auth-failure guard ---
+# When the CLI's OAuth session expires, the agent exits non-zero within seconds and
+# does no work — which is indistinguishable from a legitimate no-op run in changes.log.
+# Detect it and surface it loudly to the monitored cron-errors.log so it doesn't fail
+# silently for days. (Refresh with: run `claude` interactively, then `/login`.)
+AUTH_FAILED=0
+if (( AGENT_RC != 0 )) && grep -qiE "OAuth session expired|Failed to authenticate|Invalid API key|credit balance too low" "$LOG_FILE"; then
+    AUTH_FAILED=1
+    echo "$(date -Iseconds) AUTH FAILURE: claude could not authenticate (agent exit ${AGENT_RC}); no vault work done. Fix: run \`claude\` interactively and \`/login\` to refresh the OAuth session." >> "$LOG_DIR/cron-errors.log"
+fi
+
 # Adaptive-load control: nudge next run's load toward the ~10-min target.
+# Skip entirely on auth failure so a dead run never ramps the load up (a 2s failed
+# run otherwise reads as "far under target" and inflates the counter every time).
 PREV_LOAD=$LOAD
-if (( ELAPSED < LOAD_TARGET_SEC - 60 )); then
+if (( AUTH_FAILED )); then
+    :                                        # auth failure did no work → leave load unchanged
+elif (( ELAPSED < LOAD_TARGET_SEC - 60 )); then
     LOAD=$(( LOAD + 1 ))                     # under target → ramp the load up slowly
 elif (( ELAPSED > LOAD_TARGET_SEC + 60 )); then
     (( LOAD > 1 )) && LOAD=$(( LOAD - 1 ))   # over target → ease off
