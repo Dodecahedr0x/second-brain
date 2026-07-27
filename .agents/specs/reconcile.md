@@ -120,7 +120,7 @@ For every note to create:
 The **only** agent write into a daily note is the recap link. Follow `skills/recap.md` Link procedure:
 
 - Preserve the user input zone exactly.
-- Replace the agent zone with `[[Recap YYYY-MM-DD]]` only — all sections (What's New, Explore, Routines, New Notes, etc.) live in `Recap YYYY-MM-DD`.
+- Replace the agent zone with `[[YYYY-MM-DD Recap]]` only — all sections (What's New, Explore, Routines, New Notes, etc.) live in `YYYY-MM-DD Recap`.
 - Extract URL bullets and concept mentions from the user zone as seeds for knowledge-note creation.
 
 ---

@@ -4,7 +4,7 @@
 
 Generate positive-confirmation check-in questions from `Agent Interest Model`, and read the user's ticks back into steering updates. Which topics get asked depends on the `tier`.
 
-For daily use: the `## Check-in` section is the **top section of the recap** (`$VAULT_PATH/Recap YYYY-MM-DD.md`), not the daily note. Read-back reads today's recap. Pre-generation for tomorrow: call `skills/recap.md` **Pre-generate tomorrow** before the session ends.
+For daily use: the `## Check-in` section is the **top section of the recap** (`$VAULT_PATH/YYYY-MM-DD Recap.md`), not the daily note. Read-back reads today's recap. Pre-generation for tomorrow: call `skills/recap.md` **Pre-generate tomorrow** before the session ends.
 
 ## Tiers (which topics to ask about)
 
@@ -37,7 +37,7 @@ Only render the groups relevant to the tier. Every box is **positive-confirmatio
 
 ## Read-back
 
-Source for daily read-back: the `## Check-in` section of **today's recap** (`$VAULT_PATH/Recap YYYY-MM-DD.md`), not the daily note.
+Source for daily read-back: the `## Check-in` section of **today's recap** (`$VAULT_PATH/YYYY-MM-DD Recap.md`), not the daily note.
 
 Given a `## Check-in` section not yet marked processed:
 - Collect checked boxes; map each to `{promote | focus | refresh | drop}` by its question label (see the daily/weekly/monthly rows above).

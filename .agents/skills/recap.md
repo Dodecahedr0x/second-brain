@@ -4,7 +4,7 @@
 
 ## Purpose
 
-`Recap YYYY-MM-DD` is the agent's primary daily output note. All sections formerly written into the daily agent zone (Check-in, What's New, Explore, Routines, Question for Today, New Notes) live here instead. The daily note's agent zone holds only `[[Recap YYYY-MM-DD]]` — the **only** agent write into a daily note.
+`YYYY-MM-DD Recap` is the agent's primary daily output note. All sections formerly written into the daily agent zone (Check-in, What's New, Explore, Routines, Question for Today, New Notes) live here instead. The daily note's agent zone holds only `[[YYYY-MM-DD Recap]]` — the **only** agent write into a daily note.
 
 Recap notes are `agent_generated` (flat at vault root), not `agent_managed`. They do not live under `Agent/`.
 
@@ -12,7 +12,7 @@ Recap notes are `agent_generated` (flat at vault root), not `agent_managed`. The
 
 ## Build / Refresh
 
-Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from current day state.
+Called when `<date>` is today. Assembles `$VAULT_PATH/<date> Recap.md` from current day state.
 
 1. Run `skills/classify-note.md` augment-check if the file already exists.
 2. Collect section content — call **every** provider and **fully regenerate** the recap (a build is a complete rewrite, not a partial patch of a few sections; never drop a section that has material). Omit a section only when it genuinely has no entries — but **Synthesis and Explore are REQUIRED on any run that created/updated a note or has an active or queued research session** (i.e. essentially every run). If `EXPLORE` ran this session, the Explore section MUST report it.
@@ -37,7 +37,7 @@ Called when `<date>` is today. Assembles `$VAULT_PATH/Recap <date>.md` from curr
    8. This Week's Theme *(if any)*
    9. Question for Today
    10. New Notes
-4. Write (or fully rewrite if `agent_generated`) `$VAULT_PATH/Recap <date>.md`:
+4. Write (or fully rewrite if `agent_generated`) `$VAULT_PATH/<date> Recap.md`:
 
 ```markdown
 ---
@@ -45,7 +45,7 @@ agent_generated: true
 agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 ---
 
-# Recap YYYY-MM-DD
+# YYYY-MM-DD Recap
 
 ## Check-in
 Focus this week?
@@ -100,7 +100,7 @@ One sentence + optional [[MOC suggestion]]
 
 ## Link
 
-Ensure the daily note's agent zone contains exactly `[[Recap <date>]]`:
+Ensure the daily note's agent zone contains exactly `[[<date> Recap]]`:
 
 1. Open `$VAULT_PATH/<date>.md`. If it does not exist, skip (log `RECAP_SKIPPED: missing daily note <date>`).
 2. Locate the agent zone boundary (`\n---\n## Agent`). If absent, append the boundary after all user content.
@@ -110,7 +110,7 @@ Ensure the daily note's agent zone contains exactly `[[Recap <date>]]`:
 ---
 ## Agent — YYYY-MM-DD HH:MM
 
-[[Recap YYYY-MM-DD]]
+[[YYYY-MM-DD Recap]]
 ```
 
 The user zone above the boundary is **never touched**. This replacement is the sole agent write into any daily note. Sibling agent links (weekly/monthly review notes) surface in the recap's `## New Notes`, not in the daily note's agent zone.
@@ -124,20 +124,20 @@ A recap dated `< today` is frozen:
 | State | Action |
 |-------|--------|
 | Recap exists (past date) | Do not edit — log `PAST_RECAP_FROZEN: <date>` |
-| Recap missing, daily note exists | Regenerate once (Build/Refresh cold run using that day's state), then freeze — log `REGENERATED: Recap <date>` |
+| Recap missing, daily note exists | Regenerate once (Build/Refresh cold run using that day's state), then freeze — log `REGENERATED: <date> Recap` |
 | Recap missing, daily note also missing | Log `RECAP_SKIPPED: missing daily note <date>`; invent nothing |
 
 ---
 
 ## Pre-generate tomorrow
 
-Ensure `$VAULT_PATH/Recap <tomorrow>.md` exists with a fresh `## Check-in` before the session ends. **Idempotent** — skip silently if the file already exists.
+Ensure `$VAULT_PATH/<tomorrow> Recap.md` exists with a fresh `## Check-in` before the session ends. **Idempotent** — skip silently if the file already exists.
 
 1. Compute tomorrow's date (today + 1 day, ISO 8601: `YYYY-MM-DD`).
-2. Check whether `$VAULT_PATH/Recap <tomorrow>.md` exists.
-   - If it exists: log `PRE_GEN_SKIPPED: Recap <tomorrow> already exists`; stop.
+2. Check whether `$VAULT_PATH/<tomorrow> Recap.md` exists.
+   - If it exists: log `PRE_GEN_SKIPPED: <tomorrow> Recap already exists`; stop.
 3. Call `skills/check-in.md` Generate (tier=daily) to produce a `## Check-in` block.
-4. Write `$VAULT_PATH/Recap <tomorrow>.md`:
+4. Write `$VAULT_PATH/<tomorrow> Recap.md`:
 
 ```markdown
 ---
@@ -145,12 +145,12 @@ agent_generated: true
 agent_last_touched: YYYY-MM-DDThh:mm:ssZ
 ---
 
-# Recap <tomorrow>
+# <tomorrow> Recap
 
 ## Check-in
 <generated check-in block from step 3>
 ```
 
-5. Log `PRE_GEN: created Recap <tomorrow>`.
+5. Log `PRE_GEN: created <tomorrow> Recap`.
 
 This procedure is called by Loop Phase 6 (CLEANUP).

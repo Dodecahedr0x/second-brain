@@ -9,7 +9,7 @@ Daily notes have two zones separated by `\n---\n## Agent`:
 | Zone | Owner | Rules |
 |------|-------|-------|
 | **User zone** (above the boundary) | User | **Read-only.** Agent reads/analyzes but never modifies it — no annotating, wikilinking, appending, or rewriting. Detected links and source-note refs surface in the recap note (via `skills/recap.md`) |
-| **Agent zone** (from `---\n## Agent` onward) | Agent | Single `[[Recap YYYY-MM-DD]]` link (via `skills/recap.md`); replaced each run; user never edits it. All generated sections live in the recap note |
+| **Agent zone** (from `---\n## Agent` onward) | Agent | Single `[[YYYY-MM-DD Recap]]` link (via `skills/recap.md`); replaced each run; user never edits it. All generated sections live in the recap note |
 
 If no agent boundary exists yet, the entire note is the user zone. The agent appends the boundary at the end of the first run.
 

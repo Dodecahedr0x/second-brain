@@ -9,8 +9,8 @@
 $VAULT_PATH/
 ├── .obsidian/          ← FORBIDDEN: Obsidian config, never touch
 ├── .stfolder/          ← FORBIDDEN: Syncthing metadata, never touch
-├── YYYY-MM-DD.md       ← Daily notes; user input at top, a single [[Recap YYYY-MM-DD]] link below
-├── Recap YYYY-MM-DD.md ← Agent's derived daily output (Check-in + exploration); agent_generated
+├── YYYY-MM-DD.md       ← Daily notes; user input at top, a single [[YYYY-MM-DD Recap]] link below
+├── YYYY-MM-DD Recap.md ← Agent's derived daily output (Check-in + exploration); agent_generated
 ├── <Title>.md          ← User notes and flat agent-generated knowledge notes
 └── Agent/              ← Agent-owned machine state + temporary working files
 ```
@@ -29,7 +29,7 @@ $VAULT_PATH/
 
 ## Note Structure
 
-A **daily note** holds the user's free input; the agent writes only a single `[[Recap YYYY-MM-DD]]` link into its agent zone (via `skills/recap.md`). Everything the agent generates for the day — the **Check-in** and the exploration sections — lives in the **recap note**, not the daily note.
+A **daily note** holds the user's free input; the agent writes only a single `[[YYYY-MM-DD Recap]]` link into its agent zone (via `skills/recap.md`). Everything the agent generates for the day — the **Check-in** and the exploration sections — lives in the **recap note**, not the daily note.
 
 ```markdown
 YYYY-MM-DD
@@ -39,10 +39,10 @@ YYYY-MM-DD
 
 ---
 ## Agent — YYYY-MM-DD HH:MM
-[[Recap YYYY-MM-DD]]
+[[YYYY-MM-DD Recap]]
 ```
 
-The recap note (`Recap YYYY-MM-DD.md`, flat, `agent_generated`) holds the day's output — Check-in first, then the exploration sections:
+The recap note (`YYYY-MM-DD Recap.md`, flat, `agent_generated`) holds the day's output — Check-in first, then the exploration sections:
 
 ```markdown
 ## Check-in

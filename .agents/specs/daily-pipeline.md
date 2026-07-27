@@ -8,7 +8,7 @@ The vault is jointly maintained by the user and the agent. Today's daily note is
 
 - **User zone**: everything above the agent boundary (`---\n## Agent`). The user writes freely here — bullets, URLs, tasks, thoughts. It is **read-only** to the agent: analyze it, but never annotate, wikilink, append to, or rewrite it. All generated content (source-note links, transcripts, detected concepts) goes in the agent zone. Preferred shape: `## User Inputs` first (freeform user content), then `## Agent Feedback` (user-owned checkboxes).
 - **Feedback checkboxes**: positive-confirmation only, max 3 boxes. Unchecked boxes are neutral prompts, not weak negatives. Checked boxes are explicit steering; read them in Phase 1, update `Agent User Profile` / `Agent Concept Gaps` / discovery priorities as applicable, then leave the checkbox text unchanged.
-- **Agent zone**: everything from `---\n## Agent — YYYY-MM-DD HH:MM` onward. Contains only `[[Recap YYYY-MM-DD]]` — a link to the recap note where all generated sections live. The agent replaces this with a single link each run (via `skills/recap.md`). The user never edits it.
+- **Agent zone**: everything from `---\n## Agent — YYYY-MM-DD HH:MM` onward. Contains only `[[YYYY-MM-DD Recap]]` — a link to the recap note where all generated sections live. The agent replaces this with a single link each run (via `skills/recap.md`). The user never edits it.
 
 ---
 
@@ -91,7 +91,7 @@ When fetched content maps to an existing atomic note:
 
 ## §Agent Zone (Phase 4 — Always)
 
-Call `skills/recap.md` **Build/Refresh** (today's date) to assemble all generated sections (Check-in, What's New, Explore, Routines, Question for Today, New Notes) into `$VAULT_PATH/Recap YYYY-MM-DD.md`.
+Call `skills/recap.md` **Build/Refresh** (today's date) to assemble all generated sections (Check-in, What's New, Explore, Routines, Question for Today, New Notes) into `$VAULT_PATH/YYYY-MM-DD Recap.md`.
 
 Then call `skills/recap.md` **Link** to write or update the daily note's agent zone:
 
@@ -99,7 +99,7 @@ Then call `skills/recap.md` **Link** to write or update the daily note's agent z
 ---
 ## Agent — YYYY-MM-DD HH:MM
 
-[[Recap YYYY-MM-DD]]
+[[YYYY-MM-DD Recap]]
 ```
 
 The recap note is the write target for all suggestions content. The daily note's agent zone holds only the link.
@@ -124,7 +124,7 @@ If any limit is hit, defer remaining items with `#queued` and log clearly.
 ## Relationship to Other Specs
 
 - `specs/daily-note.md` — zone ownership rules (governs what agent may touch in the user zone)
-- `skills/recap.md` — builds the recap note and writes the `[[Recap YYYY-MM-DD]]` link into the daily note
+- `skills/recap.md` — builds the recap note and writes the `[[YYYY-MM-DD Recap]]` link into the daily note
 - `specs/daily-suggestions.md` — section builders (What's New, Explore, Routines, Question) called from `skills/recap.md`
 - `specs/source-note.md` — source note creation
 - `specs/generation.md` — atomic note creation

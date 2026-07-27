@@ -92,7 +92,7 @@ Checks (from `specs/victory.md`):
 4. MOCs updated for any new notes in tracked topics
 5. No forbidden files modified
 6. **Content progress**: at least one root knowledge note (source / atomic / MOC / research) was created or modified this run (depth or width) — not only `Agent/` state notes. If unmet, return to Phase 3/4 and do genuine deepening before completing (see `specs/victory.md` → Content Progress).
-7. **Recap completeness**: if any note was created/updated or a research hop ran this session, today's `Recap YYYY-MM-DD` includes a non-empty **Synthesis** section (the reasoning) and a non-empty **Explore** section (origin-tagged questions **and** the running exploration). A stripped recap (only Check-in / What's New / New Notes) is a fail — fully rebuild it via `skills/recap.md` Build/Refresh before completing.
+7. **Recap completeness**: if any note was created/updated or a research hop ran this session, today's `YYYY-MM-DD Recap` includes a non-empty **Synthesis** section (the reasoning) and a non-empty **Explore** section (origin-tagged questions **and** the running exploration). A stripped recap (only Check-in / What's New / New Notes) is a fail — fully rebuild it via `skills/recap.md` Build/Refresh before completing.
 
 Fail → fix in Phase 4, or log as DEFERRED with reason.
 
@@ -115,7 +115,7 @@ Exit: All checks pass, or failures explicitly logged as DEFERRED.
    ```
 4. Append new concept gaps to `Agent Concept Gaps`
 5. Verify `Agent Vault Index` is consistent with actual vault contents
-6. **Pre-generate tomorrow's recap** (runs every cycle): call `skills/recap.md` "Pre-generate tomorrow" procedure — creates `Recap <tomorrow>.md` with a fresh `## Check-in` if it does not already exist. Idempotent: skip silently if the file exists.
+6. **Pre-generate tomorrow's recap** (runs every cycle): call `skills/recap.md` "Pre-generate tomorrow" procedure — creates `<tomorrow> Recap.md` with a fresh `## Check-in` if it does not already exist. Idempotent: skip silently if the file exists.
 
 Exit: All agent-managed notes updated. Session fully logged. Tomorrow's recap stub ready with Check-in.
 

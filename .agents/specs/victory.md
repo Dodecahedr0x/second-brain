@@ -16,7 +16,7 @@ A session is complete ONLY when ALL applicable checks below pass. This prevents 
 
 ## Recap Completeness (every session that changed anything)
 
-- [ ] If any note was created/updated or a research hop ran this session, today's `Recap YYYY-MM-DD` is a **full** recap — it includes a non-empty **Synthesis** section (1–3 paragraph reasoning over the day's notes) and a non-empty **Explore** section (origin-tagged questions from new notes / Check-in / interests **and** a report of the running exploration). A stripped recap (only Check-in / What's New / New Notes) does NOT pass — rebuild it via `skills/recap.md` Build/Refresh.
+- [ ] If any note was created/updated or a research hop ran this session, today's `YYYY-MM-DD Recap` is a **full** recap — it includes a non-empty **Synthesis** section (1–3 paragraph reasoning over the day's notes) and a non-empty **Explore** section (origin-tagged questions from new notes / Check-in / interests **and** a report of the running exploration). A stripped recap (only Check-in / What's New / New Notes) does NOT pass — rebuild it via `skills/recap.md` Build/Refresh.
 
 ## Ingestion Session Checks
 

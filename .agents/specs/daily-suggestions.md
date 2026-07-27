@@ -2,14 +2,14 @@
 
 **Trigger**: End of each daily pipeline run, after §Knowledge Digest is written.
 
-**Goal**: Assemble a curated, actionable set of sections into today's `Recap YYYY-MM-DD` note so the user opens Obsidian and immediately knows what to explore and do — with hooks that pull them back (open threads, memory, questions, stakes).
+**Goal**: Assemble a curated, actionable set of sections into today's `YYYY-MM-DD Recap` note so the user opens Obsidian and immediately knows what to explore and do — with hooks that pull them back (open threads, memory, questions, stakes).
 
 ---
 
 ## Output Location
 
-Sections are assembled into `$VAULT_PATH/Recap YYYY-MM-DD.md` (today's date) by `skills/recap.md`.
-Do not write to the daily note — `skills/recap.md` Link handles the `[[Recap YYYY-MM-DD]]` pointer there.
+Sections are assembled into `$VAULT_PATH/YYYY-MM-DD Recap.md` (today's date) by `skills/recap.md`.
+Do not write to the daily note — `skills/recap.md` Link handles the `[[YYYY-MM-DD Recap]]` pointer there.
 
 ---
 
@@ -122,7 +122,7 @@ Omit the section if no discovery rows or research notes are dated today.
 
 ### 5. Write to the Recap
 
-Sections from this spec are assembled into the recap by `skills/recap.md`, in the order `skills/recap.md` defines. `skills/recap.md` calls the section-builder steps above to get content; it owns placement, ordering, and writing the assembled result to `$VAULT_PATH/Recap YYYY-MM-DD.md`.
+Sections from this spec are assembled into the recap by `skills/recap.md`, in the order `skills/recap.md` defines. `skills/recap.md` calls the section-builder steps above to get content; it owns placement, ordering, and writing the assembled result to `$VAULT_PATH/YYYY-MM-DD Recap.md`.
 
 ---
 
